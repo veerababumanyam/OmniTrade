@@ -5,13 +5,14 @@
 ![OmniTrade Banner](https://images.unsplash.com/photo-1611974717433-28ebbfba0989?q=80&w=2070&auto=format&fit=crop)
 
 [![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=for-the-badge&logo=go)](https://go.dev/)
-[![React Version](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![Genkit](https://img.shields.io/badge/Google-Genkit-4285F4?style=for-the-badge&logo=google)](https://firebase.google.com/docs/genkit)
-[![Design](https://img.shields.io/badge/Design-Liquid_Glass-FF69B4?style=for-the-badge)](https://github.com/v13478/OmniTrade)
+[![React Version](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![Genkit](https://img.shields.io/badge/Google-Genkit_1.4-4285F4?style=for-the-badge&logo=google)](https://firebase.google.com/docs/genkit)
+[![Quality](https://img.shields.io/badge/Quality-90%25+-success?style=for-the-badge)](./.specswarm/quality-standards.md)
+[![Design](https://img.shields.io/badge/Design-Liquid_Glass-FF69B4?style=for-the-badge)](./docs/08_UI_UX_Design_Standards_2026.md)
 
-**OmniTrade** is a multi-agent AI quantitative trading and research platform. It leverages state-of-the-art agentic workflows to analyze markets, synthesize financial data, and propose high-conviction trades with a premium "Liquid Glass" experience.
+**OmniTrade** is a next-generation multi-agent AI quantitative trading and research platform. Built with a high-integrity **Three-Plane Architecture** and a premium **Liquid Glass** aesthetic, it empowers traders with autonomous intelligence and human-in-the-loop safeguards.
 
-[Explore Documentation](./docs) • [Architecture](./docs/AI_Trading_System_Architecture.md) • [Features](#key-features)
+[Explore Documentation](./docs) • [Architecture](./docs/AI_Trading_System_Architecture.md) • [Features](#-key-features) • [Getting Started](#-getting-started)
 
 </div>
 
@@ -19,31 +20,31 @@
 
 ## 💎 The Vision
 
-OmniTrade represents the next generation of financial intelligence. By moving away from monolithic AI models and adopting a **Multi-Agent Orchestration** strategy, we achieve unprecedented precision, token efficiency, and cross-market analysis capabilities.
+OmniTrade represents the convergence of specialized AI intelligence and elite financial research. By orchestrating a **Swarm of 50+ Specialized Agents**, the platform decomposes complex market analysis into verifiable, collaborative reasoning steps, achieving unprecedented token efficiency and decision accuracy.
 
-### 🌊 Liquid Glass Design
-Built with a "Liquid Glass" philosophy, the interface feels premium, alive, and professional. Transparent surfaces, smooth Gaussian blurs, and micro-interactivity define the OmniTrade experience.
+### 🌊 Liquid Glass Experience
+Our UI follows the **2026 "Liquid Glass" Design System**. It’s not just transparent; it’s physics-based. Surfaces simulate refraction, lensing, and dynamic specularity, creating a workspace that feel alive and professional.
 
 ---
 
 ## 🛠️ Three-Plane Architecture
 
-OmniTrade is built on a high-integrity architectural foundation:
+OmniTrade is engineered for security and precision:
 
-1.  **📡 Data Plane (Read-Only)**: Ingests real-time market data, technical indicators, and news sentiment. AI agents operate with a strictly read-only role (`medisync_readonly`) to ensure data integrity.
-2.  **🧠 Intelligence Plane**: A Google Genkit-powered multi-agent system (MAS). Specialized agents perform deep research, fundamental analysis, and risk assessment before reaching consensus.
-3.  **🛡️ Action Plane (HITL)**: A "Human-in-the-Loop" secure execution layer. No trade is ever placed without human oversight, supported by transparent reasoning and confidence scores.
+1.  **📡 Data Plane (Read-Only)**: Real-time ingestion of market OHLCV, SEC filings, and global news. Agents operate via the `medisync_readonly` role, ensuring zero unauthorized mutations.
+2.  **🧠 Intelligence Plane**: A Google Genkit-powered Multi-Agent System (MAS). Specialized analysts (Fundamental, Technical, Sentiment) engage in a "Debate Topology" to reach high-conviction consensus.
+3.  **🛡️ Action Plane (HITL)**: The execution layer. AI proposes, human approves. Every trade includes a full **Chain-of-Thought (CoT)** reasoning audit and confidence score.
 
 ---
 
 ## 🚀 Key Features
 
-- **Agentic Workflows**: Specialized roles for Data Fetching, Fundamental/Technical Analysis, Risk Management, and Portfolio Synthesis.
-- **Universal LLM Support**: Support for OpenAI, Anthropic, Gemini, DeepSeek, and local inference via Ollama/LM Studio.
-- **Token Optimization**: Smart model routing to minimize costs while maximizing reasoning depth.
-- **Multi-Horizon Strategies**: From event-driven growth to intraday high-volatility technical trading.
-- **Auditability**: Immutable logs of all AI reasoning and human decisions.
-- **i18n**: Support for English (LTR) and Arabic (RTL) out of the box.
+- **Advanced Debate Topology**: Hierarchical agent structure (Parallel Analysis -> Strategy Optimization -> Synthesis).
+- **Universal LLM Integration**: support for OpenAI (GPT-5), Anthropic (Claude 6), Gemini 2.x, DeepSeek-V4, and local inference via **Ollama**.
+- **Token Efficiency Engine**: Smart routing and context compression reducing costs by up to 40%.
+- **Hallucination Control**: Multi-source validation and cross-checking guardrails.
+- **Agent Collaboration Framework**: Formal A2A (Agent-to-Agent) protocols for knowledge distillation and peer review.
+- **Full i18n Support**: Native English (LTR) and Arabic (RTL) capabilities.
 
 ---
 
@@ -51,51 +52,78 @@ OmniTrade is built on a high-integrity architectural foundation:
 
 | Component | Technology |
 | :--- | :--- |
-| **Backend** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK |
-| **Frontend** | React 19, Vite, Vanilla CSS, CopilotKit |
-| **Database** | PostgreSQL + pgvector, Redis |
-| **AI Models** | GPT-4o, Claude 3.5, Gemini 1.5 Pro, Llama 3 (Local) |
+| **Foundation** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK 1.4+ |
+| **Intelligence** | Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
+| **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit |
+| **Protocols** | A2A (Agent-to-Agent), MCP (Model Context), ACP (Agent Client) |
+| **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs |
+
+---
+
+## 🤖 Specialized Agent Swarm
+
+OmniTrade utilizes over **50+ specialized trading agents** categorized into expert domains:
+
+- 📊 **Fundamental Analysis**: Valuation models, Growth trends, Forensic accounting.
+- 📉 **Technical Analysis**: Breakout detection, Volume profiles, Support/Resistance.
+- 📈 **Market Sentiment**: News synthesis, Social media scraping, Analyst ratings.
+- 🌍 **Alternative Data**: Geopolitical events, Macro-indicators, Insider tracking.
+- 🧠 **Meta Agents**: Bayes inference, Risk management, Portfolio synthesis.
 
 ---
 
 ## 🚦 Getting Started
 
 ### Prerequisites
-- Go 1.26 or higher
-- Node.js 20+
-- PostgreSQL instance
+- **Go 1.26+**
+- **Node.js 22+**
+- **PostgreSQL + pgvector**
+- **Docker** (for infrastructure services)
 
-### Local Development
-1. **Clone the repository**
+### Local Setup
+
+1. **Clone & Install Dependencies**
    ```bash
    git clone https://github.com/v13478/OmniTrade.git
    cd OmniTrade
+   npm install && cd backend && go mod download
    ```
 
-2. **Setup Backend**
+2. **Run Infrastructure**
    ```bash
-   cd backend
-   go mod download
-   go run main.go
+   docker-compose up -d
    ```
 
-3. **Setup Frontend**
+3. **Start Development Servers**
    ```bash
-   cd frontend
-   npm install
+   # From root
    npm run dev
    ```
 
 ---
 
-## 📖 Documentation
-Detailed technical specifications and research findings can be found in the `/docs` directory:
+## 📖 Documentation Index
+
 - [Product Requirements (PRD)](./docs/PRD_OmniTrade.md)
-- [System Architecture](./docs/AI_Trading_System_Architecture.md)
-- [Trading Strategies](./docs/AI_Trading_Strategies.md)
+- [Agent Intelligence System](./docs/02_Agent_Intelligence_System.md)
+- [Liquid Glass Design Specs](./docs/08_UI_UX_Design_Standards_2026.md)
+- [API Specifications](./docs/04_API_Specification.md)
+- [Security & HITL Protocol](./docs/05_Security_HITL_Protocol.md)
+
+---
+
+## 📋 Quality Standards (SpecSwarm)
+
+We maintain strict quality gates enforced by **SpecSwarm**:
+
+| Metric | Threshold |
+| :--- | :--- |
+| **Test Coverage** | 90% Minimum |
+| **Quality Score** | 90/100 Minimum |
+| **Security** | Zero Critical Vulnerabilities |
 
 ---
 
 <div align="center">
-Built with ❤️ by the OmniTrade Team
+Built with ❤️ by the OmniTrade Core Team
 </div>

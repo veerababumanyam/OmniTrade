@@ -18,7 +18,7 @@ LLMs are inherently limited by their training data cutoff. RAG is critical for r
 - **Financial Documents**: Parsing SEC filings, earnings call transcripts, and research reports to extract fundamental data.
 
 ### 2.3 Financial LLMs and Fine-tuning
-- **FinGPT**: Demonstrates that lightweight adaptation (LoRA/QLoRA) of open-source models (like LLaMA-3) on financial data is more cost-effective and sometimes more performant than using general-purpose models like GPT-4 for specific financial tasks.
+- **FinGPT**: Demonstrates that lightweight adaptation (LoRA/QLoRA) of open-source models (like Llama-4) on financial data is more cost-effective and sometimes more performant than using general-purpose models like GPT-5.3 for specific financial tasks.
 - **Sentiment & Forecasting**: Models fine-tuned specifically for financial sentiment analysis and stock price forecasting are readily available.
 
 ### 2.4 Quantitative Pipelines
@@ -49,7 +49,12 @@ Based on the research, we propose a modular, three-plane architecture for the ap
      - *Quantitative Agent*: Runs statistical/ML models.
      - *Risk Analyst*: Evaluates portfolio exposure.
      - *Portfolio Manager*: Aggregates signals and proposes trades.
-   - **LLM Options**: Support for multiple providers (Anthropic, Gemini, OpenAI, local Ollama) based on the task's complexity vs. cost.
+   - **Universal LLM Support**: Provider-agnostic abstraction layer supporting:
+     - US providers: OpenAI, Anthropic, Google Gemini
+     - China/Asia providers: DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai
+     - Aggregators: OpenRouter, Together, Groq, Fireworks
+     - Local: Ollama, LM Studio, vLLM, custom endpoints
+   - **Per-Agent Configuration**: Users can assign any model to any agent role.
 
 3. **Action Plane (Human-in-the-loop)**
    - **Trade Proposal Generation**: The Intelligence Plane proposes trades with full reasoning and confidence scores.
@@ -58,9 +63,11 @@ Based on the research, we propose a modular, three-plane architecture for the ap
    - **Audit Log**: Every AI decision, retrieved context, and human action is logged to an immutable audit table.
 
 ### 3.2 Tech Stack
-- **Backend**: Go (1.26+), `go-chi` for routing, `sqlx` for database access, Google Genkit (Go SDK) for AI workflows.
-- **Frontend**: React 19, Vite, Vanilla CSS with "Liquid Glass" aesthetic (glassmorphism, modern typography, micro-animations).
-- **Infrastructure**: Docker for containerization, Redis for caching/queues.
+- **Backend**: Go 1.24+, `go-chi` v5.x for routing, `sqlx` for database access, Google Genkit Go SDK for AI workflows.
+- **Frontend**: React 19.x, Vite 6.x, TypeScript 5.7.x, Vanilla CSS with "Liquid Glass" aesthetic (glassmorphism, modern typography, micro-animations).
+- **Database**: PostgreSQL 17.x with pgvector extension.
+- **Infrastructure**: Docker for containerization, Redis 8.x for caching/queues.
+- **LLM Support**: Universal provider abstraction supporting OpenAI, Anthropic, Google Gemini, DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai, OpenRouter, Together, Groq, Fireworks, Ollama, LM Studio, vLLM, and custom endpoints.
 
 ## 4. Development Roadmap
 

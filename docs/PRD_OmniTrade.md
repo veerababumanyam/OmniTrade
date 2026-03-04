@@ -22,22 +22,42 @@ The system operates on a strict **Three-Plane Architecture**:
 **Requirements:**
 - **Agent Roles:** Implement specialized agents (Data Fetcher, Fundamental Analyst, Technical Analyst, Risk Manager, Portfolio Manager).
 - **Token Optimization:**
-    - Use smaller, fine-tuned models (e.g., FinGPT, Llama-3-8B) for intermediate tasks (sentiment extraction, data structuring) instead of defaulting to GPT-4/Claude-3.5-Sonnet for everything.
+    - Use smaller, high-efficiency models (e.g., Llama-4-Maverick, DeepSeek-V3.2) for intermediate tasks (sentiment extraction, data structuring) instead of defaulting to GPT-5.3 or Claude 4.6 for everything.
     - Implement caching for repetitive fundamental data queries to avoid redundant RAG cycles.
     - Employ strict summarization pipelines before feeding context into reasoning agents to minimize input tokens.
-- **Workflow Orchestration:** Utilize Google Genkit flows to explicitly define agent interactions, input/output schemas (Pydantic/Typed Structs), and debate mechanisms.
+- **Workflow Orchestration:** Utilize Google Genkit Go SDK 1.4+ flows to explicitly define agent interactions, input/output schemas (Pydantic/Typed Structs), and stateful sessions.
 
 ### 4.2 Universal LLM Provider Support
 **Description:** The platform must not be locked into a single AI provider, ensuring global usability, redundancy, and local privacy options.
 
 **Requirements:**
-- **USA Providers:** Support OpenAI, Anthropic, Google Gemini (via Genkit).
-- **China Providers:** Support major Chinese foundation models (e.g., DeepSeek, GLM, Qwen) for diverse market analysis and domestic users.
-- **Aggregators/Routing:** Support API integration with OpenRouter or similar services for dynamic model routing.
-- **Local/Private Execution:** Native support for local inference engines:
-    - Ollama
-    - LM Studio
-- **Dynamic Model Selection:** Users must be able to assign specific models to specific agents (e.g., use a cheap local model for data parsing, and a high-reasoning Anthropic model for the final Portfolio Manager synthesis).
+- **US Cloud Providers:**
+    - OpenAI (GPT-4.x, GPT-5.x, o1, o3-mini series)
+    - Anthropic (Claude 4.x/5.x/6.x Opus, Sonnet, Haiku series)
+    - Google Gemini (Gemini 2.x Flash, Pro series)
+- **China/Asia Cloud Providers:**
+    - DeepSeek (V3, V4, R1 series)
+    - Zhipu AI (GLM-4, GLM-5 series)
+    - Moonshot/Kimi (V1 series with 8K-128K context)
+    - ByteDance/Doubao (Pro, Lite series)
+    - Alibaba Qwen (Max, Plus, Turbo, VL series)
+    - Baidu ERNIE (4.0, 3.5 series)
+    - Tencent Hunyuan (Lite, Standard, Pro)
+    - Minimax (ABAB 6.5, 5.5 series)
+    - SiliconFlow (Multi-model aggregator)
+    - Z.ai
+- **Aggregators/Routing:**
+    - OpenRouter (access to 200+ models via single API)
+    - Together AI (open-source models)
+    - Groq (ultra-fast inference)
+    - Fireworks AI (fast inference)
+- **Local/Private Execution:**
+    - Ollama (any local model)
+    - LM Studio (any GGUF model)
+    - vLLM (high-performance serving)
+    - Custom OpenAI-compatible endpoints
+- **Dynamic Model Selection:** Users must be able to assign specific models to specific agents (e.g., use Llama 3.2 for data parsing, and Claude Opus 4.6 for final Portfolio Manager synthesis).
+- **User Flexibility:** Per-agent model configuration via UI, with ability to add custom providers and models.
 
 ### 4.3 Algorithmic Strategy Execution
 **Description:** Support diverse trading horizons and risk profiles as identified in the architecture research.
@@ -59,7 +79,7 @@ The system operates on a strict **Three-Plane Architecture**:
 **Description:** The UI must adhere to the "Liquid Glass" design aesthetic, feeling premium and state-of-the-art.
 
 **Requirements:**
-- **Tech Stack:** React 19, Vite, Vanilla CSS.
+- **Tech Stack:** React 19.2, Vite 7.3, Vanilla CSS.
 - **Aesthetics:** Glassmorphism, smooth gradients, highly curated typography (Inter/Outfit), and subtle micro-animations for responsiveness. No generic templates.
 - **Generative UI:** Utilize CopilotKit or similar to render dynamic financial charts and analysis directly within chat/agent interfaces.
 
@@ -69,6 +89,6 @@ The system operates on a strict **Three-Plane Architecture**:
 - **i18n:** Built-in support for English (LTR) and Arabic (RTL) locales.
 
 ## 6. Success Metrics
-- **Token Cost:** Achieve a 40% reduction in average token cost per trade signal compared to monolithic GPT-4 baseline workflows.
+- **Token Cost:** Achieve a 40% reduction in average token cost per trade signal compared to monolithic GPT-5.3 baseline workflows.
 - **Provider Uptime:** 99.9% availability through LLM model fallback mechanisms.
 - **User Engagement:** High adoption of the HITL approval dashboard demonstrating trust in the AI's reasoning.
