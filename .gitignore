@@ -59,4 +59,23 @@ backend/debug
 
 # MCP
 mcpLocal.md
-docs\mcpLocal.md
+docs/mcpLocal.md
+
+# RAG and Cache
+.rag_cache.db
+.rag_cache.db-journal
+.claude/
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Indicators
+backend/indicators/bin/
+backend/indicators/obj/
