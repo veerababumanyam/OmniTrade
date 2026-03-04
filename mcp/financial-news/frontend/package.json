@@ -1,0 +1,59 @@
+{
+  "name": "@omnitrade/plugins-ui",
+  "version": "1.0.0",
+  "description": "OmniTrade Plugin Management UI Components with Liquid Glass Design System",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "omnitrade",
+    "plugin",
+    "react",
+    "ui",
+    "glassmorphism",
+    "design-system",
+    "dashboard"
+  ],
+  "author": "OmniTrade",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omnitrade/plugins-ui"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/styles/liquid-glass.css",
+    "./styles/components": "./dist/styles/components.css"
+  }
+}

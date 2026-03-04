@@ -1,0 +1,37 @@
+{
+  "name": "mcp-pgvector-server",
+  "version": "1.0.0",
+  "description": "MCP server for pgvector semantic search in OmniTrade",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-pgvector-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "watch": "tsc --watch",
+    "test": "node test-server.js"
+  },
+  "keywords": [
+    "mcp",
+    "pgvector",
+    "semantic-search",
+    "omnitrade"
+  ],
+  "author": "OmniTrade",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

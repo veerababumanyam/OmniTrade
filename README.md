@@ -39,11 +39,21 @@ OmniTrade is engineered for security and precision:
 
 ## 🚀 Key Features
 
+### Multi-Agent Intelligence
 - **Advanced Debate Topology**: Hierarchical agent structure (Parallel Analysis -> Strategy Optimization -> Synthesis).
 - **Universal LLM Integration**: support for OpenAI (GPT-5), Anthropic (Claude 6), Gemini 2.x, DeepSeek-V4, and local inference via **Ollama**.
 - **Token Efficiency Engine**: Smart routing and context compression reducing costs by up to 40%.
 - **Hallucination Control**: Multi-source validation and cross-checking guardrails.
 - **Agent Collaboration Framework**: Formal A2A (Agent-to-Agent) protocols for knowledge distillation and peer review.
+
+### Extensibility & Plugin Systems
+- **Claude Code Plugin**: Complete developer experience plugin with commands, agents, skills, hooks, and MCP server integrations
+- **Internal Agent Plugin System**: Google ADK-based plugin architecture with hooks, tools registry, and lifecycle management
+- **25+ Built-in Tools**: Market data, sentiment analysis, technical indicators, risk assessment, and portfolio management
+- **40+ Hook Events**: Complete observability into agent lifecycles with circuit breaker patterns
+- **React Management UI**: Liquid Glass dashboard for plugin, tool, and hook management
+
+### Internationalization
 - **Full i18n Support**: Native English (LTR) and Arabic (RTL) capabilities.
 
 ---
@@ -52,11 +62,12 @@ OmniTrade is engineered for security and precision:
 
 | Component | Technology |
 | :--- | :--- |
-| **Foundation** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK 1.4+ |
+| **Foundation** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK 1.4+, Google ADK Go |
 | **Intelligence** | Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
-| **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit |
+| **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit, Liquid Glass Design System |
+| **Plugin Systems** | Claude Code Plugin, Internal Agent Plugin System, MCP Servers (5) |
 | **Protocols** | A2A (Agent-to-Agent), MCP (Model Context), ACP (Agent Client) |
-| **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs |
+| **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs, Circuit Breaker Patterns |
 
 ---
 
@@ -64,11 +75,21 @@ OmniTrade is engineered for security and precision:
 
 OmniTrade utilizes over **50+ specialized trading agents** categorized into expert domains:
 
-- 📊 **Fundamental Analysis**: Valuation models, Growth trends, Forensic accounting.
-- 📉 **Technical Analysis**: Breakout detection, Volume profiles, Support/Resistance.
-- 📈 **Market Sentiment**: News synthesis, Social media scraping, Analyst ratings.
-- 🌍 **Alternative Data**: Geopolitical events, Macro-indicators, Insider tracking.
-- 🧠 **Meta Agents**: Bayes inference, Risk management, Portfolio synthesis.
+### Analysis Agents
+- 📊 **Fundamental Analysis**: Valuation models, Growth trends, Forensic accounting
+- 📉 **Technical Analysis**: Breakout detection, Volume profiles, Support/Resistance
+- 📈 **Market Sentiment**: News synthesis, Social media scraping, Analyst ratings
+- 🌍 **Alternative Data**: Geopolitical events, Macro-indicators, Insider tracking
+
+### Meta Agents
+- 🧠 **Portfolio Manager**: Synthesizes all inputs, generates trade proposals
+- ⚠️ **Risk Manager**: Circuit breaker enforcement, position sizing, VaR calculations
+- 🔄 **Debate Orchestrator**: Manages agent disagreements and consensus building
+
+### Plugin-Enabled Architecture
+- **Custom Tools**: 25+ built-in tools across 8 categories (market data, sentiment, technical, risk, portfolio, fundamentals, notifications)
+- **Hook System**: 40+ lifecycle events for observability and customization
+- **Extensible Plugins**: Interface-based plugin system with hot reload and circuit breakers
 
 ---
 
@@ -77,6 +98,7 @@ OmniTrade utilizes over **50+ specialized trading agents** categorized into expe
 ### Prerequisites
 - **Go 1.26+**
 - **Node.js 22+**
+- **Claude Code 1.0.33+** (for Claude Code Plugin)
 - **PostgreSQL + pgvector**
 - **Docker** (for infrastructure services)
 
@@ -89,26 +111,99 @@ OmniTrade utilizes over **50+ specialized trading agents** categorized into expe
    npm install && cd backend && go mod download
    ```
 
-2. **Run Infrastructure**
+2. **Install Claude Code Plugin**
+   ```bash
+   # From project root
+   claude plugin install ./
+
+   # Or test without installation
+   claude --plugin-dir ./
+   ```
+
+3. **Build MCP Servers**
+   ```bash
+   cd mcp
+   for server in polygon-market-data sec-filings pgvector-server alpaca-broker financial-news; do
+     cd "$server" && npm install && npm run build && cd ..
+   done
+   ```
+
+4. **Run Infrastructure**
    ```bash
    docker-compose up -d
    ```
 
-3. **Start Development Servers**
+5. **Start Development Servers**
    ```bash
-   # From root
+   # From root - starts all services
    npm run dev
    ```
+
+### Quick Commands
+
+**Generate Trade Proposal:**
+```bash
+# Using Claude Code Plugin
+/trade:analyze AAPL
+
+# View pending proposals
+/trade:status
+
+# Approve trade
+/trade:approve <proposal-id>
+```
+
+**Agent Orchestration:**
+```bash
+# List all agents
+/agents:list
+
+# Debug Genkit flow
+/agents:debug GenerateTradeProposal
+
+# Test agent with mock data
+/agents:test technical-analyst mock/AAPL.json
+```
+
+**Data Operations:**
+```bash
+# Check data ingestion status
+/data:status
+
+# Connect to WebSocket
+/data:connect polygon
+
+# Query historical data
+/data:query AAPL 2026-01-01 2026-03-01 --interval 15m
+```
 
 ---
 
 ## 📖 Documentation Index
 
+### Product Documentation
 - [Product Requirements (PRD)](./docs/PRD_OmniTrade.md)
 - [Agent Intelligence System](./docs/02_Agent_Intelligence_System.md)
 - [Liquid Glass Design Specs](./docs/08_UI_UX_Design_Standards_2026.md)
 - [API Specifications](./docs/04_API_Specification.md)
 - [Security & HITL Protocol](./docs/05_Security_HITL_Protocol.md)
+
+### Claude Code Plugin Documentation
+- [Plugin Architecture](./docs/plugins/architecture.md) - System design and component overview
+- [Commands Reference](./docs/plugins/commands.md) - All slash commands (trade, agents, data, dev)
+- [Hooks Configuration](./docs/plugins/hooks.md) - Event automation and configuration
+- [Agent Definitions](./docs/plugins/agents.md) - Custom agent details (trading-reviewer, risk-analyst, etc.)
+- [MCP Integration](./docs/plugins/mcp-integration.md) - MCP server setup (Polygon, SEC, pgvector, Alpaca, News)
+- [Quick Start Guide](./docs/plugins/QUICKSTART.md) - 5-minute setup guide
+- [Documentation Index](./docs/plugins/index.md) - Navigation for all plugin docs
+
+### Internal Agent Plugin System Documentation
+- [Plugin Development Guide](./docs/plugins/internal/plugin-development-guide.md) - How to create plugins
+- [Tool Reference](./docs/plugins/internal/tool-reference.md) - All 25+ tools documented
+- [Hooks Reference](./docs/plugins/internal/hooks-reference.md) - Complete hooks reference (40+ events)
+- [System Architecture](./docs/plugins/internal/architecture.md) - Complete system architecture
+- [Examples](./docs/plugins/internal/examples/) - Code examples for plugins, tools, and hooks
+- [Troubleshooting](./docs/plugins/internal/troubleshooting.md) - Common issues and solutions
 
 ---
 
@@ -121,9 +216,83 @@ We maintain strict quality gates enforced by **SpecSwarm**:
 | **Test Coverage** | 90% Minimum |
 | **Quality Score** | 90/100 Minimum |
 | **Security** | Zero Critical Vulnerabilities |
+| **Plugin Performance** | < 40ms INP (Interaction to Next Paint) |
+| **Circuit Breaker** | 5 failures/60s triggers auto-disable |
 
 ---
 
-<div align="center">
+## 🔌 Plugin Ecosystem
+
+### Claude Code Plugin (Developer Experience)
+Extends Claude Code with specialized capabilities for OmniTrade development:
+
+| Component | Count | Description |
+|-----------|-------|-------------|
+| **Commands** | 4 | `/trade:*`, `/agents:*`, `/data:*`, `/dev:*` |
+| **Agents** | 4 | Trading Reviewer, Risk Analyst, Flow Debugger, Frontend Architect |
+| **Skills** | 10 | Financial rules, Genkit flows, Debate topology, etc. |
+| **MCP Servers** | 5 | Polygon, SEC, pgvector, Alpaca, Financial News |
+| **Hooks** | 6 | Auto-format, lint, logging, etc. |
+
+**Location:** `.claude-plugin/`, `commands/`, `agents/`, `.claude/skills/`
+
+**Documentation:** [docs/plugins/](./docs/plugins/)
+
+### Internal Agent Plugin System (Application)
+Google ADK-based plugin architecture for the application's AI agents:
+
+| Component | Files | Description |
+|-----------|-------|-------------|
+| **Hooks System** | 6 | 40+ events, priority execution, 10 middlewares |
+| **Plugins System** | 5 | Lifecycle management, hot reload, circuit breakers |
+| **Tools Registry** | 12 | 25+ tools across 8 categories |
+| **Google ADK** | 6 | Agent creation, tool wrapping, flow definitions |
+| **React UI** | 12 | Liquid Glass dashboard for management |
+
+**Location:** `backend/internal/agent/`, `frontend/src/plugins/`
+
+**Documentation:** [docs/plugins/internal/](./docs/plugins/internal/)
+
+---
+
+## 🎨 Design System
+
+OmniTrade follows the **2026 "Liquid Glass" Design System**:
+
+- **Generative UI (GenUI)**: Intent-driven assembly with real-time component generation
+- **Photon-Engine Rendering**: Real-time refraction, sub-surface scattering, refractive indexing
+- **Z-Axis Spatial Logic**: Volume-based hierarchy measured in virtual millimeters
+- **Neuro-Adaptive Interfaces**: Cognitive load balancing with foveated UI and hesitation logic
+- **WCAG 3.0 & APCA**: Advanced Perceptual Contrast Algorithm for true visual equity
+- **Sustainable UI**: Energy-efficient rendering with digital carbon budget tracking
+
+**Full Specification:** [docs/08_UI_UX_Design_Standards_2026.md](./docs/08_UI_UX_Design_Standards_2026.md)
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see:
+- [Contributing Guidelines](./CONTRIBUTING.md)
+- [Plugin Development Guide](./docs/plugins/internal/plugin-development-guide.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
 Built with ❤️ by the OmniTrade Core Team
-</div>
+
+**Inspired by:**
+- [HKUDS/AI-Trader](https://github.com/HKUDS/AI-Trader) - MCP toolchain architecture
+- [virattt/ai-hedge-fund](https://github.com/virattt/ai-hedge-fund) - Multi-agent patterns
+- [FinRobot](https://github.com/AI4Finance-Foundation/FinRobot) - Four-layer architecture
+- [QLib](https://github.com/microsoft/qlib) - Tool organization patterns
+- [12-Factor Agents](https://github.com/humanlayer/12-factor-agents) - Production agent design
+- [Google ADK](https://github.com/google/adk-go) - Agent development kit
+
+**Built With:**
+- Go 1.26+ | React 19.2 | Google Genkit | Google ADK | PostgreSQL + pgvector | Redis
+- Claude Code | MCP (Model Context Protocol) | Liquid Glass Design System

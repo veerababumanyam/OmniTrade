@@ -1,0 +1,34 @@
+{
+  "go": {
+    "command": "gopls",
+    "args": ["serve"],
+    "extensionToLanguage": {
+      ".go": "go"
+    },
+    "env": {
+      "GOFLAGS": "-buildvcs=false"
+    }
+  },
+  "typescript": {
+    "command": "typescript-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".ts": "typescript",
+      ".tsx": "typescript",
+      ".js": "javascript",
+      ".jsx": "javascriptreact"
+    },
+    "env": {
+      "NODE_OPTIONS": "--max-old-space-size=4096"
+    }
+  },
+  "css": {
+    "command": "vscode-css-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".css": "css",
+      ".scss": "scss",
+      ".less": "less"
+    }
+  }
+}

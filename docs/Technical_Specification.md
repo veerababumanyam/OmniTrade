@@ -164,6 +164,7 @@ The Intelligence Service implements a provider-agnostic LLM abstraction that sup
 | OpenAI | `openai` | `https://api.openai.com/v1` | GPT-5, GPT-5.1, o3 series |
 | Anthropic | `anthropic` | `https://api.anthropic.com/v1` | Claude 4.6 Opus/Sonnet/Haiku |
 | Google Gemini | `gemini` | `https://generativelanguage.googleapis.com/v1beta` | Gemini 2.5, Gemini 3 series |
+| xAI Grok | `grok` | `https://api.x.ai/v1` | Grok-3, Grok-3-mini (https://grok.com) |
 
 #### Cloud Providers (China/Asia)
 | Provider | Provider ID | API Base URL | Notes |
@@ -331,6 +332,7 @@ func NewProviderFactory() *ProviderFactory {
     f.Register("openai", NewOpenAIProvider)
     f.Register("anthropic", NewAnthropicProvider)
     f.Register("gemini", NewGeminiProvider)
+    f.Register("grok", NewGrokProvider)
     f.Register("deepseek", NewDeepSeekProvider)
     f.Register("zhipu", NewZhipuProvider)
     f.Register("moonshot", NewMoonshotProvider)
@@ -646,6 +648,10 @@ providers:
   gemini:
     api_key: "${GOOGLE_API_KEY}"
 
+  grok:
+    api_key: "${GROK_API_KEY}"
+    base_url: "https://api.x.ai/v1"
+
   deepseek:
     api_key: "${DEEPSEEK_API_KEY}"
     base_url: "https://api.deepseek.com/v1"
@@ -806,6 +812,24 @@ providers:
         supports_tools: true
         input_cost_per_1k: 0.0008
         output_cost_per_1k: 0.004
+
+  grok:
+    models:
+      - id: "grok-3"
+        display_name: "Grok 3"
+        context_window: 131072
+        supports_vision: true
+        supports_tools: true
+        input_cost_per_1k: 0.01
+        output_cost_per_1k: 0.03
+
+      - id: "grok-3-mini"
+        display_name: "Grok 3 Mini"
+        context_window: 131072
+        supports_vision: true
+        supports_tools: true
+        input_cost_per_1k: 0.0005
+        output_cost_per_1k: 0.0015
 
   gemini:
     models:
@@ -1422,6 +1446,7 @@ REDIS_URL=redis://localhost:6379
 OPENAI_API_KEY=
 ANTHROPIC_API_KEY=
 GOOGLE_API_KEY=
+GROK_API_KEY=
 DEEPSEEK_API_KEY=
 ZHIPU_API_KEY=
 MOONSHOT_API_KEY=

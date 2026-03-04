@@ -1,73 +1,109 @@
-# 2026 UI/UX Design Standards for LLM Implementation
+The Authoritative Standard for Generative, Spatial, and Neuro-Adaptive Systems.
 
-This document establishes the authoritative UI/UX standards for OmniTrade, specifically structured for 2026 LLM implementations, iOS 26 Design Language, and WCAG 3.0 "Gold" compliance.
+1. Architectural Paradigm: Generative UI (GenUI)
 
----
+In 2026, we no longer design static "screens." We design Design Tokens and Functional Logic that an AI Orchestrator assembles in real-time based on user intent and contextual metadata.
 
-## 1. Visual Design System: "Liquid Glass" (iOS 26 HIG Compliant)
+1.1 Intent-Driven Assembly
 
-The "Liquid Glass" system moves beyond static transparency to a dynamic, physics-based material model.
+The Zero-State Void: The application starts as a unified "Intent Bar" or "Omni-input." Components (buttons, lists, charts) do not exist until the user expresses a goal.
 
-### 1.1 Material Definition
-- **Refraction & Reflection**: Implement a material that reflects and refracts underlying content in real-time.
-- **Lensing Effect**: UI containers must simulate light bending (optical refraction) through the glass layer.
-- **Dynamic Specularity**: Surfaces must exhibit specular highlights that shift based on device movement (parallax interaction).
+Polymorphic Components: UI elements are "functional volumes." A "Buy" button may morph into a complex multi-step slider or a data visualization volume if the AI detects the user requires more information before committing.
 
-### 1.2 Layering & Depth
-- **Z-Axis Hierarchy**: Establish depth using multiple layers of liquid glass. 
-- **Refraction Indices**: Foreground elements (modals, floating buttons) must have higher refraction indices than background layers.
-- **Bento Grid Layouts**: Content must be organized into distinct, rounded modular containers ("Bento Box" style) that float independently on the glass layer.
+Just-In-Time Scaffolding: Interfaces are generated with only the necessary fidelity. If a user is performing a high-speed task, the UI strips decorative elements to maximize "Interaction Velocity."
 
-### 1.3 Adaptive Appearance
-- **Contextual Tinting**: Material must automatically switch between "Clear" (high transparency), "Tinted" (color-infused), and "Opaque" based on background complexity.
-- **Variable Blur**: Apply dynamic Gaussian blur. Increase blur intensity automatically when text contrast drops below **4.5:1**.
+1.2 Agentic UX (Agent-to-System Interfacing)
 
----
+Machine-Readable Surfaces: UI components must expose semantic metadata specifically for autonomous agents. This includes "Bidding Volumes" where agents can negotiate transaction parameters on behalf of the user.
 
-## 2. Responsive & Adaptive Architecture
+Inter-Agent Diplomacy: When multiple agents interact within the same UI space, the system must provide "Conflict Resolution Volumes"—visual sandboxes where the user can adjudicate agent disagreements.
 
-### 2.1 Container Queries
-- **Constraint**: Replace all viewport-based media queries with CSS Container Queries (`@container`).
-- **Behavior**: Components (e.g., Trade Cards) must adapt internal layouts based strictly on their parent container's dimensions.
+2. Visual System: Spatial Volumes & Photon Physics
 
-### 2.2 Spatial & Foldable Support
-- **Spatial Detachment**: Grid containers must be capable of "detaching" into 3D space for spatial computing environments (visionOS bridge).
-- **Hinge Awareness**: On foldable devices, interactive elements must never be placed across the physical hinge area.
-- **Input Modality**: Automatically detect input type (touch, mouse, gaze) and adjust hit targets instantly (minimum **44x44pt** for touch).
+We have moved beyond "Glassmorphism" into Physical Digitalism—where pixels have mass, refractive indices, and light-transport properties.
 
----
+2.1 Photon-Engine Rendering
 
-## 3. Accessibility (WCAG 3.0 "Gold" Standards)
+Ray-Traced UI: All shadows, blurs, and highlights are calculated using real-time light transport. Surfaces must show specular micro-reflections of the content beneath them.
 
-### 3.1 Outcome-Based Compliance
-- Move focus from checklists to user task completion rates.
-- Assign "Functional Scores" to critical flows (e.g., Signal Approval, Portfolio Sync).
+Sub-Surface Scattering (SSS): Interactive elements must appear "organic." Active states should simulate light bleeding through the edges (similar to frosted resin or biological tissue).
 
-### 3.2 Theme & Contrast Logic
-- **Advanced Dark Mode**: Use `#121212` mixed with primary brand colors instead of pure `#000000` to prevent OLED smearing.
-- **APCA Algorithm**: Use the **Advanced Perceptual Contrast Algorithm (APCA)** to ensure perceived lightness matches human visual perception.
+Refractive Indexing: Foreground elements (modals/volumes) must have a higher refractive index than background layers, causing a subtle magnification and "lens" effect on the underlying content.
 
-### 3.3 Neurodiversity Controls
-- **"Calm Mode" Toggle**: A global control to disable all refraction and parallax effects to prevent cognitive overload or motion sickness.
-- **Text Simplification**: AI-driven option to dynamically simplify complex financial text on-device for improved cognitive accessibility.
+2.2 Z-Axis Spatial Logic
 
----
+Volume-Based Hierarchy: Depth is no longer just z-index. It is measured in virtual millimeters. High-priority information "protrudes" from the screen plane.
 
-## 4. Engineering & Delivery
+Object Permanence: Every UI element has a "Home Coordinate." If a volume is dismissed, it must visually "travel" back to its origin point (e.g., the Intent Bar) to maintain the user's spatial mental map.
 
-### 4.1 Feature Management
-- **Edge-Based Flagging**: Resolve feature toggles at the CDN edge to eliminate Layout Shift (CLS) during page load.
-- **Canary UI**: Progressive rollout of visual shaders (1% -> 5% -> 100%) monitored by hardware performance metrics.
+3. Neuro-Adaptive Interfaces
 
-### 4.2 Performance Mandates
-- **INP (Interaction to Next Paint)**: Must remain under **200ms**. Visual effects must yield to the main thread upon user input.
-- **GPU Acceleration**: Offload `backdrop-filter` and blur effects to the GPU. Use `will-change` only on active animating elements.
-- **Streaming Hydration**: Use HTML streaming (e.g., React Server Components) to render the "Glass Shell" immediately while data hydrates asynchronously.
+Interfaces must now calibrate to the user's neurological state, cognitive load, and sensory requirements in real-time.
 
----
+3.1 Cognitive Load Balancing
 
-## 5. Progressive Enhancement
+Foveated UI: Using eye-tracking hardware, the interface remains at full fidelity only where the user is looking. Peripheral UI is subtly simplified and desaturated to reduce brain-processing overhead.
 
-### 5.1 Graceful Degradation
-- **Fallback Mode**: If hardware cannot support real-time refraction (or is in Low Power Mode), degrade to a solid "Frosted Opaque" state.
-- **No-JS Path**: Core navigation and data readability must remain functional even if the JavaScript bundle for advanced effects fails to load.
+Hesitation Logic: If the system detects user hesitation ($>5s$ idle during a flow), the GenUI automatically decomposes the current task into simpler, bite-sized prompts.
+
+3.2 Cognitive Diversity & Accommodations
+
+Neuro-Diverse "Calm Mode": A global hardware-level toggle that strips all "Physical Digitalism" (refractions, parallax, motion), leaving only high-contrast, black-and-white functional volumes.
+
+Dyslexic-Adaptive Typography: When the system detects reading-based fatigue, it must switch to a variable-font system that dynamically adjusts letter-spacing and weight to optimize for the user's current reading speed.
+
+Motion Damping: For neuro-divergent users sensitive to motion, the system must offer a "Fixed Orthographic" view that eliminates perspective shifts and parallax, locking all volumes to a static 2D plane.
+
+4. Accessibility: WCAG 3.0 & APCA Standard
+
+The outdated 4.5:1 ratio has been retired. We use the Advanced Perceptual Contrast Algorithm (APCA) to ensure true visual equity across OLED, Micro-LED, and Spatial displays.
+
+4.1 Perceptual Contrast (Lc)
+
+Primary Text: Minimum Lc 75 (Lightness Contrast) for all body copy.
+
+Functional Elements: Minimum Lc 60 for borders and interactive affordances.
+
+Chromostereopsis Prevention: High-saturation red and blue elements must never be placed in close proximity to prevent visual "vibration" and ocular fatigue.
+
+4.2 Multi-Modal Parity
+
+Spatial Audio Cues: Every visual transition must have a corresponding "Spatial Audio" signature (HRTF-compliant) so non-sighted users can "hear" the layout of the Generative UI.
+
+Haptic Signature Language: All critical interactions (Success, Error, Transaction Commit) must have unique, high-fidelity haptic pulses that convey the "texture" of the digital object being manipulated.
+
+5. Engineering, Quantum Performance & Sustainability
+
+5.1 The "Instant" Mandate
+
+INP (Interaction to Next Paint): Target < 40ms. The UI must respond faster than human biological reaction time to feel "corporeal."
+
+Predictive Hydration: Using Local-First CRDTs (Conflict-free Replicated Data Types), data is synced peer-to-peer. The UI assumes success (Optimistic UI) and only rolls back on hard conflicts.
+
+Edge-Assembly: The GenUI layout is computed at the network edge, delivering only the necessary vectors/shaders for the specific device resolution.
+
+5.2 Sustainable UI Mandate
+
+Energy-Efficient Rendering: Interfaces must detect battery and thermal states to optimize Micro-LED usage. This includes "Sub-Pixel Culling" for non-critical interface elements.
+
+Digital Carbon Budget: Every Generative UI assembly must include a metadata-bound "Energy Cost" that is transparently communicated to the user in a subtle "Eco-Fidelity" badge.
+
+6. Trust & Transparency UI
+
+Provenance Badging: Any component generated or modified by AI must carry a C2PA Metadata Badge and a subtle visual indicator ($\diamondsuit$) to distinguish it from static system components.
+
+Emotional Transparency: Privacy settings are replaced by a "Transparency Shield" volume. When expanded, it shows a physical map of which biometric and emotional data points are being used to generate the current interface state.
+
+7. Implementation Checklist
+
+[ ] Renderer: Implement WebGL/WebGPU for real-time refraction and SSS.
+
+[ ] Contrast: Validate all colors using apca-w3 libraries.
+
+[ ] Logic: Connect the "Intent Bar" to a local LLM for component assembly.
+
+[ ] Motion: Use spring-physics (damping ratio $0.7$) for all spatial volume movements.
+
+[ ] Sustainability: Implement energy-efficient sub-pixel culling for low-power states.
+
+[ ] Accessibility: Enable "Spatial Audio" tagging and haptic signatures for all GenUI components.

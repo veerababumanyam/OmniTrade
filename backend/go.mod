@@ -9,6 +9,9 @@ require (
 	github.com/lib/pq v1.11.2
 )
 
+// Use local indicator module
+replace github.com/cinar/indicator/v2 => ./indicators
+
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect

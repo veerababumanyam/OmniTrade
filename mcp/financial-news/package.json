@@ -1,0 +1,35 @@
+{
+  "name": "financial-news-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for financial news, headlines, sentiment analysis, and analyst ratings",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "watch": "tsx watch src/index.ts",
+    "test": "node test-server.js"
+  },
+  "keywords": [
+    "mcp",
+    "financial-news",
+    "stock-market",
+    "news-api",
+    "alpha-vantage"
+  ],
+  "author": "OmniTrade",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "agent": null,
+  "modelPreferences": {
+    "default": "claude-3-5-sonnet",
+    "fast": "claude-3-5-haiku",
+    "analysis": "claude-3-5-sonnet",
+    "coding": "claude-3-5-sonnet"
+  },
+  "toolRestrictions": {
+    "bash": {
+      "allowed": true,
+      "description": "Bash tool for running commands, tests, and builds"
+    },
+    "write": {
+      "allowed": true,
+      "description": "Write tool for creating new files"
+    },
+    "edit": {
+      "allowed": true,
+      "description": "Edit tool for modifying existing files"
+    },
+    "read": {
+      "allowed": true,
+      "description": "Read tool for viewing file contents"
+    }
+  },
+  "skills": {
+    "autoInvoke": true,
+    "required": [
+      "financial-trading-rules",
+      "genkit-multi-agent-flows",
+      "multi-agent-debate-topology"
+    ]
+  },
+  "hooks": {
+    "autoFormat": true,
+    "autoLint": true,
+    "logCommands": true
+  }
+}

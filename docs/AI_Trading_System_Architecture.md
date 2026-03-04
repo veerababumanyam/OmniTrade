@@ -23,7 +23,8 @@ LLMs are inherently limited by their training data cutoff. RAG is critical for r
 
 ### 2.4 Quantitative Pipelines
 - **Qlib Componentization**: A full quantitative pipeline requires distinct components: Data Processing (feature engineering), ML Model Training (supervised/RL), Backtesting, and Online Serving (live trading).
-- **Model Variety**: Integrating traditional quant models (LightGBM, XGBoost) alongside deep learning and LLM-based signals provides a balanced approach.
+- **Model Variety**: Integrating traditional quant models (LightGBM, XGBoost) alongside deep learning (LSTM, Temporal Fusion Transformers) and LLM-based signals provides a balanced approach.
+- **ML Microservice**: A dedicated Python/FastAPI microservice runs quantitative ML models (LightGBM, XGBoost, LSTM, TFT, PPO, SAC), managed by MLflow for experiment tracking and Vectorbt for backtesting. See `09_Machine_Learning_Models.md`.
 
 ### 2.5 Real-Time Trading Terminals
 - **Institutional Grade Pipelines**: Projects like `claude-code-trading-terminal` highlight the need for robust real-time data ingestion using WebSockets, data normalization, and message queues (like Redis/Kafka).
@@ -50,11 +51,12 @@ Based on the research, we propose a modular, three-plane architecture for the ap
      - *Risk Analyst*: Evaluates portfolio exposure.
      - *Portfolio Manager*: Aggregates signals and proposes trades.
    - **Universal LLM Support**: Provider-agnostic abstraction layer supporting:
-     - US providers: OpenAI, Anthropic, Google Gemini
+     - US providers: OpenAI, Anthropic, Google Gemini, xAI Grok
      - China/Asia providers: DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai
      - Aggregators: OpenRouter, Together, Groq, Fireworks
      - Local: Ollama, LM Studio, vLLM, custom endpoints
    - **Per-Agent Configuration**: Users can assign any model to any agent role.
+   - **Zero Hardcoding**: No LLM models, providers, API keys, prompts, or temperatures are hardcoded in the codebase. All configuration is stored in the database (`llm_providers`, `llm_models`, `agent_model_config`, `agent_skills` tables) and managed via the Agent Management UI at runtime.
 
 3. **Action Plane (Human-in-the-loop)**
    - **Trade Proposal Generation**: The Intelligence Plane proposes trades with full reasoning and confidence scores.
@@ -67,7 +69,8 @@ Based on the research, we propose a modular, three-plane architecture for the ap
 - **Frontend**: React 19.x, Vite 6.x, TypeScript 5.7.x, Vanilla CSS with "Liquid Glass" aesthetic (glassmorphism, modern typography, micro-animations).
 - **Database**: PostgreSQL 17.x with pgvector extension.
 - **Infrastructure**: Docker for containerization, Redis 8.x for caching/queues.
-- **LLM Support**: Universal provider abstraction supporting OpenAI, Anthropic, Google Gemini, DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai, OpenRouter, Together, Groq, Fireworks, Ollama, LM Studio, vLLM, and custom endpoints.
+- **LLM Support**: Universal provider abstraction supporting OpenAI, Anthropic, Google Gemini, xAI Grok, DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai, OpenRouter, Together, Groq, Fireworks, Ollama, LM Studio, vLLM, and custom endpoints.
+- **ML Microservice**: Python 3.12+, FastAPI, LightGBM, XGBoost, PyTorch (LSTM, TFT, CNN, Neural GARCH), Stable-Baselines3 (PPO, SAC), Qlib, MLflow, Vectorbt.
 
 ## 4. Development Roadmap
 
@@ -83,6 +86,12 @@ Based on the research, we propose a modular, three-plane architecture for the ap
    - Develop the Portfolio Manager agent to synthesize signals.
    - Build the Human-In-The-Loop approval UI.
    - Implement the immutable audit logging system.
-4. **Phase 4: Refinement & Premium UI**
+4. **Phase 4: ML Quantitative Models**
+   - Build the Python ML microservice (FastAPI).
+   - Implement feature engineering (200+ technical/fundamental features).
+   - Train baseline models (LightGBM, LSTM, TFT, GARCH).
+   - Setup MLflow model registry and Vectorbt backtesting.
+5. **Phase 5: Refinement & Premium UI**
    - Polish the React frontend to achieve the "Liquid Glass" standard.
    - Add comprehensive backtesting visualization.
+   - Build the Agent Management UI for dynamic config.

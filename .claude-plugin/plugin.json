@@ -1,0 +1,41 @@
+{
+  "name": "omnitrade",
+  "version": "1.0.0",
+  "description": "Complete Claude Code plugin for OmniTrade - AI-powered quantitative trading platform with multi-agent orchestration",
+  "author": "OmniTrade",
+  "license": "MIT",
+  "homepage": "https://github.com/omnitrade/omnitrade-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omnitrade/omnitrade-plugin.git"
+  },
+  "categories": [
+    "financial-trading",
+    "multi-agent",
+    "genkit",
+    "go-backend",
+    "react-frontend"
+  ],
+  "keywords": [
+    "trading",
+    "ai",
+    "quantitative",
+    "genkit",
+    "multi-agent",
+    "go",
+    "react",
+    "websocket",
+    "postgresql",
+    "pgvector"
+  ],
+  "claude": {
+    "minVersion": "1.0.33"
+  },
+  "components": {
+    "skills": 10,
+    "agents": 4,
+    "commands": 4,
+    "hooks": 8,
+    "mcpServers": 5
+  }
+}
