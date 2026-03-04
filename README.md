@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![OmniTrade Banner](https://images.unsplash.com/photo-1611974717433-28ebbfba0989?q=80&w=2070&auto=format&fit=crop)
+![OmniTrade Logo](./assets/omnitrade_logo.png)
 
 [![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=for-the-badge&logo=go)](https://go.dev/)
 [![React Version](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
