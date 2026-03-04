@@ -72,6 +72,39 @@ async function getCIK(symbol: string): Promise<string | null> {
 }
 
 /**
+ * Helper to get chat completions from LiteLLM Gateway
+ */
+async function getChatCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
+  const litellmUrl = (process.env.LITELLM_URL || "http://localhost:4000/v1/chat/completions").replace("/embeddings", "/chat/completions");
+  const masterKey = process.env.LITELLM_MASTER_KEY || "sk-omnitrade-master-key";
+
+  try {
+    const response = await axios.post(
+      litellmUrl,
+      {
+        model: "ministral3",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.3,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${masterKey}`,
+        },
+      }
+    );
+
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error getting chat completion:", error);
+    throw error;
+  }
+}
+
+/**
  * Fetch recent filings for a company
  */
 interface FilingInfo {
@@ -512,9 +545,36 @@ const TOOLS: Tool[] = [
           default: 50,
         },
       },
-      required: ["symbol", "query"],
+      required: ["symbol", "filingType"],
     },
   },
+  {
+    name: "summarize_filing",
+    description: "Get a concise summary of a specific SEC filing using Ministral 3.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        symbol: {
+          type: "string",
+          description: "Stock ticker symbol (e.g., AAPL)",
+        },
+        filingType: {
+          type: "string",
+          description: "Filing type (e.g., 10-K, 10-Q, 8-K)",
+          enum: ["10-K", "10-Q", "8-K"],
+        },
+        year: {
+          type: "number",
+          description: "Filing year (optional)",
+        },
+        accessionNumber: {
+          type: "string",
+          description: "Direct accession number (optional)",
+        },
+      },
+      required: ["symbol", "filingType"],
+    },
+  }
 ];
 
 // List tools handler
@@ -784,6 +844,53 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 null,
                 2
               ),
+            },
+          ],
+        };
+      }
+
+      case "summarize_filing": {
+        const { symbol, filingType, year, accessionNumber } = args as unknown as {
+          symbol: string;
+          filingType: string;
+          year?: number;
+          accessionNumber?: string;
+        };
+
+        const cik = await getCIK(symbol);
+        if (!cik) {
+          throw new Error(`Could not find CIK for symbol ${symbol}`);
+        }
+
+        let targetAccessionNumber = accessionNumber;
+        if (!targetAccessionNumber) {
+          const filings = await listFilingsForCIK(cik, [filingType], 10);
+          let targetFiling = filings[0];
+          if (year) {
+            const yearFilings = filings.filter((f) => f.filingDate.startsWith(year.toString()));
+            if (yearFilings.length > 0) targetFiling = yearFilings[0];
+          }
+          if (!targetFiling) throw new Error(`No ${filingType} found for ${symbol}`);
+          targetAccessionNumber = targetFiling.accessionNumber;
+        }
+
+        const filingText = await fetchFilingText(cik, targetAccessionNumber, filingType);
+        if (!filingText) throw new Error("Failed to fetch filing text.");
+
+        const systemPrompt = "You are a senior financial analyst. Summarize the following SEC filing text concisely, highlighting the most important financial results, risk factors, and outlook changes. Use bullet points.";
+        const summary = await getChatCompletion(systemPrompt, filingText.text.substring(0, 15000)); // Truncate for safety
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({
+                tool: "summarize_filing",
+                symbol,
+                filingType,
+                accessionNumber: targetAccessionNumber,
+                summary,
+              }, null, 2),
             },
           ],
         };

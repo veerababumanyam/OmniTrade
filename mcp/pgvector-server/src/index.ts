@@ -74,6 +74,85 @@ function getPool(): Pool {
 }
 
 /**
+ * Helper to generate embeddings from LiteLLM Gateway
+ */
+async function getEmbedding(text: string): Promise<number[]> {
+  const litellmUrl = process.env.LITELLM_URL || "http://localhost:4000/v1/embeddings";
+  const masterKey = process.env.LITELLM_MASTER_KEY || "sk-omnitrade-master-key";
+
+  console.error(`Generating embedding for: "${text.substring(0, 50)}..."`);
+
+  try {
+    const response = await fetch(litellmUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${masterKey}`,
+      },
+      body: JSON.stringify({
+        model: "embeddinggemma",
+        input: text,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`LiteLLM error (${response.status}): ${errorText}`);
+    }
+
+    const data = (await response.json()) as any;
+    if (!data.data || !data.data[0] || !data.data[0].embedding) {
+      throw new Error("Invalid response from LiteLLM");
+    }
+
+    return data.data[0].embedding;
+  } catch (error) {
+    console.error("Error generating embedding:", error);
+    throw error;
+  }
+}
+
+/**
+ * Helper to get chat completions from LiteLLM Gateway
+ */
+async function getChatCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
+  const litellmUrl = (process.env.LITELLM_URL || "http://localhost:4000/v1/embeddings").replace("/embeddings", "/chat/completions");
+  const masterKey = process.env.LITELLM_MASTER_KEY || "sk-omnitrade-master-key";
+
+  try {
+    const response = await fetch(litellmUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${masterKey}`,
+      },
+      body: JSON.stringify({
+        model: "ministral3",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`LiteLLM error (${response.status}): ${errorText}`);
+    }
+
+    const data = (await response.json()) as any;
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error("Invalid response from LiteLLM chat completions");
+    }
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error getting chat completion:", error);
+    throw error;
+  }
+}
+
+/**
  * Tool definitions
  */
 const TOOLS: Tool[] = [
@@ -102,6 +181,25 @@ const TOOLS: Tool[] = [
       },
       required: ["symbol", "query"],
     },
+  },
+  {
+    name: "summarize_text",
+    description: "Summarize a given text using the local Ministral 3 model via LiteLLM. Useful for condensing long financial reports or news articles.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        text: {
+          type: "string",
+          description: "The text to summarize"
+        },
+        max_length: {
+          type: "number",
+          description: "Approximate target length of the summary in words (optional)",
+          default: 150
+        }
+      },
+      required: ["text"]
+    }
   },
   {
     name: "search_news",
@@ -156,7 +254,7 @@ const TOOLS: Tool[] = [
             type: "number",
           },
           description:
-            "Vector embedding (typically 1536 dimensions for OpenAI embeddings)",
+            "Vector embedding (typically 768 dimensions for Gemma embeddings)",
         },
       },
       required: ["symbol", "content", "report_type", "embedding"],
@@ -177,7 +275,7 @@ const TOOLS: Tool[] = [
             type: "number",
           },
           description:
-            "Query vector embedding (typically 1536 dimensions for OpenAI embeddings)",
+            "Query vector embedding (typically 768 dimensions for Gemma embeddings)",
         },
         limit: {
           type: "number",
@@ -213,7 +311,7 @@ const TOOLS: Tool[] = [
 const server = new Server(
   {
     name: "mcp-pgvector-server",
-    version: "1.0.0",
+    version: "1.1.0",
   },
   {
     capabilities: {
@@ -244,8 +342,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "search_sec_filings": {
         const { symbol, query, limit = 10 } = args as unknown as SearchSecFilingsArgs;
 
-        // For now, we'll do a text-based search since we don't have embedding generation
-        // In production, you would generate an embedding for the query first
+        // Generate embedding for the query
+        const queryEmbedding = await getEmbedding(query);
+        const embeddingStr = `[${queryEmbedding.join(",")}]`;
+
         const result = await pool.query(
           `SELECT
             id,
@@ -253,14 +353,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             report_type,
             content,
             created_at,
-            1 - (embedding <=> '[0]')::float as similarity
+            1 - (embedding <=> $1::vector)::float as similarity
           FROM fundamental_data
-          WHERE symbol = $1
+          WHERE symbol = $2
             AND report_type IN ('10-K', '10-Q', '8-K', '10-K/A', '10-Q/A')
-            AND content ILIKE $2
-          ORDER BY created_at DESC
+          ORDER BY embedding <=> $1::vector
           LIMIT $3`,
-          [symbol.toUpperCase(), `%${query}%`, limit]
+          [embeddingStr, symbol.toUpperCase(), limit]
         );
 
         return {
@@ -293,18 +392,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "search_news": {
         const { symbol, query, limit = 10 } = args as unknown as SearchNewsArgs;
 
+        // Generate embedding for the query
+        const queryEmbedding = await getEmbedding(query);
+        const embeddingStr = `[${queryEmbedding.join(",")}]`;
+
         let queryText = `
           SELECT
             id,
             symbol,
             report_type,
             content,
-            created_at
+            created_at,
+            1 - (embedding <=> $1::vector)::float as similarity
           FROM fundamental_data
-          WHERE report_type IN ('news', 'press_release', 'analyst_report')
-            AND content ILIKE $1
+          WHERE report_type IN ('news', 'press_release', 'analyst_report', 'social_media', 'reddit_post')
         `;
-        const params: (string | number)[] = [`%${query}%`];
+        const params: (string | number)[] = [embeddingStr];
         let paramIndex = 2;
 
         if (symbol) {
@@ -313,7 +416,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           paramIndex++;
         }
 
-        queryText += ` ORDER BY created_at DESC LIMIT $${paramIndex}`;
+        queryText += ` ORDER BY embedding <=> $1::vector LIMIT $${paramIndex}`;
         params.push(limit);
 
         const result = await pool.query(queryText, params);
@@ -333,6 +436,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                     symbol: row.symbol,
                     report_type: row.report_type,
                     content: row.content.substring(0, 500) + "...",
+                    similarity: row.similarity,
                     created_at: row.created_at,
                   })),
                 },
@@ -353,7 +457,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (user.includes("readonly")) {
           throw new Error(
             "Write operations are not permitted with read-only database role. " +
-              "Please configure a write-enabled database user for this operation."
+            "Please configure a write-enabled database user for this operation."
           );
         }
 
@@ -483,6 +587,28 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               ),
             },
           ],
+        };
+      }
+
+      case "summarize_text": {
+        const { text, max_length = 150 } = args as unknown as { text: string, max_length?: number };
+
+        const systemPrompt = `You are a professional financial analyst. Summarize the following text concisely, focusing on key insights, metrics, and risks. Target length is approximately ${max_length} words. Return only the summary text without any introduction or conclusion.`;
+
+        const summary = await getChatCompletion(systemPrompt, text);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({
+                tool: "summarize_text",
+                summary,
+                original_length: text.length,
+                summary_length: summary.length
+              }, null, 2)
+            }
+          ]
         };
       }
 

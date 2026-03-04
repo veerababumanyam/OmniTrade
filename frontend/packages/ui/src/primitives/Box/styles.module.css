@@ -1,0 +1,149 @@
+/**
+ * Box Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Generic container with spacing props and liquid glass surfaces
+ */
+
+/* Base Box */
+.box {
+  box-sizing: border-box;
+  margin: var(--ot-box-m, 0);
+  padding: var(--ot-box-p, 0);
+  padding-top: var(--ot-box-pt, var(--ot-box-p, 0));
+  padding-right: var(--ot-box-pr, var(--ot-box-p, 0));
+  padding-bottom: var(--ot-box-pb, var(--ot-box-p, 0));
+  padding-left: var(--ot-box-pl, var(--ot-box-p, 0));
+  margin-top: var(--ot-box-mt, var(--ot-box-m, 0));
+  margin-right: var(--ot-box-mr, var(--ot-box-m, 0));
+  margin-bottom: var(--ot-box-mb, var(--ot-box-m, 0));
+  margin-left: var(--ot-box-ml, var(--ot-box-m, 0));
+  width: var(--ot-box-width, auto);
+  height: var(--ot-box-height, auto);
+  border-radius: var(--ot-box-radius, 0);
+  opacity: var(--ot-box-opacity, 1);
+  transition:
+    background var(--ot-duration-normal) var(--ot-spring-gentle),
+    box-shadow var(--ot-duration-normal) var(--ot-spring-gentle);
+}
+
+/* ============================================
+   BACKGROUND VARIANTS
+   ============================================ */
+
+/* Glass background - Liquid Glass effect */
+.backgroundGlass {
+  background: var(--ot-surface-glass);
+  backdrop-filter: blur(var(--ot-glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md));
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.backgroundGlass:hover {
+  background: var(--ot-surface-glass-hover);
+}
+
+/* Elevated surface */
+.backgroundElevated {
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border: 1px solid var(--ot-border-default);
+}
+
+/* Solid surface */
+.backgroundSolid {
+  background: var(--ot-surface-base-solid);
+}
+
+/* ============================================
+   BORDER VARIANTS
+   ============================================ */
+
+.borderSubtle {
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.borderDefault {
+  border: 1px solid var(--ot-border-default);
+}
+
+.borderEmphasis {
+  border: 1px solid var(--ot-border-emphasis);
+}
+
+/* ============================================
+   SHADOW VARIANTS
+   ============================================ */
+
+.shadowSm {
+  box-shadow: var(--ot-shadow-sm);
+}
+
+.shadowMd {
+  box-shadow: var(--ot-shadow-md);
+}
+
+.shadowLg {
+  box-shadow: var(--ot-shadow-lg);
+}
+
+.shadowXl {
+  box-shadow: var(--ot-shadow-xl);
+}
+
+.shadowGlow {
+  box-shadow: var(--ot-glow-photon);
+}
+
+/* ============================================
+   RADIUS VARIANTS
+   ============================================ */
+
+.radiusNone {
+  --ot-box-radius: 0;
+}
+
+.radiusSm {
+  --ot-box-radius: var(--ot-radius-sm);
+}
+
+.radiusMd {
+  --ot-box-radius: var(--ot-radius-md);
+}
+
+.radiusLg {
+  --ot-box-radius: var(--ot-radius-lg);
+}
+
+.radiusXl {
+  --ot-box-radius: var(--ot-radius-xl);
+}
+
+.radius2xl {
+  --ot-box-radius: var(--ot-radius-2xl);
+}
+
+.radiusFull {
+  --ot-box-radius: var(--ot-radius-full);
+}
+
+/* ============================================
+   OVERFLOW VARIANTS
+   ============================================ */
+
+.overflowVisible {
+  overflow: visible;
+}
+
+.overflowHidden {
+  overflow: hidden;
+}
+
+.overflowScroll {
+  overflow: scroll;
+}
+
+.overflowAuto {
+  overflow: auto;
+}

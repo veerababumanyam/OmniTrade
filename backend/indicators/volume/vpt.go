@@ -1,11 +1,11 @@
 // Copyright (c) 2021-2026 Onur Cinar.
 // The source code is provided under GNU AGPLv3 License.
-// https://github.com/cinar/indicator
+// https://indicator
 
 package volume
 
 import (
-	"github.com/cinar/indicator/v2/helper"
+	"indicator/v2/helper"
 )
 
 // Vpt holds configuration parameters for calculating the Volume Price Trend (VPT). It provides a correlation

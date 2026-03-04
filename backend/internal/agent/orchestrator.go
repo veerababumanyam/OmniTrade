@@ -4,25 +4,63 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/firebase/genkit/go/genkit"
 	"github.com/v13478/omnitrade/backend/internal/database"
 )
 
-var dbConn *database.DB
+// Orchestrator manages the multi-agent system and holds dependencies.
+// It uses dependency injection rather than global state for thread safety.
+type Orchestrator struct {
+	genkit        *genkit.Genkit
+	semanticCache *SemanticCache
+	memoryService *MemoryService
+}
 
-// InitOrchestrator initializes the Genkit flows with the database dependency
-func InitOrchestrator(db *database.DB, g *genkit.Genkit) {
-	dbConn = db
+// NewOrchestrator creates a new Orchestrator with the given dependencies.
+func NewOrchestrator(g *genkit.Genkit, redisDB *database.RedisDB) *Orchestrator {
+	return &Orchestrator{
+		genkit:        g,
+		semanticCache: NewSemanticCache(redisDB),
+		memoryService: NewMemoryService(redisDB),
+	}
+}
+
+// InitOrchestrator initializes the Genkit flows with the orchestrator.
+// This uses proper dependency injection rather than global state.
+func InitOrchestrator(o *Orchestrator) {
 	log.Println("Initializing OmniTrade Genkit Orchestrator...")
 
 	// Define the Trade Proposal Flow
-	genkit.DefineFlow(g,
+	genkit.DefineFlow(o.genkit,
 		"GenerateTradeProposal",
 		func(ctx context.Context, input TradeProposalInput) (*TradeProposalOutput, error) {
 			// This represents the Multi-Agent Orchestration layer.
 
 			log.Printf("Received signal request for: %s (Strategy: %s)", input.Symbol, input.Strategy)
+
+			// ** Semantic Caching Layer **
+			// Generate a unique query fingerprint based on inputs
+			queryFingerprint := fmt.Sprintf("%s|%s", input.Symbol, input.Strategy)
+			
+			if cachedOutput, hit := o.semanticCache.CheckCache(ctx, queryFingerprint); hit {
+				// Bypass LLM completely!
+				// Log to Working Memory that we used a cache hit
+				o.memoryService.SaveWorkingMemory(ctx, input.Symbol, MemoryEntry{
+					Role:      "system",
+					Content:   fmt.Sprintf("Cache HIT for %s. Bypassed LLM.", input.Symbol),
+					Timestamp: time.Now(),
+				})
+				return cachedOutput, nil
+			}
+
+			// Save initial task intent to Working Memory
+			o.memoryService.SaveWorkingMemory(ctx, input.Symbol, MemoryEntry{
+				Role:      "user",
+				Content:   fmt.Sprintf("Analyze %s using %s strategy.", input.Symbol, input.Strategy),
+				Timestamp: time.Now(),
+			})
 
 			// Step 1: Data Fetcher Agent (Simulated interaction with DB/API)
 			// In production, this would be a specialized Genkit tool/action.
@@ -32,17 +70,33 @@ func InitOrchestrator(db *database.DB, g *genkit.Genkit) {
 			// fundamentalContext := fetchRAGContext(input.Symbol)
 
 			// Step 3: Portfolio Manager Synthesizer (The LLM Call)
-			// We would use an AI model here (e.g., Anthropic Claude 3.5 Sonnet / Llama-3)
+			// PROMPT CACHING REQUIREMENT:
+			// Ensure the static system instructions (Agent Persona, strict JSON rules, etc.)
+			// are > 1024 tokens and placed at the absolute beginning of the prompt context
+			// to trigger provider-side Prompt Caching (e.g., Anthropic/OpenAI).
+			// We would use an AI model here (e.g., Anthropic Claude 3.5 Sonnet / Ministral 3)
 			// to synthesize the fetched data into a strict JSON output matching TradeProposalOutput.
 
 			reasoning := fmt.Sprintf("Based on simulated data (Price: %.2f) and the %s strategy, this asset shows strong momentum.", currentPrice, input.Strategy)
 
-			// Step 4: Output structure matching the Action Plane requirements
+			// Step 4: Output structure matching the Action Plane database schema
 			output := &TradeProposalOutput{
 				Symbol:          input.Symbol,
 				Action:          "BUY",
 				ConfidenceScore: 0.88,
 				Reasoning:       reasoning,
+			}
+
+			// Save result to Episodic Memory for long-term recall
+			o.memoryService.SaveEpisodicMemory(ctx, "default_user", MemoryEntry{
+				Role:      "assistant",
+				Content:   fmt.Sprintf("Generated %s signal for %s with %.2f confidence. Reasoning: %s", output.Action, output.Symbol, output.ConfidenceScore, output.Reasoning),
+				Timestamp: time.Now(),
+			})
+
+			// Save to Semantic Cache
+			if err := o.semanticCache.SetCache(ctx, queryFingerprint, output); err != nil {
+				log.Printf("Warning: Failed to set semantic cache: %v", err)
 			}
 
 			// Note: We DO NOT insert this into `trade_proposals` here directly.
@@ -57,8 +111,8 @@ func InitOrchestrator(db *database.DB, g *genkit.Genkit) {
 
 // Input definition for the primary orchestration flow
 type TradeProposalInput struct {
-	Symbol          string  `json:"symbol"`
-	Strategy        string  `json:"strategy"`
+	Symbol           string  `json:"symbol"`
+	Strategy         string  `json:"strategy"`
 	AllocatorBudget float64 `json:"allocator_budget"`
 }
 

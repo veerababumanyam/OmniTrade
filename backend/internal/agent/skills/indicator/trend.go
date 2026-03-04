@@ -7,8 +7,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/trend"
+	"indicator/v2/momentum"
+	"indicator/v2/trend"
+	"indicator/v2/volatility"
 )
 
 // calculateTrend handles all trend indicator calculations

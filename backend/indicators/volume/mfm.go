@@ -1,10 +1,10 @@
 // Copyright (c) 2021-2026 Onur Cinar.
 // The source code is provided under GNU AGPLv3 License.
-// https://github.com/cinar/indicator
+// https://indicator
 
 package volume
 
-import "github.com/cinar/indicator/v2/helper"
+import "indicator/v2/helper"
 
 // Mfm holds configuration parameters for calculating the Money Flow Multiplier (MFM),
 // which adjusts volume based on the closing price's position within the high-low range:

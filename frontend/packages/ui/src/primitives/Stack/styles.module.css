@@ -1,0 +1,232 @@
+/**
+ * Stack Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Flexbox-based stack for consistent layouts
+ */
+
+/* Base Stack */
+.stack {
+  display: flex;
+  flex-direction: var(--ot-stack-direction, column);
+  gap: var(--ot-stack-gap, 0);
+  align-items: var(--ot-stack-align, stretch);
+  justify-content: var(--ot-stack-justify, start);
+  flex-wrap: var(--ot-stack-wrap, nowrap);
+  box-sizing: border-box;
+}
+
+.stackInline {
+  display: inline-flex;
+}
+
+/* ============================================
+   DIRECTION VARIANTS
+   ============================================ */
+
+.directionRow {
+  --ot-stack-direction: row;
+}
+
+.directionColumn {
+  --ot-stack-direction: column;
+}
+
+.directionRowReverse {
+  --ot-stack-direction: row-reverse;
+}
+
+.directionColumnReverse {
+  --ot-stack-direction: column-reverse;
+}
+
+/* ============================================
+   GAP VARIANTS
+   ============================================ */
+
+.gapNone {
+  --ot-stack-gap: 0;
+}
+
+.gapXs {
+  --ot-stack-gap: var(--ot-space-1);
+}
+
+.gapSm {
+  --ot-stack-gap: var(--ot-space-2);
+}
+
+.gapMd {
+  --ot-stack-gap: var(--ot-space-4);
+}
+
+.gapLg {
+  --ot-stack-gap: var(--ot-space-6);
+}
+
+.gapXl {
+  --ot-stack-gap: var(--ot-space-8);
+}
+
+.gap2xl {
+  --ot-stack-gap: var(--ot-space-12);
+}
+
+/* ============================================
+   ALIGN VARIANTS
+   ============================================ */
+
+.alignStart {
+  --ot-stack-align: flex-start;
+}
+
+.alignEnd {
+  --ot-stack-align: flex-end;
+}
+
+.alignCenter {
+  --ot-stack-align: center;
+}
+
+.alignBaseline {
+  --ot-stack-align: baseline;
+}
+
+.alignStretch {
+  --ot-stack-align: stretch;
+}
+
+/* ============================================
+   JUSTIFY VARIANTS
+   ============================================ */
+
+.justifyStart {
+  --ot-stack-justify: flex-start;
+}
+
+.justifyEnd {
+  --ot-stack-justify: flex-end;
+}
+
+.justifyCenter {
+  --ot-stack-justify: center;
+}
+
+.justifyBetween {
+  --ot-stack-justify: space-between;
+}
+
+.justifyAround {
+  --ot-stack-justify: space-around;
+}
+
+.justifyEvenly {
+  --ot-stack-justify: space-evenly;
+}
+
+/* ============================================
+   WRAP VARIANTS
+   ============================================ */
+
+.wrap {
+  --ot-stack-wrap: wrap;
+}
+
+.wrapReverse {
+  --ot-stack-wrap: wrap-reverse;
+}
+
+.nowrap {
+  --ot-stack-wrap: nowrap;
+}
+
+/* ============================================
+   FLEX PROPERTIES
+   ============================================ */
+
+.grow {
+  flex-grow: 1;
+}
+
+.shrink {
+  flex-shrink: 1;
+}
+
+/* ============================================
+   BACKGROUND VARIANTS
+   ============================================ */
+
+.backgroundGlass {
+  background: var(--ot-surface-glass);
+  backdrop-filter: blur(var(--ot-glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md));
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.backgroundElevated {
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border: 1px solid var(--ot-border-default);
+}
+
+.backgroundSolid {
+  background: var(--ot-surface-base-solid);
+}
+
+/* ============================================
+   BORDER VARIANTS
+   ============================================ */
+
+.borderSubtle {
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.borderDefault {
+  border: 1px solid var(--ot-border-default);
+}
+
+.borderEmphasis {
+  border: 1px solid var(--ot-border-emphasis);
+}
+
+/* ============================================
+   RADIUS VARIANTS
+   ============================================ */
+
+.radiusNone {
+  border-radius: 0;
+}
+
+.radiusSm {
+  border-radius: var(--ot-radius-sm);
+}
+
+.radiusMd {
+  border-radius: var(--ot-radius-md);
+}
+
+.radiusLg {
+  border-radius: var(--ot-radius-lg);
+}
+
+.radiusXl {
+  border-radius: var(--ot-radius-xl);
+}
+
+.radius2xl {
+  border-radius: var(--ot-radius-2xl);
+}
+
+.radiusFull {
+  border-radius: var(--ot-radius-full);
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.divider {
+  margin: 0;
+  flex-shrink: 0;
+}

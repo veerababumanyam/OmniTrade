@@ -1,0 +1,215 @@
+/**
+ * Container Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Max-width centered container with Liquid Glass styling
+ */
+
+/* Base Container */
+.container {
+  width: 100%;
+  max-width: var(--ot-container-max-width, none);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--ot-container-padding, 0);
+  padding-right: var(--ot-container-padding, 0);
+  box-sizing: border-box;
+}
+
+/* ============================================
+   SIZE VARIANTS
+   ============================================ */
+
+/* Extra Small: 480px */
+.sizeXs {
+  --ot-container-max-width: 480px;
+}
+
+/* Small: 640px */
+.sizeSm {
+  --ot-container-max-width: 640px;
+}
+
+/* Medium: 768px */
+.sizeMd {
+  --ot-container-max-width: 768px;
+}
+
+/* Large: 1024px */
+.sizeLg {
+  --ot-container-max-width: 1024px;
+}
+
+/* Extra Large: 1280px */
+.sizeXl {
+  --ot-container-max-width: 1280px;
+}
+
+/* 2X Large: 1536px */
+.size2xl {
+  --ot-container-max-width: 1536px;
+}
+
+/* Full width */
+.sizeFull {
+  --ot-container-max-width: 100%;
+}
+
+/* Fluid (no max-width) */
+.sizeFluid {
+  --ot-container-max-width: none;
+}
+
+/* ============================================
+   CENTERING
+   ============================================ */
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.centerVertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.centerBoth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+/* ============================================
+   PADDING VARIANTS
+   ============================================ */
+
+.paddingNone {
+  --ot-container-padding: 0;
+}
+
+.paddingXs {
+  --ot-container-padding: var(--ot-space-2);
+}
+
+.paddingSm {
+  --ot-container-padding: var(--ot-space-4);
+}
+
+.paddingMd {
+  --ot-container-padding: var(--ot-space-6);
+}
+
+.paddingLg {
+  --ot-container-padding: var(--ot-space-8);
+}
+
+.paddingXl {
+  --ot-container-padding: var(--ot-space-12);
+}
+
+/* ============================================
+   FULL HEIGHT
+   ============================================ */
+
+.fullHeight {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+/* ============================================
+   BACKGROUND VARIANTS
+   ============================================ */
+
+.backgroundGlass {
+  background: var(--ot-surface-glass);
+  backdrop-filter: blur(var(--ot-glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md));
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.backgroundElevated {
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border: 1px solid var(--ot-border-default);
+}
+
+.backgroundSolid {
+  background: var(--ot-surface-base-solid);
+}
+
+/* ============================================
+   BORDER VARIANTS
+   ============================================ */
+
+.borderSubtle {
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.borderDefault {
+  border: 1px solid var(--ot-border-default);
+}
+
+.borderEmphasis {
+  border: 1px solid var(--ot-border-emphasis);
+}
+
+/* ============================================
+   RADIUS VARIANTS
+   ============================================ */
+
+.radiusNone {
+  border-radius: 0;
+}
+
+.radiusSm {
+  border-radius: var(--ot-radius-sm);
+}
+
+.radiusMd {
+  border-radius: var(--ot-radius-md);
+}
+
+.radiusLg {
+  border-radius: var(--ot-radius-lg);
+}
+
+.radiusXl {
+  border-radius: var(--ot-radius-xl);
+}
+
+.radius2xl {
+  border-radius: var(--ot-radius-2xl);
+}
+
+.radiusFull {
+  border-radius: var(--ot-radius-full);
+}
+
+/* ============================================
+   RESPONSIVE PADDING
+   ============================================ */
+
+/* Reduce padding on smaller screens */
+@media (max-width: 639px) {
+  .paddingSm {
+    --ot-container-padding: var(--ot-space-3);
+  }
+
+  .paddingMd {
+    --ot-container-padding: var(--ot-space-4);
+  }
+
+  .paddingLg {
+    --ot-container-padding: var(--ot-space-6);
+  }
+
+  .paddingXl {
+    --ot-container-padding: var(--ot-space-8);
+  }
+}

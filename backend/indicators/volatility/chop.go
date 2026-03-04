@@ -1,6 +1,6 @@
 // Copyright (c) 2021-2026 Onur Cinar.
 // The source code is provided under GNU AGPLv3 License.
-// https://github.com/cinar/indicator
+// https://indicator
 
 package volatility
 
@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/trend"
+	"indicator/v2/helper"
+	"indicator/v2/trend"
 )
 
 const (

@@ -1,0 +1,187 @@
+/**
+ * Toggle Component Styles
+ * Liquid Glass Design System - OmniTrade
+ * Atomic Component - Z-axis: translateZ(2px)
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Container
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ot-space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.container--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Toggle Switch
+   ═══════════════════════════════════════════════════════════════ */
+
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  background: var(--ot-glass-surface-2);
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-full);
+  backdrop-filter: blur(var(--ot-glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-sm));
+  transform: translateZ(2px);
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-default),
+    border-color var(--ot-duration-fast) var(--ot-spring-default),
+    box-shadow var(--ot-duration-fast) var(--ot-spring-default);
+  cursor: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Size Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.toggle--sm {
+  width: 36px;
+  height: 20px;
+}
+
+.toggle--md {
+  width: 44px;
+  height: 24px;
+}
+
+.toggle--lg {
+  width: 52px;
+  height: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Checked State
+   ═══════════════════════════════════════════════════════════════ */
+
+.toggle--checked {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-photon-400) 0%,
+    var(--ot-color-photon-600) 100%
+  );
+  border-color: var(--ot-color-photon-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Thumb
+   ═══════════════════════════════════════════════════════════════ */
+
+.thumb {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  left: 2px;
+  background: var(--ot-text-inverse);
+  border-radius: var(--ot-radius-full);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition: transform var(--ot-duration-fast) var(--ot-spring-bouncy);
+}
+
+.toggle--sm .thumb {
+  width: 14px;
+  height: 14px;
+}
+
+.toggle--md .thumb {
+  width: 18px;
+  height: 18px;
+}
+
+.toggle--lg .thumb {
+  width: 22px;
+  height: 22px;
+}
+
+.toggle--checked .thumb {
+  transform: translateX(20px);
+}
+
+.toggle--sm.toggle--checked .thumb {
+  transform: translateX(16px);
+}
+
+.toggle--lg.toggle--checked .thumb {
+  transform: translateX(24px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Hover State
+   ═══════════════════════════════════════════════════════════════ */
+
+.container:not(.container--disabled):hover .toggle {
+  border-color: var(--ot-color-photon-400);
+}
+
+.container:not(.container--disabled):hover .toggle--checked {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-photon-300) 0%,
+    var(--ot-color-photon-500) 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Focus State
+   ═══════════════════════════════════════════════════════════════ */
+
+.toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Label
+   ═══════════════════════════════════════════════════════════════ */
+
+.label {
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-normal);
+  color: var(--ot-text-primary);
+  font-family: var(--ot-font-sans);
+  line-height: 1.5;
+}
+
+.label--left {
+  order: -1;
+}
+
+.required {
+  color: var(--ot-color-entropy-500, #ff3333);
+  margin-left: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .thumb {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .toggle {
+    border-width: 2px;
+  }
+}

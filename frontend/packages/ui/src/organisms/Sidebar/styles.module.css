@@ -1,0 +1,585 @@
+/**
+ * Sidebar Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Macro-Volume with Z-axis: translateZ(12px)
+ * Features: Collapsible, nested menus, pinned items
+ */
+
+/* ============================================
+   BASE SIDEBAR
+   Liquid Glass with spatial elevation
+   ============================================ */
+.sidebar {
+  position: fixed;
+  top: var(--ot-header-height, 64px);
+  left: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: var(--ot-sidebar-width, 280px);
+  background: var(--ot-surface-primary, rgba(15, 23, 42, 0.8));
+  border-right: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  backdrop-filter: blur(var(--ot-glass-blur-md, 16px));
+  transform: translateZ(12px);
+  transition:
+    width var(--ot-duration-normal, 200ms) var(--ot-spring-default),
+    transform var(--ot-duration-normal, 200ms) var(--ot-spring-default);
+}
+
+/* Photon Physics - Inner light refraction */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Collapsed state */
+.sidebarCollapsed {
+  width: var(--ot-sidebar-width-collapsed, 72px);
+}
+
+/* ============================================
+   SIDEBAR HEADER
+   ============================================ */
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ot-space-4, 16px);
+  border-bottom: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.04));
+  z-index: 1;
+}
+
+.headerCollapsed {
+  justify-content: center;
+  padding: var(--ot-space-3, 12px);
+}
+
+/* Search Input */
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 200px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--ot-space-3, 12px) 0 var(--ot-space-10, 40px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: var(--ot-radius-md, 8px);
+  outline: none;
+  transition:
+    background var(--ot-duration-fast, 100ms) ease,
+    border-color var(--ot-duration-fast, 100ms) ease;
+}
+
+.searchInput::placeholder {
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.searchInput:focus {
+  background: var(--ot-surface-glass-active, rgba(255, 255, 255, 0.08));
+  border-color: var(--ot-brand-primary-500, #0070f3);
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--ot-space-3, 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.searchHidden {
+  display: none;
+}
+
+/* Toggle Button */
+.toggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: var(--ot-space-2, 8px);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-md, 8px);
+  cursor: pointer;
+  transition:
+    color var(--ot-duration-fast, 100ms) ease,
+    background var(--ot-duration-fast, 100ms) ease;
+}
+
+.toggleButton:hover {
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-interactive-hover, rgba(255, 255, 255, 0.1));
+}
+
+.toggleButtonCollapsed {
+  margin-left: 0;
+}
+
+/* ============================================
+   SIDEBAR CONTENT
+   ============================================ */
+.content {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--ot-space-3, 12px) 0;
+  z-index: 1;
+}
+
+/* Custom Scrollbar */
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: var(--ot-border-default, rgba(255, 255, 255, 0.1));
+  border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: var(--ot-border-emphasis, rgba(255, 255, 255, 0.15));
+}
+
+/* ============================================
+   ITEM GROUP
+   ============================================ */
+.itemGroup {
+  margin-bottom: var(--ot-space-4, 16px);
+}
+
+.itemGroupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ot-space-2, 8px) var(--ot-space-4, 16px);
+  cursor: pointer;
+}
+
+.itemGroupLabel {
+  font-family: var(--ot-font-sans);
+  font-size: 11px;
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.itemGroupLabelHidden {
+  display: none;
+}
+
+.itemGroupChevron {
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  transition: transform var(--ot-duration-fast, 100ms) ease;
+}
+
+.itemGroupChevronCollapsed {
+  transform: rotate(-90deg);
+}
+
+.itemGroupList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   SIDEBAR ITEM
+   ============================================ */
+.item {
+  position: relative;
+}
+
+.itemLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-3, 12px);
+  width: 100%;
+  padding: var(--ot-space-3, 12px) var(--ot-space-4, 16px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-medium, 500);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition:
+    color var(--ot-duration-fast, 100ms) ease,
+    background var(--ot-duration-fast, 100ms) ease;
+}
+
+.itemLink::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  border-radius: 0 2px 2px 0;
+  transition: background var(--ot-duration-fast, 100ms) ease;
+}
+
+.itemLink:hover {
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-interactive-hover, rgba(255, 255, 255, 0.05));
+}
+
+.itemLinkActive {
+  color: var(--ot-brand-primary-400, #60a5fa);
+  background: var(--ot-brand-gradient-glow, linear-gradient(90deg, rgba(0, 112, 243, 0.1) 0%, transparent 100%));
+}
+
+.itemLinkActive::before {
+  background: var(--ot-brand-primary-500, #0070f3);
+}
+
+/* Collapsed state */
+.itemLinkCollapsed {
+  justify-content: center;
+  padding: var(--ot-space-3, 12px);
+}
+
+/* Active indicator for collapsed */
+.itemLinkActiveCollapsed::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--ot-brand-primary-500, #0070f3);
+  border-radius: 50%;
+}
+
+/* Item Icon */
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.itemIconCollapsed {
+  width: 24px;
+  height: 24px;
+}
+
+/* Item Label */
+.itemLabel {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemLabelHidden {
+  display: none;
+}
+
+/* Item Badge */
+.itemBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--ot-space-1, 4px);
+  font-size: 11px;
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-white, #ffffff);
+  background: var(--ot-brand-accent-500, #8b5cf6);
+  border-radius: var(--ot-radius-full, 9999px);
+}
+
+.itemBadgeHidden {
+  display: none;
+}
+
+/* Item Shortcut */
+.itemShortcut {
+  font-family: var(--ot-font-mono);
+  font-size: 10px;
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.4));
+  padding: 2px 4px;
+  background: var(--ot-surface-glass-hover, rgba(255, 255, 255, 0.04));
+  border-radius: var(--ot-radius-sm, 4px);
+}
+
+.itemShortcutHidden {
+  display: none;
+}
+
+/* Expand/Collapse Chevron */
+.itemChevron {
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  transition: transform var(--ot-duration-fast, 100ms) ease;
+}
+
+.itemChevronExpanded {
+  transform: rotate(90deg);
+}
+
+.itemChevronHidden {
+  display: none;
+}
+
+/* Disabled State */
+.itemLinkDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Filtered (hidden by search) */
+.itemFiltered {
+  display: none;
+}
+
+/* ============================================
+   NESTED ITEMS
+   ============================================ */
+.nestedItems {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height var(--ot-duration-normal, 200ms) ease-out;
+}
+
+.nestedItemsExpanded {
+  max-height: 500px;
+}
+
+.nestedItem {
+  /* Indentation for nested items */
+}
+
+.nestedItem .itemLink {
+  padding-left: calc(var(--ot-space-4, 16px) + var(--ot-space-6, 24px));
+}
+
+.nestedLevel2 .itemLink {
+  padding-left: calc(var(--ot-space-4, 16px) + var(--ot-space-10, 40px));
+}
+
+/* ============================================
+   PINNED SECTION
+   ============================================ */
+.pinnedSection {
+  border-top: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.04));
+  padding-top: var(--ot-space-3, 12px);
+  margin-top: var(--ot-space-3, 12px);
+}
+
+.pinnedHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-2, 8px);
+  padding: var(--ot-space-2, 8px) var(--ot-space-4, 16px);
+}
+
+.pinnedLabel {
+  font-family: var(--ot-font-sans);
+  font-size: 11px;
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pinnedLabelHidden {
+  display: none;
+}
+
+.pinnedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   SIDEBAR FOOTER
+   ============================================ */
+.footer {
+  position: relative;
+  border-top: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.04));
+  padding: var(--ot-space-3, 12px);
+  z-index: 1;
+}
+
+.footerCollapsed {
+  padding: var(--ot-space-2, 8px);
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ot-space-2, 8px);
+}
+
+.footerCollapsed .footerContent {
+  flex-direction: column;
+}
+
+/* ============================================
+   TOOLTIP (for collapsed state)
+   ============================================ */
+.tooltip {
+  position: absolute;
+  left: calc(100% + var(--ot-space-2, 8px));
+  top: 50%;
+  transform: translateY(-50%);
+  padding: var(--ot-space-2, 8px) var(--ot-space-3, 12px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-medium, 500);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-elevated, rgba(39, 39, 42, 0.95));
+  border: 1px solid var(--ot-border-default, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-md, 8px);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--ot-duration-fast, 100ms) ease,
+    visibility var(--ot-duration-fast, 100ms) ease;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.itemLink:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ============================================
+   KEYBOARD SHORTCUT INDICATOR
+   ============================================ */
+.shortcutIndicator {
+  position: absolute;
+  bottom: var(--ot-space-2, 8px);
+  right: var(--ot-space-2, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.4));
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border-radius: var(--ot-radius-sm, 4px);
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .sidebarCollapsed {
+    width: var(--ot-sidebar-width, 280px);
+    transform: translateX(-100%);
+  }
+
+  .sidebarCollapsed.sidebarOpen {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+.itemLink:focus-visible,
+.toggleButton:focus-visible,
+.searchInput:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-brand-primary-500));
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .nestedItems,
+  .itemChevron,
+  .itemGroupChevron {
+    transition: none;
+  }
+}
+
+/* ============================================
+   MOBILE OVERLAY
+   ============================================ */
+.overlay {
+  display: none;
+  position: fixed;
+  top: var(--ot-header-height, 64px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ot-scrim, rgba(0, 0, 0, 0.7));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--ot-duration-normal, 200ms) ease,
+    visibility var(--ot-duration-normal, 200ms) ease;
+  z-index: 40;
+}
+
+.overlayVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 1024px) {
+  .overlay {
+    display: block;
+  }
+}

@@ -1,0 +1,180 @@
+/**
+ * Skeleton Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Variants: text, circle, rect
+ * Features: shimmer animation, reduced motion support
+ */
+
+/* ============================================
+   BASE SKELETON
+   ============================================ */
+.skeleton {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  /* Liquid Glass: translucent background */
+  background: var(--glass-bg, rgba(255, 255, 255, 0.03));
+  border-radius: var(--skeleton-radius, var(--radius-md, 8px));
+  /* Subtle inner glow for depth */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Pulse Animation - Fades in and out */
+.animatedPulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Wave Animation - Shimmer effect */
+.animatedWave::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Liquid Glass: shimmer effect with brand color */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 245, 160, 0.05) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(0, 245, 160, 0.05) 75%,
+    transparent 100%
+  );
+  animation: shimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ============================================
+   VARIANT: Text
+   ============================================ */
+.text {
+  width: var(--skeleton-width, 100%);
+  height: var(--skeleton-height, 16px);
+  border-radius: var(--radius-sm, 4px);
+  margin-bottom: var(--space-xs, 4px);
+}
+
+.text:last-child {
+  width: var(--skeleton-width, 75%);
+  margin-bottom: 0;
+}
+
+/* Text lines container */
+.textGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 4px);
+}
+
+/* ============================================
+   VARIANT: Circle
+   ============================================ */
+.circle {
+  width: var(--skeleton-width, 40px);
+  height: var(--skeleton-height, 40px);
+  border-radius: var(--radius-full, 9999px);
+  --skeleton-radius: var(--radius-full, 9999px);
+}
+
+/* ============================================
+   VARIANT: Rectangle
+   ============================================ */
+.rect {
+  width: var(--skeleton-width, 100%);
+  height: var(--skeleton-height, 120px);
+  border-radius: var(--skeleton-radius, var(--radius-lg, 12px));
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .animatedWave::after,
+  .animatedPulse {
+    animation: none;
+  }
+
+  .skeleton {
+    /* Static subtle gradient for reduced motion */
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+  }
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ============================================
+   SIZE PRESETS
+   ============================================ */
+
+/* Common text sizes */
+.textSm {
+  --skeleton-height: 12px;
+}
+
+.textMd {
+  --skeleton-height: 16px;
+}
+
+.textLg {
+  --skeleton-height: 20px;
+}
+
+/* Common circle sizes */
+.circleSm {
+  --skeleton-width: 24px;
+  --skeleton-height: 24px;
+}
+
+.circleMd {
+  --skeleton-width: 40px;
+  --skeleton-height: 40px;
+}
+
+.circleLg {
+  --skeleton-width: 56px;
+  --skeleton-height: 56px;
+}
+
+/* Common rect sizes */
+.rectSm {
+  --skeleton-height: 80px;
+}
+
+.rectMd {
+  --skeleton-height: 120px;
+}
+
+.rectLg {
+  --skeleton-height: 200px;
+}

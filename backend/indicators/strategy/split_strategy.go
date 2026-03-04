@@ -1,14 +1,14 @@
 // Copyright (c) 2021-2026 Onur Cinar.
 // The source code is provided under GNU AGPLv3 License.
-// https://github.com/cinar/indicator
+// https://indicator
 
 package strategy
 
 import (
 	"fmt"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"indicator/v2/asset"
+	"indicator/v2/helper"
 )
 
 // SplitStrategy leverages two separate strategies. It utilizes the first strategy to identify potential Buy

@@ -1,0 +1,262 @@
+/**
+ * AuthLayout Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Centered card layout for authentication pages
+ */
+
+/* ============================================
+   ROOT LAYOUT
+   ============================================ */
+
+.authLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--ot-space-6);
+  background: var(--ot-surface-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   BACKGROUND PATTERN
+   ============================================ */
+
+.background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient background */
+.backgroundGradient {
+  background: radial-gradient(
+    ellipse at top,
+    var(--ot-brand-primary-950) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at bottom right,
+    var(--ot-brand-accent-950) 0%,
+    transparent 50%
+  );
+}
+
+/* Dots pattern */
+.backgroundDots {
+  background-image: radial-gradient(
+    var(--ot-border-subtle) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* Grid pattern */
+.backgroundGrid {
+  background-image:
+    linear-gradient(var(--ot-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ot-border-subtle) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glow effect */
+.background::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 112, 243, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ============================================
+   AUTH CARD
+   ============================================ */
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--ot-auth-card-width, 400px);
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border: 1px solid var(--ot-border-default);
+  border-radius: var(--ot-radius-2xl);
+  box-shadow: var(--ot-shadow-xl);
+  overflow: hidden;
+}
+
+/* Card size variants */
+.cardSm {
+  --ot-auth-card-width: 360px;
+}
+
+.cardMd {
+  --ot-auth-card-width: 440px;
+}
+
+.cardLg {
+  --ot-auth-card-width: 520px;
+}
+
+.cardFull {
+  --ot-auth-card-width: 100%;
+  max-width: 600px;
+}
+
+/* ============================================
+   CARD HEADER
+   ============================================ */
+
+.cardHeader {
+  padding: var(--ot-space-8) var(--ot-space-8) var(--ot-space-6);
+  text-align: center;
+}
+
+/* Logo */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--ot-space-6);
+  color: var(--ot-text-brand);
+  text-decoration: none;
+  transition: opacity var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.logo:hover {
+  opacity: 0.9;
+}
+
+.logoImage {
+  max-height: 48px;
+  width: auto;
+}
+
+/* Title */
+.cardTitle {
+  font-size: var(--ot-font-size-2xl);
+  font-weight: var(--ot-font-weight-bold);
+  color: var(--ot-text-primary);
+  margin: 0 0 var(--ot-space-2);
+}
+
+/* Description */
+.cardDescription {
+  font-size: var(--ot-font-size-md);
+  color: var(--ot-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+
+.cardContent {
+  padding: 0 var(--ot-space-8);
+}
+
+/* ============================================
+   CARD FOOTER
+   ============================================ */
+
+.cardFooter {
+  padding: var(--ot-space-6) var(--ot-space-8) var(--ot-space-8);
+  text-align: center;
+  border-top: 1px solid var(--ot-border-subtle);
+  margin-top: var(--ot-space-6);
+  background: var(--ot-surface-glass);
+}
+
+.footerText {
+  font-size: var(--ot-font-size-sm);
+  color: var(--ot-text-secondary);
+  margin: 0;
+}
+
+.footerLink {
+  color: var(--ot-text-link);
+  text-decoration: none;
+  font-weight: var(--ot-font-weight-medium);
+  transition: color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.footerLink:hover {
+  color: var(--ot-text-link-hover);
+  text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 479px) {
+  .authLayout {
+    padding: var(--ot-space-4);
+    justify-content: flex-start;
+    padding-top: 10vh;
+  }
+
+  .card {
+    border-radius: var(--ot-radius-xl);
+  }
+
+  .cardHeader {
+    padding: var(--ot-space-6) var(--ot-space-6) var(--ot-space-4);
+  }
+
+  .cardContent {
+    padding: 0 var(--ot-space-6);
+  }
+
+  .cardFooter {
+    padding: var(--ot-space-4) var(--ot-space-6) var(--ot-space-6);
+  }
+
+  .cardTitle {
+    font-size: var(--ot-font-size-xl);
+  }
+
+  .cardDescription {
+    font-size: var(--ot-font-size-sm);
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn var(--ot-duration-slow) var(--ot-spring-gentle);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}

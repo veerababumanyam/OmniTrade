@@ -1,0 +1,274 @@
+/**
+ * Grid Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * CSS Grid wrapper with Liquid Glass styling
+ */
+
+/* Base Grid */
+.grid {
+  display: grid;
+  grid-template-columns: var(--ot-grid-columns, 1fr);
+  grid-template-rows: var(--ot-grid-rows, auto);
+  gap: var(--ot-grid-gap, 0);
+  column-gap: var(--ot-grid-gap-x, var(--ot-grid-gap, 0));
+  row-gap: var(--ot-grid-gap-y, var(--ot-grid-gap, 0));
+  box-sizing: border-box;
+}
+
+.gridInline {
+  display: inline-grid;
+}
+
+/* ============================================
+   GAP VARIANTS
+   ============================================ */
+
+.gapNone {
+  --ot-grid-gap: 0;
+}
+
+.gapXs {
+  --ot-grid-gap: var(--ot-space-1);
+}
+
+.gapSm {
+  --ot-grid-gap: var(--ot-space-2);
+}
+
+.gapMd {
+  --ot-grid-gap: var(--ot-space-4);
+}
+
+.gapLg {
+  --ot-grid-gap: var(--ot-space-6);
+}
+
+.gapXl {
+  --ot-grid-gap: var(--ot-space-8);
+}
+
+.gap2xl {
+  --ot-grid-gap: var(--ot-space-12);
+}
+
+/* ============================================
+   ALIGN VARIANTS
+   ============================================ */
+
+.alignStart {
+  align-items: start;
+}
+
+.alignEnd {
+  align-items: end;
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.alignStretch {
+  align-items: stretch;
+}
+
+/* ============================================
+   JUSTIFY VARIANTS
+   ============================================ */
+
+.justifyStart {
+  justify-items: start;
+}
+
+.justifyEnd {
+  justify-items: end;
+}
+
+.justifyCenter {
+  justify-items: center;
+}
+
+.justifyBetween {
+  justify-items: stretch;
+  justify-content: space-between;
+}
+
+.justifyAround {
+  justify-items: stretch;
+  justify-content: space-around;
+}
+
+.justifyEvenly {
+  justify-items: stretch;
+  justify-content: space-evenly;
+}
+
+/* ============================================
+   ALIGN CONTENT VARIANTS
+   ============================================ */
+
+.alignContentStart {
+  align-content: start;
+}
+
+.alignContentEnd {
+  align-content: end;
+}
+
+.alignContentCenter {
+  align-content: center;
+}
+
+.alignContentBetween {
+  align-content: space-between;
+}
+
+.alignContentAround {
+  align-content: space-around;
+}
+
+.alignContentEvenly {
+  align-content: space-evenly;
+}
+
+/* ============================================
+   AUTO FLOW VARIANTS
+   ============================================ */
+
+.autoFlowRow {
+  grid-auto-flow: row;
+}
+
+.autoFlowColumn {
+  grid-auto-flow: column;
+}
+
+.autoFlowDense {
+  grid-auto-flow: dense;
+}
+
+.autoFlowRowDense {
+  grid-auto-flow: row dense;
+}
+
+.autoFlowColumnDense {
+  grid-auto-flow: column dense;
+}
+
+/* ============================================
+   BACKGROUND VARIANTS
+   ============================================ */
+
+.backgroundGlass {
+  background: var(--ot-surface-glass);
+  backdrop-filter: blur(var(--ot-glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md));
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.backgroundElevated {
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border: 1px solid var(--ot-border-default);
+}
+
+.backgroundSolid {
+  background: var(--ot-surface-base-solid);
+}
+
+/* ============================================
+   BORDER VARIANTS
+   ============================================ */
+
+.borderSubtle {
+  border: 1px solid var(--ot-border-subtle);
+}
+
+.borderDefault {
+  border: 1px solid var(--ot-border-default);
+}
+
+.borderEmphasis {
+  border: 1px solid var(--ot-border-emphasis);
+}
+
+/* ============================================
+   RADIUS VARIANTS
+   ============================================ */
+
+.radiusNone {
+  border-radius: 0;
+}
+
+.radiusSm {
+  border-radius: var(--ot-radius-sm);
+}
+
+.radiusMd {
+  border-radius: var(--ot-radius-md);
+}
+
+.radiusLg {
+  border-radius: var(--ot-radius-lg);
+}
+
+.radiusXl {
+  border-radius: var(--ot-radius-xl);
+}
+
+.radius2xl {
+  border-radius: var(--ot-radius-2xl);
+}
+
+.radiusFull {
+  border-radius: var(--ot-radius-full);
+}
+
+/* ============================================
+   GRID ITEM
+   ============================================ */
+
+.gridItem {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Base (mobile-first): 1 column by default on small screens */
+@media (max-width: 639px) {
+  .responsive {
+    --ot-grid-columns: 1fr;
+  }
+}
+
+/* Small: 640px+ */
+@media (min-width: 640px) {
+  .responsive {
+    --ot-grid-columns: repeat(2, 1fr);
+  }
+}
+
+/* Medium: 768px+ */
+@media (min-width: 768px) {
+  .responsive {
+    --ot-grid-columns: repeat(3, 1fr);
+  }
+}
+
+/* Large: 1024px+ */
+@media (min-width: 1024px) {
+  .responsive {
+    --ot-grid-columns: repeat(4, 1fr);
+  }
+}
+
+/* Extra Large: 1280px+ */
+@media (min-width: 1280px) {
+  .responsive {
+    --ot-grid-columns: repeat(5, 1fr);
+  }
+}

@@ -1,0 +1,265 @@
+/**
+ * Badge Component Styles
+ * Liquid Glass Design System - OmniTrade
+ * Atomic Component - Z-axis: translateZ(2px)
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Base Badge
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ot-space-1);
+  padding: var(--ot-space-1) var(--ot-space-2);
+  min-width: 20px;
+  height: 20px;
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-xs);
+  font-weight: var(--ot-font-weight-medium);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--ot-letter-spacing-wide);
+  background: var(--ot-glass-surface-2);
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-md);
+  color: var(--ot-text-primary);
+  backdrop-filter: blur(var(--ot-glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-sm));
+  transform: translateZ(2px);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Size Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge--xs {
+  padding: 1px var(--ot-space-1);
+  min-width: 12px;
+  height: 12px;
+  font-size: 9px;
+  border-radius: var(--ot-radius-sm);
+  line-height: 1;
+}
+
+.badge--sm {
+  padding: 2px var(--ot-space-1);
+  min-width: 16px;
+  height: 16px;
+  font-size: 10px;
+  border-radius: var(--ot-radius-sm);
+}
+
+.badge--md {
+  padding: var(--ot-space-1) var(--ot-space-2);
+  min-width: 20px;
+  height: 20px;
+  font-size: var(--ot-font-size-xs);
+}
+
+.badge--lg {
+  padding: var(--ot-space-1) var(--ot-space-3);
+  min-width: 24px;
+  height: 24px;
+  font-size: var(--ot-font-size-sm);
+  border-radius: var(--ot-radius-lg);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Color Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge--default {
+  background: var(--ot-glass-surface-2);
+  border-color: var(--ot-glass-edge-dark);
+  color: var(--ot-text-secondary);
+}
+
+.badge--primary {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 102, 255, 0.2) 0%,
+    rgba(0, 102, 255, 0.1) 100%
+  );
+  border-color: var(--ot-color-photon-500);
+  color: var(--ot-color-photon-400);
+}
+
+.badge--success {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 110, 0.2) 0%,
+    rgba(0, 255, 110, 0.1) 100%
+  );
+  border-color: var(--ot-color-quantum-500);
+  color: var(--ot-color-quantum-400);
+}
+
+.badge--warning {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 204, 0, 0.2) 0%,
+    rgba(255, 204, 0, 0.1) 100%
+  );
+  border-color: var(--ot-color-flux-500);
+  color: var(--ot-color-flux-500);
+}
+
+.badge--error {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 0, 0.2) 0%,
+    rgba(255, 0, 0, 0.1) 100%
+  );
+  border-color: var(--ot-color-entropy-500);
+  color: var(--ot-color-entropy-400);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dot Variant
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge--dot {
+  padding: 0;
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: var(--ot-radius-full);
+  border: none;
+}
+
+.badge--dot.badge--xs {
+  width: 4px;
+  height: 4px;
+  min-width: 4px;
+}
+
+.badge--dot.badge--sm {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+}
+
+.badge--dot.badge--lg {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+}
+
+.badge--dot.badge--success {
+  background: var(--ot-color-quantum-500);
+  box-shadow: 0 0 8px var(--ot-color-quantum-500);
+}
+
+.badge--dot.badge--error {
+  background: var(--ot-color-entropy-500);
+  box-shadow: 0 0 8px var(--ot-color-entropy-500);
+}
+
+.badge--dot.badge--warning {
+  background: var(--ot-color-flux-500);
+  box-shadow: 0 0 8px var(--ot-color-flux-500);
+}
+
+.badge--dot.badge--primary {
+  background: var(--ot-color-photon-500);
+  box-shadow: 0 0 8px var(--ot-color-photon-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Pill Variant
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge--pill {
+  border-radius: var(--ot-radius-full);
+  padding: var(--ot-space-1) var(--ot-space-3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Solid Variant
+   ═══════════════════════════════════════════════════════════════ */
+
+.badge--solid.badge--primary {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-photon-400) 0%,
+    var(--ot-color-photon-600) 100%
+  );
+  color: var(--ot-text-inverse);
+  border-color: transparent;
+}
+
+.badge--solid.badge--success {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-quantum-400) 0%,
+    var(--ot-color-quantum-600) 100%
+  );
+  color: var(--ot-text-inverse);
+  border-color: transparent;
+}
+
+.badge--solid.badge--error {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-entropy-400) 0%,
+    var(--ot-color-entropy-600) 100%
+  );
+  color: var(--ot-text-inverse);
+  border-color: transparent;
+}
+
+.badge--solid.badge--warning {
+  background: linear-gradient(
+    135deg,
+    var(--ot-color-flux-400) 0%,
+    var(--ot-color-flux-600) 100%
+  );
+  color: var(--ot-text-inverse);
+  border-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Remove Button
+   ═══════════════════════════════════════════════════════════════ */
+
+.removeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: var(--ot-space-1);
+  margin-right: -2px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-sm);
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.removeButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.removeButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-contrast: high) {
+  .badge {
+    border-width: 2px;
+  }
+}

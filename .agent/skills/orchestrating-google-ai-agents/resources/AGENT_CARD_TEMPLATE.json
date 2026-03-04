@@ -1,0 +1,30 @@
+{
+    "spec_version": "0.1.0",
+    "agent_id": "omnitrade-quant-agent-001",
+    "name": "OmniTrade Quantitative Analyst",
+    "description": "Analyzes market data and proposes high-confidence trade opportunities.",
+    "publisher": "OmniTrade Intel Plane",
+    "capabilities": [
+        {
+            "type": "tool",
+            "name": "market_analysis",
+            "description": "Performs technical and fundamental analysis on crypto/equities."
+        },
+        {
+            "type": "negotiation",
+            "description": "Negotiates transaction parameters on behalf of the user."
+        }
+    ],
+    "safety": {
+        "max_transaction_value": "1000.00 USD",
+        "hitl_required": true
+    },
+    "endpoints": {
+        "control": "https://api.omnitrade.local/v1/agents/quant/control",
+        "telemetry": "https://api.omnitrade.local/v1/agents/quant/telemetry"
+    },
+    "pricing": {
+        "model": "per_token_usage",
+        "rate": "0.0001 USD/token"
+    }
+}

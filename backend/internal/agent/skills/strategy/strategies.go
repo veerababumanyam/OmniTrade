@@ -4,11 +4,15 @@
 package strategy
 
 import (
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/momentum"
-	"github.com/cinar/indicator/v2/strategy"
-	"github.com/cinar/indicator/v2/strategy/compound"
-	"github.com/cinar/indicator/v2/trend"
+	"context"
+	"fmt"
+	"time"
+
+	"indicator/v2/asset"
+	"indicator/v2/momentum"
+	"indicator/v2/strategy"
+	"indicator/v2/strategy/compound"
+	"indicator/v2/trend"
 )
 
 // sliceToChannel converts a slice to a channel for indicator library
@@ -39,11 +43,28 @@ func lastValue[T comparable](values []T) T {
 	return values[len(values)-1]
 }
 
+// dataToSnapshots converts OHLCVData to asset.Snapshot channel
+func dataToSnapshots(data *OHLCVData) <-chan *asset.Snapshot {
+	ch := make(chan *asset.Snapshot, len(data.Close))
+	for i := 0; i < len(data.Close); i++ {
+		ch <- &asset.Snapshot{
+			Date:   time.Unix(data.Timestamp[i], 0),
+			Open:   data.Open[i],
+			High:   data.High[i],
+			Low:    data.Low[i],
+			Close:  data.Close[i],
+			Volume: data.Volume[i],
+		}
+	}
+	close(ch)
+	return ch
+}
+
 // executeBuyAndHold implements a simple buy and hold strategy
 func (s *Service) executeBuyAndHold(ctx context.Context, req *ExecutionRequest) (*StrategyResult, error) {
-	bs := strategy.NewBuyAndHoldStrategy[float64]()
-	closes := sliceToChannel(req.Data.Close)
-	actions := bs.Compute(closes)
+	bs := strategy.NewBuyAndHoldStrategy()
+	snapshots := dataToSnapshots(req.Data)
+	actions := bs.Compute(snapshots)
 	actionValues := channelToSlice(actions)
 
 	// Convert strategy actions
@@ -58,12 +79,12 @@ func (s *Service) executeBuyAndHold(ctx context.Context, req *ExecutionRequest) 
 	}
 
 	return &StrategyResult{
-		Name:      "Buy and Hold",
-		Actions:   actionsList,
+		Name:       "Buy and Hold",
+		Actions:    actionsList,
 		LastAction: lastAction,
 		Signals: map[string]any{
 			"recommendation": string(lastAction),
-			"reason":        "always buy on first bar, hold thereafter",
+			"reason":         "always buy on first bar, hold thereafter",
 		},
 		Metadata: map[string]any{
 			"type": "benchmark",
@@ -82,8 +103,8 @@ func (s *Service) executeMACDRSI(ctx context.Context, req *ExecutionRequest) (*S
 	if f, ok := req.Params["fast_period"].(int); ok && f > 0 {
 		fastPeriod = f
 	}
-	if s, ok := req.Params["slow_period"].(int); ok && s > 0 {
-		slowPeriod = s
+	if sv, ok := req.Params["slow_period"].(int); ok && sv > 0 {
+		slowPeriod = sv
 	}
 	if sp, ok := req.Params["signal_period"].(int); ok && sp > 0 {
 		signalPeriod = sp
@@ -92,15 +113,11 @@ func (s *Service) executeMACDRSI(ctx context.Context, req *ExecutionRequest) (*S
 		rsiPeriod = rp
 	}
 
-	macdRsiStrategy := compound.NewMacdRsiStrategy[float64](
-		fastPeriod,
-		slowPeriod,
-		signalPeriod,
-		rsiPeriod,
-	)
+	// Use default MACD+RSI strategy (no period params in constructor)
+	macdRsiStrategy := compound.NewMacdRsiStrategy()
 
-	closes := sliceToChannel(req.Data.Close)
-	actions := macdRsiStrategy.Compute(closes)
+	snapshots := dataToSnapshots(req.Data)
+	actions := macdRsiStrategy.Compute(snapshots)
 	actionValues := channelToSlice(actions)
 
 	// Convert strategy actions
@@ -146,23 +163,23 @@ func (s *Service) executeMACDRSI(ctx context.Context, req *ExecutionRequest) (*S
 	}
 
 	return &StrategyResult{
-		Name:      "MACD + RSI",
-		Actions:   actionsList,
+		Name:       "MACD + RSI",
+		Actions:    actionsList,
 		LastAction: lastAction,
 		Signals: map[string]any{
 			"recommendation": recommendation,
-			"reason":        reason,
-			"macd":          lastMACD,
-			"signal":        lastSignal,
-			"histogram":     histogram,
-			"rsi":           lastRSI,
+			"reason":         reason,
+			"macd":           lastMACD,
+			"signal":         lastSignal,
+			"histogram":      histogram,
+			"rsi":            lastRSI,
 		},
 		Metadata: map[string]any{
-			"fast_period":    fastPeriod,
-			"slow_period":    slowPeriod,
-			"signal_period":  signalPeriod,
-			"rsi_period":     rsiPeriod,
-			"type":           "momentum",
+			"fast_period":   fastPeriod,
+			"slow_period":   slowPeriod,
+			"signal_period": signalPeriod,
+			"rsi_period":    rsiPeriod,
+			"type":          "momentum",
 		},
 	}, nil
 }

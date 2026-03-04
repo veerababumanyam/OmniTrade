@@ -1,0 +1,485 @@
+/**
+ * Toast Component Styles
+ * Liquid Glass Design System
+ * Macro-Volume Organism - Z-axis: translateZ(48px)
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Container (Position Wrapper)
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  position: fixed;
+  z-index: var(--ot-z-toast);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  font-family: var(--ot-font-sans);
+}
+
+.container--top-right {
+  top: var(--ot-space-6);
+  right: var(--ot-space-6);
+}
+
+.container--top-left {
+  top: var(--ot-space-6);
+  left: var(--ot-space-6);
+}
+
+.container--top-center {
+  top: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.container--bottom-right {
+  bottom: var(--ot-space-6);
+  right: var(--ot-space-6);
+}
+
+.container--bottom-left {
+  bottom: var(--ot-space-6);
+  left: var(--ot-space-6);
+}
+
+.container--bottom-center {
+  bottom: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Position variants */
+.container--top-right {
+  top: var(--ot-space-6);
+  right: var(--ot-space-6);
+}
+
+.container--top-left {
+  top: var(--ot-space-6);
+  left: var(--ot-space-6);
+}
+
+.container--top-center {
+  top: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.container--bottom-right {
+  bottom: var(--ot-space-6);
+  right: var(--ot-space-6);
+}
+
+.container--bottom-left {
+  bottom: var(--ot-space-6);
+  left: var(--ot-space-6);
+}
+
+.container--bottom-center {
+  bottom: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Stack direction based on position */
+.container--top-right,
+.container--top-left,
+.container--top-center {
+  flex-direction: column-reverse;
+}
+
+.container--bottom-right,
+.container--bottom-left,
+.container--bottom-center {
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Toast Item
+   ═══════════════════════════════════════════════════════════════ */
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ot-space-3);
+  width: 360px;
+  max-width: calc(100vw - var(--ot-space-12));
+  padding: var(--ot-space-4);
+  background: var(--ot-surface-elevated);
+  border: 1px solid var(--ot-glass-edge-light);
+  border-radius: var(--ot-radius-xl);
+  box-shadow:
+    var(--ot-shadow-xl),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  transform: translateZ(48px);
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+/* Animation states */
+.toast[data-state='entering'] {
+  animation: toastEnter var(--ot-duration-slow) var(--ot-spring-bouncy) forwards;
+}
+
+.toast[data-state='entered'] {
+  opacity: 1;
+  transform: translateZ(48px) translateX(0) scale(1);
+}
+
+.toast[data-state='exiting'] {
+  animation: toastExit var(--ot-duration-fast) var(--ot-spring-gentle) forwards;
+}
+
+/* Position-specific animations */
+.toast--position-top-right[data-state='entering'],
+.toast--position-top-left[data-state='entering'],
+.toast--position-bottom-right[data-state='entering'],
+.toast--position-bottom-left[data-state='entering'] {
+  animation: toastSlideIn var(--ot-duration-slow) var(--ot-spring-bouncy) forwards;
+}
+
+.toast--position-top-center[data-state='entering'],
+.toast--position-bottom-center[data-state='entering'] {
+  animation: toastFadeIn var(--ot-duration-slow) var(--ot-spring-bouncy) forwards;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) translateX(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) translateX(0) scale(1);
+  }
+}
+
+@keyframes toastFadeIn {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) translateY(0) scale(1);
+  }
+}
+
+@keyframes toastEnter {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) scale(1);
+  }
+}
+
+@keyframes toastExit {
+  from {
+    opacity: 1;
+    transform: translateZ(48px) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateZ(48px) scale(0.95);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Hover state */
+.toast:hover {
+  box-shadow:
+    var(--ot-shadow-xl),
+    0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Type variants - left border accent */
+.toast--success {
+  border-left: 3px solid var(--ot-color-quantum-500);
+}
+
+.toast--error {
+  border-left: 3px solid var(--ot-color-entropy-500);
+}
+
+.toast--warning {
+  border-left: 3px solid var(--ot-color-flux-500);
+}
+
+.toast--info {
+  border-left: 3px solid var(--ot-color-photon-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Icon
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+}
+
+.icon--success {
+  color: var(--ot-color-quantum-500);
+}
+
+.icon--error {
+  color: var(--ot-color-entropy-500);
+}
+
+.icon--warning {
+  color: var(--ot-color-flux-500);
+}
+
+.icon--info {
+  color: var(--ot-color-photon-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Content
+   ═══════════════════════════════════════════════════════════════ */
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-semibold);
+  color: var(--ot-text-primary);
+  line-height: var(--ot-line-height-snug);
+}
+
+.description {
+  margin: var(--ot-space-1) 0 0;
+  font-size: var(--ot-font-size-sm);
+  color: var(--ot-text-secondary);
+  line-height: var(--ot-line-height-normal);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Actions
+   ═══════════════════════════════════════════════════════════════ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-2);
+  margin-top: var(--ot-space-3);
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ot-space-1) var(--ot-space-3);
+  background: transparent;
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-md);
+  font-size: var(--ot-font-size-xs);
+  font-weight: var(--ot-font-weight-medium);
+  font-family: var(--ot-font-sans);
+  cursor: pointer;
+  transition: all var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.actionButton:hover {
+  background: var(--ot-interactive-hover);
+  border-color: var(--ot-glass-edge-light);
+}
+
+.actionButton:active {
+  background: var(--ot-interactive-active);
+}
+
+.actionButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+.actionButton--primary {
+  background: var(--ot-color-photon-500);
+  border-color: var(--ot-color-photon-500);
+  color: var(--ot-text-inverse);
+}
+
+.actionButton--primary:hover {
+  background: var(--ot-color-photon-600);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Close Button
+   ═══════════════════════════════════════════════════════════════ */
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-md);
+  color: var(--ot-text-tertiary);
+  cursor: pointer;
+  transition: all var(--ot-duration-fast) var(--ot-spring-default);
+  flex-shrink: 0;
+}
+
+.closeButton:hover {
+  background: var(--ot-interactive-hover);
+  color: var(--ot-text-primary);
+}
+
+.closeButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Progress Bar
+   ═══════════════════════════════════════════════════════════════ */
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--ot-color-photon-500);
+  border-radius: 0 var(--ot-radius-sm) 0 0;
+  transform-origin: left;
+  transition: transform linear;
+}
+
+.progressBar--success {
+  background: var(--ot-color-quantum-500);
+}
+
+.progressBar--error {
+  background: var(--ot-color-entropy-500);
+}
+
+.progressBar--warning {
+  background: var(--ot-color-flux-500);
+}
+
+.progressBar--info {
+  background: var(--ot-color-photon-500);
+}
+
+.progressBar--paused {
+  animation-play-state: paused;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Queue Indicator (showing +N more)
+   ═══════════════════════════════════════════════════════════════ */
+
+.queueIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ot-space-2) var(--ot-space-3);
+  background: var(--ot-glass-surface-3);
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-lg);
+  font-size: var(--ot-font-size-xs);
+  color: var(--ot-text-secondary);
+  pointer-events: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .container {
+    left: var(--ot-space-2);
+    right: var(--ot-space-2);
+  }
+
+  .container--top-right,
+  .container--top-left,
+  .container--top-center {
+    top: var(--ot-space-2);
+    transform: none;
+  }
+
+  .container--bottom-right,
+  .container--bottom-left,
+  .container--bottom-center {
+    bottom: var(--ot-space-2);
+    transform: none;
+  }
+
+  .container--top-center,
+  .container--bottom-center {
+    left: var(--ot-space-2);
+    transform: none;
+  }
+
+  .toast {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .toast[data-state='entering'],
+  .toast[data-state='exiting'] {
+    animation: none;
+  }
+
+  .progressBar {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .toast {
+    border-width: 2px;
+  }
+
+  .toast--success {
+    border-left-width: 4px;
+  }
+
+  .toast--error {
+    border-left-width: 4px;
+  }
+
+  .toast--warning {
+    border-left-width: 4px;
+  }
+
+  .toast--info {
+    border-left-width: 4px;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.toast:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}

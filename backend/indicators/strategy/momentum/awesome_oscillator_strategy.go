@@ -1,14 +1,14 @@
 // Copyright (c) 2021-2026 Onur Cinar.
 // The source code is provided under GNU AGPLv3 License.
-// https://github.com/cinar/indicator
+// https://indicator
 
 package momentum
 
 import (
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/momentum"
-	"github.com/cinar/indicator/v2/strategy"
+	"indicator/v2/asset"
+	"indicator/v2/helper"
+	"indicator/v2/momentum"
+	"indicator/v2/strategy"
 )
 
 // AwesomeOscillatorStrategy represents the configuration parameters for calculating the Awesome Oscillator strategy.

@@ -1,0 +1,502 @@
+/**
+ * OmniTrade Design Tokens - Colors
+ * Version: 1.0.0
+ *
+ * 2026 UI/UX Design Standards: Liquid Glass, Photon Physics, Spatial Volumes
+ *
+ * APCA Contrast Targets:
+ * - Body text: Lc 60-75 minimum
+ * - Headlines: Lc 75-90
+ * - Interactive elements: Lc 60 minimum
+ * - Large text (24px+): Lc 50 minimum
+ */
+
+/* ============================================
+   PRIMITIVE COLORS
+   Raw color values used as foundation
+   ============================================ */
+
+:root {
+  /* === Blue Scale === */
+  --ot-blue-50: #eff6ff;
+  --ot-blue-100: #dbeafe;
+  --ot-blue-200: #bfdbfe;
+  --ot-blue-300: #93c5fd;
+  --ot-blue-400: #60a5fa;
+  --ot-blue-500: #3b82f6;
+  --ot-blue-600: #2563eb;
+  --ot-blue-700: #1d4ed8;
+  --ot-blue-800: #1e40af;
+  --ot-blue-900: #1e3a8a;
+  --ot-blue-950: #172554;
+
+  /* === Purple Scale === */
+  --ot-purple-50: #faf5ff;
+  --ot-purple-100: #f3e8ff;
+  --ot-purple-200: #e9d5ff;
+  --ot-purple-300: #d8b4fe;
+  --ot-purple-400: #c084fc;
+  --ot-purple-500: #a855f7;
+  --ot-purple-600: #9333ea;
+  --ot-purple-700: #7e22ce;
+  --ot-purple-800: #6b21a8;
+  --ot-purple-900: #581c87;
+  --ot-purple-950: #3b0764;
+
+  /* === Green Scale === */
+  --ot-green-50: #f0fdf4;
+  --ot-green-100: #dcfce7;
+  --ot-green-200: #bbf7d0;
+  --ot-green-300: #86efac;
+  --ot-green-400: #4ade80;
+  --ot-green-500: #22c55e;
+  --ot-green-600: #16a34a;
+  --ot-green-700: #15803d;
+  --ot-green-800: #166534;
+  --ot-green-900: #14532d;
+  --ot-green-950: #052e16;
+
+  /* === Red Scale === */
+  --ot-red-50: #fef2f2;
+  --ot-red-100: #fee2e2;
+  --ot-red-200: #fecaca;
+  --ot-red-300: #fca5a5;
+  --ot-red-400: #f87171;
+  --ot-red-500: #ef4444;
+  --ot-red-600: #dc2626;
+  --ot-red-700: #b91c1c;
+  --ot-red-800: #991b1b;
+  --ot-red-900: #7f1d1d;
+  --ot-red-950: #450a0a;
+
+  /* === Yellow/Amber Scale === */
+  --ot-yellow-50: #fefce8;
+  --ot-yellow-100: #fef9c3;
+  --ot-yellow-200: #fef08a;
+  --ot-yellow-300: #fde047;
+  --ot-yellow-400: #facc15;
+  --ot-yellow-500: #eab308;
+  --ot-yellow-600: #ca8a04;
+  --ot-yellow-700: #a16207;
+  --ot-yellow-800: #854d0e;
+  --ot-yellow-900: #713f12;
+  --ot-yellow-950: #422006;
+
+  /* === Gray Scale (Neutral) === */
+  --ot-gray-50: #fafafa;
+  --ot-gray-100: #f4f4f5;
+  --ot-gray-200: #e4e4e7;
+  --ot-gray-300: #d4d4d8;
+  --ot-gray-400: #a1a1aa;
+  --ot-gray-500: #71717a;
+  --ot-gray-600: #52525b;
+  --ot-gray-700: #3f3f46;
+  --ot-gray-800: #27272a;
+  --ot-gray-900: #18181b;
+  --ot-gray-950: #09090b;
+
+  /* === Slate Scale (Cool Gray) === */
+  --ot-slate-50: #f8fafc;
+  --ot-slate-100: #f1f5f9;
+  --ot-slate-200: #e2e8f0;
+  --ot-slate-300: #cbd5e1;
+  --ot-slate-400: #94a3b8;
+  --ot-slate-500: #64748b;
+  --ot-slate-600: #475569;
+  --ot-slate-700: #334155;
+  --ot-slate-800: #1e293b;
+  --ot-slate-900: #0f172a;
+  --ot-slate-950: #020617;
+
+  /* === White & Black === */
+  --ot-white: #ffffff;
+  --ot-black: #000000;
+}
+
+/* ============================================
+   BRAND TOKENS
+   OmniTrade specific brand colors
+   ============================================ */
+
+[data-brand="omnitrade"],
+:root {
+  /* Primary Brand - Deep Ocean Blue */
+  --ot-brand-primary-50: #e6f4ff;
+  --ot-brand-primary-100: #bae3ff;
+  --ot-brand-primary-200: #7cc4ff;
+  --ot-brand-primary-300: #47a3ff;
+  --ot-brand-primary-400: #218bff;
+  --ot-brand-primary-500: #0070f3; /* Main brand color */
+  --ot-brand-primary-600: #0058cc;
+  --ot-brand-primary-700: #0046a3;
+  --ot-brand-primary-800: #003780;
+  --ot-brand-primary-900: #002b66;
+  --ot-brand-primary-950: #001a40;
+
+  /* Accent Brand - Electric Purple */
+  --ot-brand-accent-50: #f5f3ff;
+  --ot-brand-accent-100: #ede9fe;
+  --ot-brand-accent-200: #ddd6fe;
+  --ot-brand-accent-300: #c4b5fd;
+  --ot-brand-accent-400: #a78bfa;
+  --ot-brand-accent-500: #8b5cf6; /* Main accent color */
+  --ot-brand-accent-600: #7c3aed;
+  --ot-brand-accent-700: #6d28d9;
+  --ot-brand-accent-800: #5b21b6;
+  --ot-brand-accent-900: #4c1d95;
+  --ot-brand-accent-950: #2e1065;
+
+  /* Gradient Tokens */
+  --ot-brand-gradient-primary: linear-gradient(
+    135deg,
+    var(--ot-brand-primary-500) 0%,
+    var(--ot-brand-accent-500) 100%
+  );
+  --ot-brand-gradient-subtle: linear-gradient(
+    135deg,
+    var(--ot-brand-primary-600) 0%,
+    var(--ot-brand-primary-400) 100%
+  );
+  --ot-brand-gradient-glow: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.15) 0%,
+    rgba(0, 112, 243, 0.05) 100%
+  );
+}
+
+/* Future brand placeholder */
+[data-brand="future-brand"] {
+  /* Reserved for future multi-brand support */
+  --ot-brand-primary-500: #0070f3;
+  --ot-brand-accent-500: #8b5cf6;
+}
+
+/* ============================================
+   SEMANTIC TOKENS
+   Context-based color assignments
+   ============================================ */
+
+[data-theme="dark"],
+:root {
+  /* === Success === */
+  --ot-color-success-bg: rgba(34, 197, 94, 0.15);
+  --ot-color-success-bg-subtle: rgba(34, 197, 94, 0.08);
+  --ot-color-success-border: rgba(34, 197, 94, 0.3);
+  --ot-color-success-text: #4ade80;
+  --ot-color-success-text-muted: #86efac;
+  --ot-color-success-icon: #22c55e;
+
+  /* === Error === */
+  --ot-color-error-bg: rgba(239, 68, 68, 0.15);
+  --ot-color-error-bg-subtle: rgba(239, 68, 68, 0.08);
+  --ot-color-error-border: rgba(239, 68, 68, 0.3);
+  --ot-color-error-text: #f87171;
+  --ot-color-error-text-muted: #fca5a5;
+  --ot-color-error-icon: #ef4444;
+
+  /* === Warning === */
+  --ot-color-warning-bg: rgba(234, 179, 8, 0.15);
+  --ot-color-warning-bg-subtle: rgba(234, 179, 8, 0.08);
+  --ot-color-warning-border: rgba(234, 179, 8, 0.3);
+  --ot-color-warning-text: #facc15;
+  --ot-color-warning-text-muted: #fde047;
+  --ot-color-warning-icon: #eab308;
+
+  /* === Info === */
+  --ot-color-info-bg: rgba(59, 130, 246, 0.15);
+  --ot-color-info-bg-subtle: rgba(59, 130, 246, 0.08);
+  --ot-color-info-border: rgba(59, 130, 246, 0.3);
+  --ot-color-info-text: #60a5fa;
+  --ot-color-info-text-muted: #93c5fd;
+  --ot-color-info-icon: #3b82f6;
+}
+
+[data-theme="light"] {
+  /* === Success === */
+  --ot-color-success-bg: rgba(22, 163, 74, 0.12);
+  --ot-color-success-bg-subtle: rgba(22, 163, 74, 0.06);
+  --ot-color-success-border: rgba(22, 163, 74, 0.25);
+  --ot-color-success-text: #15803d;
+  --ot-color-success-text-muted: #166534;
+  --ot-color-success-icon: #16a34a;
+
+  /* === Error === */
+  --ot-color-error-bg: rgba(220, 38, 38, 0.12);
+  --ot-color-error-bg-subtle: rgba(220, 38, 38, 0.06);
+  --ot-color-error-border: rgba(220, 38, 38, 0.25);
+  --ot-color-error-text: #b91c1c;
+  --ot-color-error-text-muted: #991b1b;
+  --ot-color-error-icon: #dc2626;
+
+  /* === Warning === */
+  --ot-color-warning-bg: rgba(202, 138, 4, 0.12);
+  --ot-color-warning-bg-subtle: rgba(202, 138, 4, 0.06);
+  --ot-color-warning-border: rgba(202, 138, 4, 0.25);
+  --ot-color-warning-text: #a16207;
+  --ot-color-warning-text-muted: #854d0e;
+  --ot-color-warning-icon: #ca8a04;
+
+  /* === Info === */
+  --ot-color-info-bg: rgba(37, 99, 235, 0.12);
+  --ot-color-info-bg-subtle: rgba(37, 99, 235, 0.06);
+  --ot-color-info-border: rgba(37, 99, 235, 0.25);
+  --ot-color-info-text: #1d4ed8;
+  --ot-color-info-text-muted: #1e40af;
+  --ot-color-info-icon: #2563eb;
+}
+
+/* ============================================
+   SURFACE TOKENS
+   Liquid Glass background surfaces
+   ============================================ */
+
+[data-theme="dark"],
+:root {
+  /* === Base Surface === */
+  --ot-surface-base: rgba(9, 9, 11, 0.85);
+  --ot-surface-base-solid: #09090b;
+  --ot-surface-base-hover: rgba(24, 24, 27, 0.9);
+
+  /* === Primary Surface === */
+  --ot-surface-primary: rgba(15, 23, 42, 0.8);
+  --ot-surface-primary-solid: #0f172a;
+  --ot-surface-primary-hover: rgba(30, 41, 59, 0.85);
+
+  /* === Secondary Surface === */
+  --ot-surface-secondary: rgba(39, 39, 42, 0.75);
+  --ot-surface-secondary-solid: #27272a;
+  --ot-surface-secondary-hover: rgba(63, 63, 70, 0.8);
+
+  /* === Elevated Surface === */
+  --ot-surface-elevated: rgba(39, 39, 42, 0.9);
+  --ot-surface-elevated-solid: #27272a;
+  --ot-surface-elevated-hover: rgba(63, 63, 70, 0.95);
+
+  /* === Overlay Surface === */
+  --ot-surface-overlay: rgba(0, 0, 0, 0.6);
+  --ot-surface-overlay-solid: #000000;
+
+  /* === Glass Surface (Liquid Glass) === */
+  --ot-surface-glass: rgba(255, 255, 255, 0.03);
+  --ot-surface-glass-hover: rgba(255, 255, 255, 0.06);
+  --ot-surface-glass-active: rgba(255, 255, 255, 0.08);
+
+  /* === Interactive Surface === */
+  --ot-surface-interactive: rgba(255, 255, 255, 0.05);
+  --ot-surface-interactive-hover: rgba(255, 255, 255, 0.1);
+  --ot-surface-interactive-active: rgba(255, 255, 255, 0.15);
+  --ot-surface-interactive-disabled: rgba(255, 255, 255, 0.02);
+
+  /* === Border Colors === */
+  --ot-border-subtle: rgba(255, 255, 255, 0.06);
+  --ot-border-default: rgba(255, 255, 255, 0.1);
+  --ot-border-emphasis: rgba(255, 255, 255, 0.15);
+  --ot-border-strong: rgba(255, 255, 255, 0.25);
+  --ot-border-focus: var(--ot-brand-primary-500);
+
+  /* === Scrim/Backdrop === */
+  --ot-scrim: rgba(0, 0, 0, 0.7);
+  --ot-scrim-light: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] {
+  /* === Base Surface === */
+  --ot-surface-base: rgba(255, 255, 255, 0.9);
+  --ot-surface-base-solid: #ffffff;
+  --ot-surface-base-hover: rgba(244, 244, 245, 0.95);
+
+  /* === Primary Surface === */
+  --ot-surface-primary: rgba(248, 250, 252, 0.85);
+  --ot-surface-primary-solid: #f8fafc;
+  --ot-surface-primary-hover: rgba(241, 245, 249, 0.9);
+
+  /* === Secondary Surface === */
+  --ot-surface-secondary: rgba(244, 244, 245, 0.8);
+  --ot-surface-secondary-solid: #f4f4f5;
+  --ot-surface-secondary-hover: rgba(228, 228, 231, 0.85);
+
+  /* === Elevated Surface === */
+  --ot-surface-elevated: rgba(255, 255, 255, 0.95);
+  --ot-surface-elevated-solid: #ffffff;
+  --ot-surface-elevated-hover: rgba(255, 255, 255, 1);
+
+  /* === Overlay Surface === */
+  --ot-surface-overlay: rgba(0, 0, 0, 0.5);
+  --ot-surface-overlay-solid: #000000;
+
+  /* === Glass Surface (Liquid Glass) === */
+  --ot-surface-glass: rgba(0, 0, 0, 0.02);
+  --ot-surface-glass-hover: rgba(0, 0, 0, 0.04);
+  --ot-surface-glass-active: rgba(0, 0, 0, 0.06);
+
+  /* === Interactive Surface === */
+  --ot-surface-interactive: rgba(0, 0, 0, 0.03);
+  --ot-surface-interactive-hover: rgba(0, 0, 0, 0.06);
+  --ot-surface-interactive-active: rgba(0, 0, 0, 0.1);
+  --ot-surface-interactive-disabled: rgba(0, 0, 0, 0.01);
+
+  /* === Border Colors === */
+  --ot-border-subtle: rgba(0, 0, 0, 0.04);
+  --ot-border-default: rgba(0, 0, 0, 0.08);
+  --ot-border-emphasis: rgba(0, 0, 0, 0.12);
+  --ot-border-strong: rgba(0, 0, 0, 0.2);
+  --ot-border-focus: var(--ot-brand-primary-500);
+
+  /* === Scrim/Backdrop === */
+  --ot-scrim: rgba(0, 0, 0, 0.5);
+  --ot-scrim-light: rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   TEXT TOKENS
+   Typography color assignments
+   ============================================ */
+
+[data-theme="dark"],
+:root {
+  /* === Primary Text (High contrast) === */
+  --ot-text-primary: rgba(255, 255, 255, 0.95);
+  --ot-text-primary-solid: #ffffff;
+
+  /* === Secondary Text (Medium contrast) === */
+  --ot-text-secondary: rgba(255, 255, 255, 0.7);
+  --ot-text-secondary-solid: #d4d4d8;
+
+  /* === Muted Text (Low contrast) === */
+  --ot-text-muted: rgba(255, 255, 255, 0.5);
+  --ot-text-muted-solid: #71717a;
+
+  /* === Disabled Text === */
+  --ot-text-disabled: rgba(255, 255, 255, 0.3);
+  --ot-text-disabled-solid: #52525b;
+
+  /* === Interactive Text === */
+  --ot-text-link: var(--ot-brand-primary-400);
+  --ot-text-link-hover: var(--ot-brand-primary-300);
+  --ot-text-link-visited: var(--ot-purple-400);
+
+  /* === Inverse Text (for dark on light) === */
+  --ot-text-inverse: rgba(0, 0, 0, 0.9);
+  --ot-text-inverse-secondary: rgba(0, 0, 0, 0.7);
+
+  /* === Brand Text === */
+  --ot-text-brand: var(--ot-brand-primary-400);
+  --ot-text-brand-accent: var(--ot-brand-accent-400);
+}
+
+[data-theme="light"] {
+  /* === Primary Text (High contrast) === */
+  --ot-text-primary: rgba(0, 0, 0, 0.9);
+  --ot-text-primary-solid: #09090b;
+
+  /* === Secondary Text (Medium contrast) === */
+  --ot-text-secondary: rgba(0, 0, 0, 0.7);
+  --ot-text-secondary-solid: #3f3f46;
+
+  /* === Muted Text (Low contrast) === */
+  --ot-text-muted: rgba(0, 0, 0, 0.5);
+  --ot-text-muted-solid: #71717a;
+
+  /* === Disabled Text === */
+  --ot-text-disabled: rgba(0, 0, 0, 0.3);
+  --ot-text-disabled-solid: #a1a1aa;
+
+  /* === Interactive Text === */
+  --ot-text-link: var(--ot-brand-primary-600);
+  --ot-text-link-hover: var(--ot-brand-primary-700);
+  --ot-text-link-visited: var(--ot-purple-600);
+
+  /* === Inverse Text (for light on dark) === */
+  --ot-text-inverse: rgba(255, 255, 255, 0.95);
+  --ot-text-inverse-secondary: rgba(255, 255, 255, 0.7);
+
+  /* === Brand Text === */
+  --ot-text-brand: var(--ot-brand-primary-600);
+  --ot-text-brand-accent: var(--ot-brand-accent-600);
+}
+
+/* ============================================
+   INTERACTIVE STATE TOKENS
+   Focus, hover, active states
+   ============================================ */
+
+:root {
+  /* === Focus Ring === */
+  --ot-focus-ring-color: var(--ot-brand-primary-500);
+  --ot-focus-ring-color-subtle: rgba(0, 112, 243, 0.3);
+  --ot-focus-ring-offset: 2px;
+
+  /* === Selection === */
+  --ot-selection-bg: rgba(0, 112, 243, 0.25);
+  --ot-selection-text: var(--ot-text-primary);
+
+  /* === Highlight === */
+  --ot-highlight-bg: rgba(234, 179, 8, 0.2);
+  --ot-highlight-text: var(--ot-text-primary);
+}
+
+/* ============================================
+   TRADING SPECIFIC TOKENS
+   Financial data color conventions
+   ============================================ */
+
+:root {
+  /* === Bullish (Positive) === */
+  --ot-trading-bullish: #22c55e;
+  --ot-trading-bullish-bg: rgba(34, 197, 94, 0.15);
+  --ot-trading-bullish-text: #4ade80;
+
+  /* === Bearish (Negative) === */
+  --ot-trading-bearish: #ef4444;
+  --ot-trading-bearish-bg: rgba(239, 68, 68, 0.15);
+  --ot-trading-bearish-text: #f87171;
+
+  /* === Neutral === */
+  --ot-trading-neutral: var(--ot-text-secondary);
+  --ot-trading-neutral-bg: var(--ot-surface-glass);
+
+  /* === Chart Colors === */
+  --ot-chart-candlestick-wick: var(--ot-text-muted);
+  --ot-chart-grid: var(--ot-border-subtle);
+  --ot-chart-axis: var(--ot-text-muted);
+  --ot-chart-crosshair: rgba(255, 255, 255, 0.3);
+  --ot-chart-volume-bullish: rgba(34, 197, 94, 0.4);
+  --ot-chart-volume-bearish: rgba(239, 68, 68, 0.4);
+}
+
+[data-theme="light"] {
+  --ot-trading-bullish: #16a34a;
+  --ot-trading-bullish-bg: rgba(22, 163, 74, 0.12);
+  --ot-trading-bullish-text: #15803d;
+
+  --ot-trading-bearish: #dc2626;
+  --ot-trading-bearish-bg: rgba(220, 38, 38, 0.12);
+  --ot-trading-bearish-text: #b91c1c;
+
+  --ot-chart-crosshair: rgba(0, 0, 0, 0.2);
+  --ot-chart-volume-bullish: rgba(22, 163, 74, 0.3);
+  --ot-chart-volume-bearish: rgba(220, 38, 38, 0.3);
+}
+
+/* ============================================
+   DATA VISUALIZATION TOKENS
+   Chart and graph colors
+   ============================================ */
+
+:root {
+  --ot-data-viz-1: var(--ot-brand-primary-500);
+  --ot-data-viz-2: var(--ot-brand-accent-500);
+  --ot-data-viz-3: var(--ot-green-500);
+  --ot-data-viz-4: var(--ot-yellow-500);
+  --ot-data-viz-5: var(--ot-red-500);
+  --ot-data-viz-6: var(--ot-blue-300);
+  --ot-data-viz-7: var(--ot-purple-300);
+  --ot-data-viz-8: var(--ot-green-300);
+
+  /* Sequential palette for heatmaps */
+  --ot-data-viz-sequential-1: var(--ot-brand-primary-950);
+  --ot-data-viz-sequential-2: var(--ot-brand-primary-700);
+  --ot-data-viz-sequential-3: var(--ot-brand-primary-500);
+  --ot-data-viz-sequential-4: var(--ot-brand-primary-300);
+  --ot-data-viz-sequential-5: var(--ot-brand-primary-100);
+}

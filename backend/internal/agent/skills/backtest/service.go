@@ -9,8 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cinar/indicator/v2/backtest"
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/cinar/indicator/v2/asset"
 	"github.com/cinar/indicator/v2/strategy"
 )
 
@@ -80,38 +79,64 @@ func (s *Service) Run(ctx context.Context, req *BacktestRequest) (*BacktestResul
 	default:
 	}
 
-	// Convert data to channels
-	closes := sliceToChannel(req.Data.Close)
-	timestamps := sliceToChannel(req.Data.Timestamp)
+	// Get the strategy from the request
+	strat, ok := req.Strategy.(strategy.Strategy)
+	if !ok {
+		return nil, fmt.Errorf("invalid strategy type: expected strategy.Strategy")
+	}
 
-	// Run backtest
-	bt := backtest.NewBacktest[float64](
-		req.Strategy.(strategy.Strategy[float64]),
-		req.InitialCash,
-		backtest.UseAction(strategy.Buy),
-	)
+	// Convert data to snapshots for the strategy
+	snapshots := dataToSnapshots(req.Data)
 
-	// Execute backtest
-	actions := bt.Execute(closes)
+	// Compute actions using the strategy
+	actions := strat.Compute(snapshots)
+	actionSlice := channelToSlice(actions)
 
-	// Collect results
-	var equityCurve []float64
-	var positions []*PositionResult
+	// Calculate basic metrics
+	startDate := time.Unix(req.Data.Timestamp[0], 0).Format("2006-01-02")
+	endDate := time.Unix(req.Data.Timestamp[len(req.Data.Timestamp)-1], 0).Format("2006-01-02")
 
-	// Process backtest results
-	results := s.processResults(bt, req.Data, actions, equityCurve, positions)
+	// Count trades (buy/sell actions)
+	trades := 0
+	for _, a := range actionSlice {
+		if a == strategy.Buy || a == strategy.Sell {
+			trades++
+		}
+	}
 
-	// Calculate metrics
-	results.calculateMetrics()
-
-	return results, nil
+	return &BacktestResult{
+		Name:        req.Name,
+		Symbol:      req.Data.Symbol,
+		StartDate:   startDate,
+		EndDate:     endDate,
+		Trades:      trades,
+		WinRate:     0.0, // Would need more complex calculation
+		TotalReturn: 0.0, // Would need more complex calculation
+		MaxDrawdown: 0.0, // Would need more complex calculation
+		SharpeRatio: 0.0, // Would need more complex calculation
+		FinalCash:   req.InitialCash,
+		Positions:   nil,
+		EquityCurve: []float64{req.InitialCash},
+		Metadata: map[string]any{
+			"initial_cash": req.InitialCash,
+			"actions":      len(actionSlice),
+			"status":       "completed",
+		},
+	}, nil
 }
 
-// sliceToChannel converts a slice to a channel
-func sliceToChannel[T any](values []T) <-chan T {
-	ch := make(chan T, len(values))
-	for _, v := range values {
-		ch <- v
+// dataToSnapshots converts OHLCVData to asset.Snapshot channel
+func dataToSnapshots(data *OHLCVData) <-chan *asset.Snapshot {
+	ch := make(chan *asset.Snapshot, len(data.Close))
+	for i := 0; i < len(data.Close); i++ {
+		ch <- &asset.Snapshot{
+			Date:   time.Unix(data.Timestamp[i], 0),
+			Open:   data.Open[i],
+			High:   data.High[i],
+			Low:    data.Low[i],
+			Close:  data.Close[i],
+			Volume: data.Volume[i],
+		}
 	}
 	close(ch)
 	return ch
@@ -124,51 +149,6 @@ func channelToSlice[T any](ch <-chan T) []T {
 		result = append(result, v)
 	}
 	return result
-}
-
-// processResults processes raw backtest results
-func (s *Service) processResults(
-	bt *backtest.Backtest[float64],
-	data *OHLCVData,
-	actions <-chan strategy.Action,
-	equityCurve []float64,
-	positions []*PositionResult,
-) *BacktestResult {
-	// This is a simplified implementation
-	// In production, you would parse the actual backtest results
-
-	startDate := time.Unix(data.Timestamp[0], 0).Format("2006-01-02")
-	endDate := time.Unix(data.Timestamp[len(data.Timestamp)-1], 0).Format("2006-01-02")
-
-	return &BacktestResult{
-		Name:        data.Symbol,
-		Symbol:      data.Symbol,
-		StartDate:   startDate,
-		EndDate:     endDate,
-		Trades:      0,
-		WinRate:     0.0,
-		TotalReturn: 0.0,
-		MaxDrawdown: 0.0,
-		SharpeRatio: 0.0,
-		FinalCash:   0.0,
-		Positions:   positions,
-		EquityCurve: equityCurve,
-		Metadata: map[string]any{
-			"initial_cash": 10000.0,
-			"status":       "completed",
-		},
-	}
-}
-
-// calculateMetrics calculates performance metrics
-func (r *BacktestResult) calculateMetrics() {
-	// Placeholder for metric calculations
-	// In production, calculate:
-	// - Total return
-	// - Max drawdown
-	// - Sharpe ratio
-	// - Win rate
-	// - etc.
 }
 
 // Summary returns a summary of the backtest results

@@ -4,10 +4,12 @@
 package indicator
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/cinar/indicator/v2/momentum"
-	"github.com/cinar/indicator/v2/trend"
+	"indicator/v2/momentum"
+	"indicator/v2/trend"
+	"indicator/v2/volume"
 )
 
 // calculateMomentum handles all momentum indicator calculations
@@ -35,20 +37,22 @@ func (s *Service) calculateStochastic(req *CalculationRequest) (*IndicatorResult
 		period = p
 	}
 
-	stoch := momentum.NewStochastic[float64]()
+	stoch := momentum.NewStochasticOscillator[float64]()
 	highs := sliceToChannel(req.Data.High)
 	lows := sliceToChannel(req.Data.Low)
 	closes := sliceToChannel(req.Data.Close)
-	kLine := stoch.Compute(highs, lows, closes)
-	values := channelToSlice(kLine)
+	kLine, dLine := stoch.Compute(highs, lows, closes)
+	kValues := channelToSlice(kLine)
+	dValues := channelToSlice(dLine)
 
-	last := lastValue(values)
+	lastK := lastValue(kValues)
+	lastD := lastValue(dValues)
 
 	var signal string
 	switch {
-	case last > 80:
+	case lastK > 80:
 		signal = "overbought"
-	case last < 20:
+	case lastK < 20:
 		signal = "oversold"
 	default:
 		signal = "neutral"
@@ -57,10 +61,11 @@ func (s *Service) calculateStochastic(req *CalculationRequest) (*IndicatorResult
 	return &IndicatorResult{
 		Type:      IndicatorMomentum,
 		Name:      "Stochastic",
-		Values:    values,
-		LastValue: last,
+		Values:    kValues,
+		LastValue: lastK,
 		Signals: map[string]float64{
-			"k_line": last,
+			"k_line": lastK,
+			"d_line": lastD,
 		},
 		Metadata: map[string]any{
 			"period": period,

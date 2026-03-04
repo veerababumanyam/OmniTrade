@@ -1,0 +1,180 @@
+/**
+ * Divider Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Variants: horizontal, vertical
+ * Features: optional label, dashed/solid, configurable spacing
+ */
+
+/* ============================================
+   BASE DIVIDER
+   ============================================ */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-medium, 500);
+}
+
+/* ============================================
+   HORIZONTAL ORIENTATION
+   ============================================ */
+.horizontal {
+  flex-direction: row;
+  width: 100%;
+  gap: var(--spacing-value, 16px);
+}
+
+.horizontal::before,
+.horizontal::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  /* Liquid Glass: subtle translucent border */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 20%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 80%,
+    transparent 100%
+  );
+}
+
+/* Dashed horizontal line */
+.dashed.horizontal::before,
+.dashed.horizontal::after {
+  height: 0;
+  border-top: 1px dashed var(--glass-border, rgba(255, 255, 255, 0.15));
+  background: transparent;
+}
+
+/* ============================================
+   VERTICAL ORIENTATION
+   ============================================ */
+.vertical {
+  flex-direction: column;
+  height: 100%;
+  align-self: stretch;
+  gap: var(--spacing-value, 8px);
+}
+
+.vertical::before,
+.vertical::after {
+  content: '';
+  flex: 1;
+  width: 1px;
+  /* Liquid Glass: subtle translucent border */
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 20%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 80%,
+    transparent 100%
+  );
+}
+
+/* Dashed vertical line */
+.dashed.vertical::before,
+.dashed.vertical::after {
+  width: 0;
+  border-left: 1px dashed var(--glass-border, rgba(255, 255, 255, 0.15));
+  background: transparent;
+}
+
+/* ============================================
+   LABEL STYLING
+   ============================================ */
+.label {
+  padding: 0 var(--space-sm, 8px);
+  white-space: nowrap;
+  /* Liquid Glass: subtle glass background for label */
+  background: var(--glass-bg, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-sm, 4px);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vertical .label {
+  padding: var(--space-xs, 4px) 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* No label - use single line */
+.noLabel.horizontal::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 20%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 80%,
+    transparent 100%
+  );
+}
+
+.noLabel.horizontal::after {
+  display: none;
+}
+
+.noLabel.dashed.horizontal::before {
+  height: 0;
+  border-top: 1px dashed var(--glass-border, rgba(255, 255, 255, 0.15));
+  background: transparent;
+}
+
+.noLabel.vertical::before {
+  content: '';
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 20%,
+    var(--glass-border, rgba(255, 255, 255, 0.1)) 80%,
+    transparent 100%
+  );
+}
+
+.noLabel.vertical::after {
+  display: none;
+}
+
+.noLabel.dashed.vertical::before {
+  width: 0;
+  border-left: 1px dashed var(--glass-border, rgba(255, 255, 255, 0.15));
+  background: transparent;
+}
+
+/* ============================================
+   SPACING VARIANTS
+   ============================================ */
+.spacingSm {
+  --spacing-value: 8px;
+}
+
+.spacingMd {
+  --spacing-value: 16px;
+}
+
+.spacingLg {
+  --spacing-value: 24px;
+}
+
+.spacingXl {
+  --spacing-value: 32px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .divider {
+    /* Ensure no animated gradients or transitions */
+    transition: none;
+  }
+}

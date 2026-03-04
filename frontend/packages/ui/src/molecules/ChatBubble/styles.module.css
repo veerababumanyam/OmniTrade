@@ -1,0 +1,413 @@
+/**
+ * ChatBubble Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Features:
+ * - Role-based styling with Liquid Glass surfaces
+ * - Thinking/typing animations for AI messages
+ * - Smooth transitions and hover effects
+ * - Markdown content support
+ */
+
+.chatBubble {
+  display: flex;
+  gap: var(--ot-spacing-3, 0.75rem);
+  max-width: 85%;
+  animation: slideIn 0.2s ease-out;
+}
+
+/* Role-based alignment */
+.chatBubble[data-role="user"] {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chatBubble[data-role="ai"],
+.chatBubble[data-role="system"] {
+  align-self: flex-start;
+}
+
+/* Grouped messages - reduced spacing and avatar visibility */
+.chatBubble[data-grouped="true"] {
+  margin-top: var(--ot-spacing-1, 0.25rem);
+}
+
+.chatBubble[data-first-in-group="false"] .avatarContainer {
+  visibility: hidden;
+  height: 0;
+}
+
+/* Avatar container */
+.avatarContainer {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.25rem;
+}
+
+/* Message content wrapper */
+.messageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ot-spacing-1, 0.25rem);
+  min-width: 0;
+}
+
+/* Timestamp above message for user */
+.chatBubble[data-role="user"] .messageWrapper {
+  align-items: flex-end;
+}
+
+.chatBubble[data-role="ai"],
+.chatBubble[data-role="system"] .messageWrapper {
+  align-items: flex-start;
+}
+
+/* Timestamp styling */
+.timestamp {
+  font-size: 0.625rem;
+  color: var(--ot-text-muted);
+  padding: 0 var(--ot-spacing-2, 0.5rem);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.chatBubble:hover .timestamp {
+  opacity: 1;
+}
+
+/* Main bubble container */
+.bubble {
+  position: relative;
+  padding: var(--ot-spacing-3, 0.75rem) var(--ot-spacing-4, 1rem);
+  border-radius: var(--ot-radius-lg, 1rem);
+  transition: all 0.15s ease;
+}
+
+/* User bubble styling */
+.chatBubble[data-role="user"] .bubble {
+  background: var(--ot-brand-gradient-primary, linear-gradient(135deg, #0070f3 0%, #8b5cf6 100%));
+  color: var(--ot-white, #ffffff);
+  border-bottom-right-radius: var(--ot-spacing-1, 0.25rem);
+}
+
+/* AI bubble styling - Liquid Glass */
+.chatBubble[data-role="ai"] .bubble {
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--ot-text-primary);
+  border-bottom-left-radius: var(--ot-spacing-1, 0.25rem);
+}
+
+.chatBubble[data-role="ai"] .bubble:hover {
+  background: var(--ot-surface-glass-hover, rgba(255, 255, 255, 0.06));
+  border-color: var(--ot-border-default, rgba(255, 255, 255, 0.1));
+}
+
+/* System bubble styling */
+.chatBubble[data-role="system"] .bubble {
+  background: var(--ot-color-info-bg, rgba(59, 130, 246, 0.15));
+  border: 1px solid var(--ot-color-info-border, rgba(59, 130, 246, 0.3));
+  color: var(--ot-color-info-text);
+  font-size: 0.8125rem;
+}
+
+/* Message content */
+.content {
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Markdown content styling */
+.content[data-markdown="true"] {
+  /* Paragraphs */
+}
+
+.content[data-markdown="true"] p {
+  margin: 0 0 var(--ot-spacing-2, 0.5rem);
+}
+
+.content[data-markdown="true"] p:last-child {
+  margin-bottom: 0;
+}
+
+.content[data-markdown="true"] code {
+  font-family: 'Fira Code', 'SF Mono', monospace;
+  font-size: 0.8125em;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--ot-radius-sm, 0.25rem);
+}
+
+.content[data-markdown="true"] pre {
+  margin: var(--ot-spacing-3, 0.75rem) 0;
+  padding: var(--ot-spacing-3, 0.75rem);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--ot-radius-md, 0.5rem);
+  overflow-x: auto;
+}
+
+.content[data-markdown="true"] pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.content[data-markdown="true"] ul,
+.content[data-markdown="true"] ol {
+  margin: var(--ot-spacing-2, 0.5rem) 0;
+  padding-left: var(--ot-spacing-5, 1.25rem);
+}
+
+.content[data-markdown="true"] li {
+  margin: var(--ot-spacing-1, 0.25rem) 0;
+}
+
+.content[data-markdown="true"] a {
+  color: var(--ot-text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.content[data-markdown="true"] a:hover {
+  color: var(--ot-text-link-hover);
+}
+
+.content[data-markdown="true"] blockquote {
+  margin: var(--ot-spacing-3, 0.75rem) 0;
+  padding-left: var(--ot-spacing-3, 0.75rem);
+  border-left: 2px solid var(--ot-border-emphasis);
+  color: var(--ot-text-secondary);
+}
+
+/* User content overrides */
+.chatBubble[data-role="user"] .content[data-markdown="true"] code {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.chatBubble[data-role="user"] .content[data-markdown="true"] pre {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chatBubble[data-role="user"] .content[data-markdown="true"] a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Status indicator */
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-spacing-2, 0.5rem);
+  padding: var(--ot-spacing-1, 0.25rem) 0;
+}
+
+/* Typing animation */
+.typingIndicator {
+  display: flex;
+  gap: 3px;
+  padding: var(--ot-spacing-1, 0.25rem) 0;
+}
+
+.typingDot {
+  width: 6px;
+  height: 6px;
+  background: var(--ot-text-muted);
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typingDot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typingDot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.typingDot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Thinking animation for AI */
+.thinkingAnimation {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-spacing-2, 0.5rem);
+  color: var(--ot-text-muted);
+  font-size: 0.8125rem;
+}
+
+.thinkingPulse {
+  width: 8px;
+  height: 8px;
+  background: var(--ot-brand-accent-500);
+  border-radius: 50%;
+  animation: thinkingPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes thinkingPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+/* Action buttons container */
+.actions {
+  display: flex;
+  gap: var(--ot-spacing-1, 0.25rem);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  margin-top: var(--ot-spacing-1, 0.25rem);
+}
+
+.chatBubble:hover .actions {
+  opacity: 1;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--ot-surface-interactive);
+  border: 1px solid var(--ot-border-subtle);
+  border-radius: var(--ot-radius-sm, 0.25rem);
+  color: var(--ot-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionButton:hover {
+  background: var(--ot-surface-interactive-hover);
+  color: var(--ot-text-primary);
+  border-color: var(--ot-border-default);
+}
+
+.actionButton:active {
+  background: var(--ot-surface-interactive-active);
+}
+
+.actionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid var(--ot-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Error state */
+.chatBubble[data-status="error"] .bubble {
+  border-color: var(--ot-color-error-border);
+  background: var(--ot-color-error-bg-subtle);
+}
+
+.errorText {
+  color: var(--ot-color-error-text);
+  font-size: 0.8125rem;
+  margin-top: var(--ot-spacing-1, 0.25rem);
+}
+
+/* Slide-in animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Avatar styling */
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--ot-radius-full, 9999px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.avatar[data-variant="default"] {
+  background: var(--ot-surface-secondary);
+  color: var(--ot-text-secondary);
+}
+
+.avatar[data-variant="accent"] {
+  background: var(--ot-brand-gradient-primary);
+  color: var(--ot-white);
+}
+
+.avatar[data-variant="success"] {
+  background: var(--ot-trading-bullish-bg);
+  color: var(--ot-trading-bullish);
+}
+
+.avatar[data-variant="warning"] {
+  background: var(--ot-color-warning-bg);
+  color: var(--ot-color-warning-icon);
+}
+
+.avatar[data-variant="error"] {
+  background: var(--ot-color-error-bg);
+  color: var(--ot-color-error-icon);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* System icon placeholder */
+.systemIcon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ot-color-info-bg);
+  color: var(--ot-color-info-icon);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .chatBubble {
+    max-width: 90%;
+  }
+
+  .bubble {
+    padding: var(--ot-spacing-2, 0.5rem) var(--ot-spacing-3, 0.75rem);
+  }
+
+  .actions {
+    opacity: 1;
+  }
+}

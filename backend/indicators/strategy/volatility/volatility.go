@@ -9,7 +9,7 @@
 //
 //	Copyright (c) 2021-2026 Onur Cinar.
 //	The source code is provided under GNU AGPLv3 License.
-//	https://github.com/cinar/indicator
+//	https://indicator
 //
 // # Disclaimer
 //
@@ -19,9 +19,9 @@
 package volatility
 
 import (
-	"github.com/cinar/indicator/v2/strategy"
-	"github.com/cinar/indicator/v2/trend"
-	"github.com/cinar/indicator/v2/volatility"
+	"indicator/v2/strategy"
+	"indicator/v2/trend"
+	"indicator/v2/volatility"
 )
 
 // AllStrategies returns a slice containing references to all available volatility strategies.

@@ -56,3 +56,7 @@ backend/debug
 .gemini/
 .gemini_data/
 .gemini_logs/
+
+# MCP
+mcpLocal.md
+docs\mcpLocal.md

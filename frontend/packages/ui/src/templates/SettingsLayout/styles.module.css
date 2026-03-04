@@ -1,0 +1,301 @@
+/**
+ * SettingsLayout Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Settings page layout with navigation sidebar
+ */
+
+/* ============================================
+   ROOT LAYOUT
+   ============================================ */
+
+.settingsLayout {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ot-surface-base);
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+
+.sidebar {
+  width: var(--ot-settings-sidebar-width, 280px);
+  flex-shrink: 0;
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg));
+  border-right: 1px solid var(--ot-border-subtle);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ============================================
+   SIDEBAR NAVIGATION
+   ============================================ */
+
+.sidebarNav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ot-space-4);
+}
+
+.sidebarGroup {
+  margin-bottom: var(--ot-space-6);
+}
+
+.sidebarGroupTitle {
+  font-size: var(--ot-font-size-xs);
+  font-weight: var(--ot-font-weight-semibold);
+  color: var(--ot-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--ot-letter-spacing-wide);
+  padding: var(--ot-space-2) var(--ot-space-3);
+  margin-bottom: var(--ot-space-1);
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-3);
+  width: 100%;
+  padding: var(--ot-space-3);
+  border: none;
+  background: transparent;
+  border-radius: var(--ot-radius-md);
+  color: var(--ot-text-secondary);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-gentle),
+    color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.sidebarItem:hover {
+  background: var(--ot-surface-interactive-hover);
+  color: var(--ot-text-primary);
+}
+
+.sidebarItemActive {
+  background: var(--ot-surface-interactive-active);
+  color: var(--ot-text-brand);
+}
+
+.sidebarItemDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.sidebarItemIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.sidebarItemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebarItemLabel {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarItemDescription {
+  display: block;
+  font-size: var(--ot-font-size-xs);
+  color: var(--ot-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: var(--ot-space-1);
+}
+
+.sidebarItemBadge {
+  flex-shrink: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--ot-space-2);
+  border-radius: var(--ot-radius-full);
+  background: var(--ot-brand-primary-500);
+  color: var(--ot-color-white);
+  font-size: var(--ot-font-size-xs);
+  font-weight: var(--ot-font-weight-semibold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.header {
+  padding: var(--ot-space-6) var(--ot-space-8);
+  border-bottom: 1px solid var(--ot-border-subtle);
+  background: var(--ot-surface-elevated);
+  backdrop-filter: blur(var(--ot-glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-sm));
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-2);
+  margin-bottom: var(--ot-space-4);
+  font-size: var(--ot-font-size-sm);
+}
+
+.breadcrumbItem {
+  color: var(--ot-text-secondary);
+  text-decoration: none;
+  transition: color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.breadcrumbItem:hover {
+  color: var(--ot-text-primary);
+}
+
+.breadcrumbItemActive {
+  color: var(--ot-text-primary);
+  font-weight: var(--ot-font-weight-medium);
+}
+
+.breadcrumbSeparator {
+  color: var(--ot-text-muted);
+}
+
+/* Back button */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ot-space-2);
+  padding: var(--ot-space-2) var(--ot-space-3);
+  margin-bottom: var(--ot-space-4);
+  border: none;
+  background: transparent;
+  border-radius: var(--ot-radius-md);
+  color: var(--ot-text-secondary);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-gentle),
+    color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.backButton:hover {
+  background: var(--ot-surface-interactive-hover);
+  color: var(--ot-text-primary);
+}
+
+.backButtonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Page title */
+.pageTitle {
+  font-size: var(--ot-font-size-2xl);
+  font-weight: var(--ot-font-weight-bold);
+  color: var(--ot-text-primary);
+  margin: 0 0 var(--ot-space-2);
+}
+
+.pageDescription {
+  font-size: var(--ot-font-size-md);
+  color: var(--ot-text-secondary);
+  margin: 0;
+  max-width: 600px;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+
+.content {
+  flex: 1;
+  padding: var(--ot-space-8);
+  overflow-y: auto;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 767px) {
+  .settingsLayout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--ot-border-subtle);
+    max-height: 50vh;
+  }
+
+  .sidebarNav {
+    padding: var(--ot-space-3);
+  }
+
+  .header {
+    padding: var(--ot-space-4) var(--ot-space-4);
+  }
+
+  .content {
+    padding: var(--ot-space-4);
+  }
+
+  .pageTitle {
+    font-size: var(--ot-font-size-xl);
+  }
+
+  .pageDescription {
+    font-size: var(--ot-font-size-sm);
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content {
+  animation: fadeIn var(--ot-duration-normal) var(--ot-spring-gentle);
+}

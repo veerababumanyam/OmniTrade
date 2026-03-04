@@ -8,11 +8,11 @@
 [![React Version](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
 [![Genkit](https://img.shields.io/badge/Google-Genkit_1.4-4285F4?style=for-the-badge&logo=google)](https://firebase.google.com/docs/genkit)
 [![Quality](https://img.shields.io/badge/Quality-90%25+-success?style=for-the-badge)](./.specswarm/quality-standards.md)
-[![Design](https://img.shields.io/badge/Design-Liquid_Glass-FF69B4?style=for-the-badge)](./docs/08_UI_UX_Design_Standards_2026.md)
+[![Design](https://img.shields.io/badge/Design-GenUI_%26_Spatial-FF69B4?style=for-the-badge)](./docs/frontend/08_UI_UX_Design_Standards_2026.md)
 
-**OmniTrade** is a next-generation multi-agent AI quantitative trading and research platform. Built with a high-integrity **Three-Plane Architecture** and a premium **Liquid Glass** aesthetic, it empowers traders with autonomous intelligence and human-in-the-loop safeguards.
+**OmniTrade** is a next-generation multi-agent AI quantitative trading and research platform. Built with a high-integrity **Three-Plane Architecture** and a premium **Generative & Spatial** interface, it empowers traders with autonomous intelligence and human-in-the-loop safeguards.
 
-[Explore Documentation](./docs) • [Architecture](./docs/AI_Trading_System_Architecture.md) • [Features](#-key-features) • [Getting Started](#-getting-started)
+[Explore Documentation](./docs) • [Architecture](./docs/architecture/AI_Trading_System_Architecture.md) • [Features](#-key-features) • [Getting Started](#-getting-started)
 
 </div>
 
@@ -22,8 +22,8 @@
 
 OmniTrade represents the convergence of specialized AI intelligence and elite financial research. By orchestrating a **Swarm of 50+ Specialized Agents**, the platform decomposes complex market analysis into verifiable, collaborative reasoning steps, achieving unprecedented token efficiency and decision accuracy.
 
-### 🌊 Liquid Glass Experience
-Our UI follows the **2026 "Liquid Glass" Design System**. It’s not just transparent; it’s physics-based. Surfaces simulate refraction, lensing, and dynamic specularity, creating a workspace that feel alive and professional.
+### 🌌 Generative & Spatial Experience
+Our UI follows the **2026 Generative, Spatial, and Neuro-Adaptive Standards**. It’s not just transparent; it’s physics-based. Surfaces simulate refraction, lensing, and dynamic specularity, while the GenUI (Generative UI) assembles components in real-time based on your specific trading intent.
 
 ---
 
@@ -51,7 +51,7 @@ OmniTrade is engineered for security and precision:
 - **Internal Agent Plugin System**: Google ADK-based plugin architecture with hooks, tools registry, and lifecycle management
 - **25+ Built-in Tools**: Market data, sentiment analysis, technical indicators, risk assessment, and portfolio management
 - **40+ Hook Events**: Complete observability into agent lifecycles with circuit breaker patterns
-- **React Management UI**: Liquid Glass dashboard for plugin, tool, and hook management
+- **React Management UI**: Generative Dashboard for plugin, tool, and hook management.
 
 ### Internationalization
 - **Full i18n Support**: Native English (LTR) and Arabic (RTL) capabilities.
@@ -64,7 +64,7 @@ OmniTrade is engineered for security and precision:
 | :--- | :--- |
 | **Foundation** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK 1.4+, Google ADK Go |
 | **Intelligence** | Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
-| **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit, Liquid Glass Design System |
+| **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit, GenUI & Spatial Standards |
 | **Plugin Systems** | Claude Code Plugin, Internal Agent Plugin System, MCP Servers (5) |
 | **Protocols** | A2A (Agent-to-Agent), MCP (Model Context), ACP (Agent Client) |
 | **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs, Circuit Breaker Patterns |
@@ -182,11 +182,14 @@ OmniTrade utilizes over **50+ specialized trading agents** categorized into expe
 ## 📖 Documentation Index
 
 ### Product Documentation
-- [Product Requirements (PRD)](./docs/PRD_OmniTrade.md)
-- [Agent Intelligence System](./docs/02_Agent_Intelligence_System.md)
-- [Liquid Glass Design Specs](./docs/08_UI_UX_Design_Standards_2026.md)
-- [API Specifications](./docs/04_API_Specification.md)
-- [Security & HITL Protocol](./docs/05_Security_HITL_Protocol.md)
+- [Product Requirements (PRD)](./docs/reference/PRD_OmniTrade.md)
+- [Agent Intelligence System](./docs/agents/02_Agent_Intelligence_System.md)
+- [Liquid Glass Design Specs](./docs/frontend/08_UI_UX_Design_Standards_2026.md)
+- [API Specifications](./docs/plans/04_API_Specification.md)
+- [Security & HITL Protocol](./docs/plans/05_Security_HITL_Protocol.md)
+- [RAG Architecture](./docs/architecture/01_RAG_Architecture_Design.md)
+- [Data Ingestion Strategy](./docs/data/03_Data_Ingestion_Strategy.md)
+- [Infrastructure Deployment](./docs/plans/06_Infrastructure_Deployment.md)
 
 ### Claude Code Plugin Documentation
 - [Plugin Architecture](./docs/plugins/architecture.md) - System design and component overview
@@ -247,7 +250,7 @@ Google ADK-based plugin architecture for the application's AI agents:
 | **Plugins System** | 5 | Lifecycle management, hot reload, circuit breakers |
 | **Tools Registry** | 12 | 25+ tools across 8 categories |
 | **Google ADK** | 6 | Agent creation, tool wrapping, flow definitions |
-| **React UI** | 12 | Liquid Glass dashboard for management |
+| **React UI** | 12 | Generative dashboard for management |
 
 **Location:** `backend/internal/agent/`, `frontend/src/plugins/`
 
@@ -257,16 +260,17 @@ Google ADK-based plugin architecture for the application's AI agents:
 
 ## 🎨 Design System
 
-OmniTrade follows the **2026 "Liquid Glass" Design System**:
+OmniTrade follows the authoritative **2026 Standard for Generative, Spatial, and Neuro-Adaptive Systems**:
 
-- **Generative UI (GenUI)**: Intent-driven assembly with real-time component generation
-- **Photon-Engine Rendering**: Real-time refraction, sub-surface scattering, refractive indexing
-- **Z-Axis Spatial Logic**: Volume-based hierarchy measured in virtual millimeters
-- **Neuro-Adaptive Interfaces**: Cognitive load balancing with foveated UI and hesitation logic
-- **WCAG 3.0 & APCA**: Advanced Perceptual Contrast Algorithm for true visual equity
-- **Sustainable UI**: Energy-efficient rendering with digital carbon budget tracking
+1.  **Generative UI (GenUI)**: Intent-driven assembly. The "Zero-State Void" starts with an Omni-input bar, generating components only when needed.
+2.  **Visual System (Photon Physics)**: Ray-traced shadows, sub-surface scattering (SSS) for "organic" interactive elements, and refractive indexing for depth.
+3.  **Neuro-Adaptive Interfaces**: Real-time calibration to cognitive load. Includes foveated UI (eye-tracking optimization) and hesitation-triggered task decomposition.
+4.  **Accessibility (WCAG 3.0 & APCA)**: Utilizing the Advanced Perceptual Contrast Algorithm (Lc 75/60) and HRTF-compliant Spatial Audio signatures.
+5.  **Quantum Performance**: < 40ms INP target with predictive hydration (Local-First CRDTs) and Edge-Assembly for zero-latency interactions.
+6.  **Sustainable UI**: Energy-efficient sub-pixel culling and "Eco-Fidelity" tracking for carbon-conscious rendering.
+7.  **Trust & Transparency**: C2PA Metadata Badging ($\diamondsuit$) for all AI-generated components and an Emotional Transparency Shield.
 
-**Full Specification:** [docs/08_UI_UX_Design_Standards_2026.md](./docs/08_UI_UX_Design_Standards_2026.md)
+**Full Specification:** [docs/frontend/08_UI_UX_Design_Standards_2026.md](./docs/frontend/08_UI_UX_Design_Standards_2026.md)
 
 ---
 
@@ -296,3 +300,17 @@ Built with ❤️ by the OmniTrade Core Team
 **Built With:**
 - Go 1.26+ | React 19.2 | Google Genkit | Google ADK | PostgreSQL + pgvector | Redis
 - Claude Code | MCP (Model Context Protocol) | Liquid Glass Design System
+
+LiteLLM RAG:
+{
+  "mcpServers": {
+    "omnitrade-gateway": {
+      "command": "npx",
+      "args": [
+        "litellm-agent-mcp",
+        "--base_url", "http://localhost:4000",
+        "--api_key", "sk-omnitrade-master-key"
+      ]
+    }
+  }
+}

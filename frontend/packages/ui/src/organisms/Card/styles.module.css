@@ -1,0 +1,267 @@
+/**
+ * * Card Component Styles
+ * OmniTrade UI Library - Liquid Glass Design System
+ *
+ * Organism-level compound card component with refractive volume effect,
+ * hover elevation, and selectable/clickable state.
+ */
+
+/* ============================================
+   BASE CARD
+   Liquid Glass with refractive volume
+   ============================================ */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ot-radius-xl, 16px);
+  overflow: hidden;
+  transition:
+    transform var(--ot-duration-normal, 200ms) var(--ot-spring-default, cubic-bezier(0.34, 1.56, 0.64, 1)),
+    box-shadow var(--ot-duration-normal, 200ms) var(--ot-spring-default),
+    border-color var(--ot-duration-normal, 200ms) var(--ot-spring-default),
+    background-color var(--ot-duration-normal, 200ms) var(--ot-spring-default);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   VARIANTS
+   ============================================ */
+
+/* Default - Subtle glass surface */
+.default {
+  background: var(--ot-glass-surface-1, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(var(--ot-glass-blur-md, 16px));
+}
+
+/* Elevated - More depth with shadow */
+.elevated {
+  background: var(--ot-glass-surface-2, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Outlined - Emphasized border */
+.outlined {
+  background: var(--ot-glass-surface-0, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.15));
+  backdrop-filter: blur(var(--ot-glass-blur-sm, 8px));
+}
+
+/* Glass - Full glassmorphism effect */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(var(--ot-glass-blur-xl, 32px));
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   INTERACTIVE STATES
+   ============================================ */
+.hoverable {
+  cursor: pointer;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover,
+.hoverable:hover {
+  transform: translateY(-2px);
+  border-color: var(--ot-glass-edge-glow, rgba(0, 102, 255, 0.15));
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.clickable:hover {
+  border-color: var(--ot-color-photon-500, #0066ff);
+}
+
+.clickable:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   PADDING STATES
+   ============================================ */
+.noPadding {
+  --card-padding: 0;
+}
+
+.noPadding .header,
+.noPadding .body,
+.noPadding .footer {
+  padding: 0;
+}
+
+/* ============================================
+   SIZES
+   ============================================ */
+.sizeSm {
+  --card-padding: var(--ot-space-3, 12px);
+  --card-radius: var(--ot-radius-lg, 12px);
+}
+
+.sizeMd {
+  --card-padding: var(--ot-space-4, 16px);
+  --card-radius: var(--ot-radius-xl, 16px);
+}
+
+.sizeLg {
+  --card-padding: var(--ot-space-6, 24px);
+  --card-radius: var(--ot-radius-2xl, 20px);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ot-space-3, 12px);
+  padding: var(--card-padding);
+  padding-bottom: 0;
+  z-index: 1;
+}
+
+.headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-lg, 18px);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  line-height: var(--ot-line-height-snug, 1.35);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-regular, 400);
+  line-height: var(--ot-line-height-normal, 1.5);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.72));
+  margin: var(--ot-space-1, 4px) 0 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-2, 8px);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   BODY
+   ============================================ */
+.body {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: var(--card-padding);
+  z-index: 1;
+}
+
+.bodyContent {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-md, 16px);
+  font-weight: var(--ot-font-weight-regular, 400);
+  line-height: var(--ot-line-height-relaxed, 1.65);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.72));
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-3, 12px);
+  padding: var(--card-padding);
+  padding-top: 0;
+  z-index: 1;
+}
+
+.footerAlignLeft {
+  justify-content: flex-start;
+}
+
+.footerAlignCenter {
+  justify-content: center;
+}
+
+.footerAlignRight {
+  justify-content: flex-end;
+}
+
+.footerAlignBetween {
+  justify-content: space-between;
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+.divider {
+  height: 1px;
+  background: var(--ot-glass-edge-light, rgba(255, 255, 255, 0.08));
+  margin: 0 var(--card-padding);
+}
+
+/* ============================================
+   FOCUS STATE
+   ============================================ */
+.card:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-color-photon-500));
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .clickable:hover,
+  .hoverable:hover {
+    transform: none;
+  }
+}

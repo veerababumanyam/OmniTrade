@@ -5,7 +5,6 @@ package categories
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/v13478/omnitrade/backend/internal/agent/tools"

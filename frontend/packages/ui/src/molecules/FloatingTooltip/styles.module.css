@@ -1,0 +1,325 @@
+/**
+ * FloatingTooltip Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Features:
+ * - Position variants (top, bottom, left, right)
+ * - Animated show/hide with delays
+ * - Arrow pointer
+ * - Liquid glass styling
+ */
+
+/* ========================================
+   Root / Trigger Wrapper
+   ======================================== */
+
+.tooltipTrigger {
+  display: inline-flex;
+  cursor: pointer;
+  outline: none;
+}
+
+.tooltipTrigger:disabled {
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Tooltip Content (Portal Container)
+   ======================================== */
+
+.tooltipContent {
+  z-index: var(--floating-tooltip-z-index, var(--ot-z-tooltip, 50));
+  max-width: var(--floating-tooltip-max-width, 280px);
+  padding: var(--ot-space-2, 0.5rem) var(--ot-space-3, 0.75rem);
+  font-family: var(--ot-font-sans, inherit);
+  font-size: var(--ot-font-size-sm, 0.875rem);
+  font-weight: var(--ot-font-weight-normal, 400);
+  line-height: var(--ot-line-height-snug, 1.375);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  text-align: left;
+  word-wrap: break-word;
+  background: var(--ot-glass-surface-3, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.12));
+  border-radius: var(--ot-radius-md, 0.5rem);
+  box-shadow: var(--ot-shadow-lg, 0 10px 25px -5px rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Pointer events when sticky */
+.tooltipSticky {
+  pointer-events: auto;
+}
+
+/* ========================================
+   Position Variants
+   ======================================== */
+
+/* Top position */
+.tooltipContent[data-position="top"] {
+  margin-bottom: var(--floating-tooltip-offset, 8px);
+}
+
+/* Bottom position */
+.tooltipContent[data-position="bottom"] {
+  margin-top: var(--floating-tooltip-offset, 8px);
+}
+
+/* Left position */
+.tooltipContent[data-position="left"] {
+  margin-right: var(--floating-tooltip-offset, 8px);
+}
+
+/* Right position */
+.tooltipContent[data-position="right"] {
+  margin-left: var(--floating-tooltip-offset, 8px);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+.tooltipContent[data-state="visible"] {
+  animation: tooltipFadeIn var(--ot-duration-fast, 150ms) var(--ot-ease-out, ease-out);
+}
+
+.tooltipContent[data-state="hidden"] {
+  animation: tooltipFadeOut var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Top animation */
+.tooltipContent[data-position="top"][data-state="visible"] {
+  animation: tooltipSlideInTop var(--ot-duration-fast, 150ms) var(--ot-ease-out, ease-out);
+}
+
+.tooltipContent[data-position="top"][data-state="hidden"] {
+  animation: tooltipSlideOutTop var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Bottom animation */
+.tooltipContent[data-position="bottom"][data-state="visible"] {
+  animation: tooltipSlideInBottom var(--ot-duration-fast, 150ms) var(--ot-ease-out, ease-out);
+}
+
+.tooltipContent[data-position="bottom"][data-state="hidden"] {
+  animation: tooltipSlideOutBottom var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Left animation */
+.tooltipContent[data-position="left"][data-state="visible"] {
+  animation: tooltipSlideInLeft var(--ot-duration-fast, 150ms) var(--ot-ease-out, ease-out);
+}
+
+.tooltipContent[data-position="left"][data-state="hidden"] {
+  animation: tooltipSlideOutLeft var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Right animation */
+.tooltipContent[data-position="right"][data-state="visible"] {
+  animation: tooltipSlideInRight var(--ot-duration-fast, 150ms) var(--ot-ease-out, ease-out);
+}
+
+.tooltipContent[data-position="right"][data-state="hidden"] {
+  animation: tooltipSlideOutRight var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tooltipFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes tooltipSlideInTop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltipSlideOutTop {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes tooltipSlideInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltipSlideOutBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes tooltipSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tooltipSlideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(4px);
+  }
+}
+
+@keyframes tooltipSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes tooltipSlideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+/* ========================================
+   Arrow
+   ======================================== */
+
+.tooltipArrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--ot-glass-surface-3, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.12));
+  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Arrow position adjustments */
+.tooltipContent[data-position="top"] .tooltipArrow {
+  bottom: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-top: none;
+  border-left: none;
+}
+
+.tooltipContent[data-position="bottom"] .tooltipArrow {
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.tooltipContent[data-position="left"] .tooltipArrow {
+  right: -5px;
+  top: 50%;
+  margin-top: -5px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.tooltipContent[data-position="right"] .tooltipArrow {
+  left: -5px;
+  top: 50%;
+  margin-top: -5px;
+  border-right: none;
+  border-top: none;
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltipContent {
+    animation: none !important;
+  }
+
+  .tooltipContent[data-state="visible"] {
+    opacity: 1;
+  }
+
+  .tooltipContent[data-state="hidden"] {
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   Dark Mode Adjustments
+   ======================================== */
+
+[data-theme="dark"] .tooltipContent {
+  background: var(--ot-glass-surface-4, rgba(0, 0, 0, 0.85));
+}
+
+[data-theme="dark"] .tooltipArrow {
+  background: var(--ot-glass-surface-4, rgba(0, 0, 0, 0.85));
+}
+
+/* ========================================
+   Light Mode Adjustments
+   ======================================== */
+
+[data-theme="light"] .tooltipContent {
+  color: var(--ot-text-primary-light, rgba(0, 0, 0, 0.9));
+  background: var(--ot-surface-elevated-light, rgba(255, 255, 255, 0.95));
+  border-color: var(--ot-border-subtle-light, rgba(0, 0, 0, 0.1));
+}
+
+[data-theme="light"] .tooltipArrow {
+  background: var(--ot-surface-elevated-light, rgba(255, 255, 255, 0.95));
+  border-color: var(--ot-border-subtle-light, rgba(0, 0, 0, 0.1));
+}

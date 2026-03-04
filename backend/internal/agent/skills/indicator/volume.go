@@ -4,9 +4,10 @@
 package indicator
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/cinar/indicator/v2/volume"
+	"indicator/v2/volume"
 )
 
 // calculateVolume handles all volume indicator calculations
@@ -154,11 +155,9 @@ func (s *Service) calculateCMF(req *CalculationRequest) (*IndicatorResult, error
 // calculateVWAP calculates Volume Weighted Average Price
 func (s *Service) calculateVWAP(req *CalculationRequest) (*IndicatorResult, error) {
 	vwap := volume.NewVwap[float64]()
-	highs := sliceToChannel(req.Data.High)
-	lows := sliceToChannel(req.Data.Low)
 	closes := sliceToChannel(req.Data.Close)
 	volumes := sliceToChannel(req.Data.Volume)
-	output := vwap.Compute(highs, lows, closes, volumes)
+	output := vwap.Compute(closes, volumes)
 	values := channelToSlice(output)
 
 	last := lastValue(values)

@@ -9,7 +9,7 @@
 //
 //	Copyright (c) 2021-2026 Onur Cinar.
 //	The source code is provided under GNU AGPLv3 License.
-//	https://github.com/cinar/indicator
+//	https://indicator
 //
 // # Disclaimer
 //
@@ -19,8 +19,8 @@
 package strategy
 
 import (
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"indicator/v2/asset"
+	"indicator/v2/helper"
 )
 
 // Strategy defines a shared interface for trading strategies.

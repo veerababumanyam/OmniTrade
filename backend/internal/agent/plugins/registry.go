@@ -1,7 +1,6 @@
 package plugins
 
 import (
-	"context"
 	"fmt"
 	"sort"
 	"sync"

@@ -1,8 +1,8 @@
 package momentum
 
 import (
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/trend"
+	"indicator/v2/helper"
+	"indicator/v2/trend"
 )
 
 // PringsSpecialK implements Martin Pring's Special K momentum indicator.

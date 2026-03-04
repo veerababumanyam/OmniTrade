@@ -5,12 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/v13478/omnitrade/backend/internal/agent/skills/indicator"
 	"github.com/v13478/omnitrade/backend/internal/agent/tools"
 )
-
-// Global indicator service
-var indicatorService = indicator.NewService()
 
 func init() {
 	// Register technical analysis tools

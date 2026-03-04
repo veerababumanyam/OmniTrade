@@ -4,9 +4,10 @@
 package indicator
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/cinar/indicator/v2/volatility"
+	"indicator/v2/volatility"
 )
 
 // calculateVolatility handles all volatility indicator calculations
@@ -88,9 +89,8 @@ func (s *Service) calculateDonchianChannel(req *CalculationRequest) (*IndicatorR
 	}
 
 	dc := volatility.NewDonchianChannel[float64]()
-	highs := sliceToChannel(req.Data.High)
-	lows := sliceToChannel(req.Data.Low)
-	upper, lower, middle := dc.Compute(highs, lows)
+	closes := sliceToChannel(req.Data.Close)
+	upper, lower, middle := dc.Compute(closes)
 
 	upperValues := channelToSlice(upper)
 	lowerValues := channelToSlice(lower)

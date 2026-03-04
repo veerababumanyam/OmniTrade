@@ -1,0 +1,446 @@
+/**
+ * SearchBar Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Composition: Input + Icon + Button
+ * Features: Debounced input, suggestions dropdown, keyboard navigation
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CONTAINER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.searchBar {
+  position: relative;
+  width: 100%;
+  font-family: var(--ot-font-sans);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INPUT WRAPPER (Glass Container)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--searchbar-height, var(--ot-input-height-md));
+  background: var(--ot-glass-surface-1);
+  backdrop-filter: blur(var(--ot-glass-blur-md, 16px));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md, 16px));
+  border: 1px solid var(--ot-input-border-color, var(--ot-glass-edge-dark));
+  border-radius: var(--ot-radius-lg, 0.75rem);
+  transition:
+    border-color var(--ot-duration-normal, 200ms) var(--ot-spring-default),
+    box-shadow var(--ot-duration-normal, 200ms) var(--ot-spring-default),
+    background var(--ot-duration-normal, 200ms) var(--ot-spring-default);
+  overflow: hidden;
+}
+
+.inputWrapper:hover:not(.disabled) {
+  border-color: var(--ot-input-border-color-hover);
+  background: var(--ot-glass-surface-2);
+}
+
+.inputWrapper.focused {
+  border-color: var(--ot-input-border-color-focus);
+  box-shadow:
+    0 0 0 3px rgba(0, 102, 255, 0.15),
+    var(--ot-glow-photon);
+  background: var(--ot-glass-surface-2);
+}
+
+.inputWrapper.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--ot-glass-surface-0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SEARCH ICON (Left)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.searchIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 100%;
+  color: var(--ot-text-tertiary);
+  pointer-events: none;
+  transition: color var(--ot-duration-fast, 100ms);
+}
+
+.inputWrapper.focused .searchIcon {
+  color: var(--ot-color-photon-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INPUT FIELD
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.input {
+  flex: 1;
+  height: 100%;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--searchbar-font-size, var(--ot-font-size-md));
+  font-weight: var(--ot-font-weight-regular);
+  color: var(--ot-text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--ot-text-tertiary);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACTIONS (Right Side)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-1, 0.25rem);
+  padding-right: var(--ot-space-2, 0.5rem);
+  height: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CLEAR BUTTON
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.clearButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--ot-text-tertiary);
+  background: var(--ot-glass-surface-2);
+  border: none;
+  border-radius: var(--ot-radius-full, 9999px);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--ot-duration-fast, 100ms),
+    background var(--ot-duration-fast, 100ms),
+    color var(--ot-duration-fast, 100ms);
+}
+
+.clearButton.visible {
+  opacity: 1;
+}
+
+.clearButton:hover {
+  background: var(--ot-interactive-hover);
+  color: var(--ot-text-secondary);
+}
+
+.clearButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LOADING SPINNER
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ot-color-photon-500);
+}
+
+.spinnerIcon {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SEARCH BUTTON
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ot-space-2, 0.5rem);
+  height: calc(var(--searchbar-height, var(--ot-input-height-md)) - 0.5rem);
+  padding: 0 var(--ot-space-4, 1rem);
+  font-family: inherit;
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  color: var(--ot-text-inverse);
+  background: linear-gradient(135deg, var(--ot-color-photon-500), var(--ot-color-photon-600));
+  border: none;
+  border-radius: var(--ot-radius-md, 0.5rem);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast, 100ms),
+    box-shadow var(--ot-duration-fast, 100ms),
+    transform var(--ot-duration-instant, 50ms);
+}
+
+.searchButton:hover {
+  background: linear-gradient(135deg, var(--ot-color-photon-400), var(--ot-color-photon-500));
+  box-shadow: var(--ot-glow-photon);
+}
+
+.searchButton:active {
+  transform: scale(0.98);
+}
+
+.searchButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+.searchButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SUGGESTIONS DROPDOWN
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.suggestionsDropdown {
+  position: absolute;
+  top: calc(100% + var(--ot-space-2, 0.5rem));
+  left: 0;
+  right: 0;
+  z-index: var(--ot-z-dropdown, 100);
+  min-width: 100%;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--ot-glass-surface-3);
+  backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  border: 1px solid var(--ot-glass-edge-light);
+  border-radius: var(--ot-radius-lg, 0.75rem);
+  box-shadow: var(--ot-shadow-xl);
+  animation: slideDown var(--ot-duration-normal, 200ms) var(--ot-spring-gentle);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestionsList {
+  list-style: none;
+  margin: 0;
+  padding: var(--ot-space-1, 0.25rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SUGGESTION ITEM
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-3, 0.75rem);
+  width: 100%;
+  padding: var(--ot-space-3, 0.75rem) var(--ot-space-4, 1rem);
+  color: var(--ot-text-primary);
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-md, 0.5rem);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background var(--ot-duration-fast, 100ms),
+    color var(--ot-duration-fast, 100ms);
+}
+
+.suggestionItem:hover,
+.suggestionItem.highlighted {
+  background: var(--ot-interactive-hover);
+}
+
+.suggestionItem.highlighted {
+  background: var(--ot-glass-surface-4);
+}
+
+.suggestionItem:focus-visible {
+  outline: none;
+  background: var(--ot-interactive-hover);
+  box-shadow: inset 0 0 0 2px var(--ot-color-photon-500);
+}
+
+.suggestionIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--ot-text-tertiary);
+  background: var(--ot-glass-surface-2);
+  border-radius: var(--ot-radius-md, 0.5rem);
+}
+
+.suggestionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestionLabel {
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  color: var(--ot-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestionDescription {
+  font-size: var(--ot-font-size-xs);
+  color: var(--ot-text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: var(--ot-space-1, 0.25rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SUGGESTION GROUP
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.suggestionGroup {
+  padding-top: var(--ot-space-2, 0.5rem);
+}
+
+.suggestionGroup:not(:first-child) {
+  border-top: 1px solid var(--ot-glass-edge-dark);
+  margin-top: var(--ot-space-2, 0.5rem);
+}
+
+.suggestionGroupHeader {
+  padding: var(--ot-space-2, 0.5rem) var(--ot-space-4, 1rem);
+  font-size: var(--ot-font-size-xs);
+  font-weight: var(--ot-font-weight-semibold);
+  color: var(--ot-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ot-space-8, 2rem);
+  color: var(--ot-text-tertiary);
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 1.5rem;
+  margin-bottom: var(--ot-space-2, 0.5rem);
+  opacity: 0.5;
+}
+
+.emptyText {
+  font-size: var(--ot-font-size-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SIZE VARIANTS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.sizeSm {
+  --searchbar-height: var(--ot-input-height-sm);
+  --searchbar-font-size: var(--ot-font-size-sm);
+  --searchbar-padding-x: var(--ot-input-padding-x-sm);
+}
+
+.sizeMd {
+  --searchbar-height: var(--ot-input-height-md);
+  --searchbar-font-size: var(--ot-font-size-md);
+  --searchbar-padding-x: var(--ot-input-padding-x-md);
+}
+
+.sizeLg {
+  --searchbar-height: var(--ot-input-height-lg);
+  --searchbar-font-size: var(--ot-font-size-lg);
+  --searchbar-padding-x: var(--ot-input-padding-x-lg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .suggestionsDropdown {
+    animation: none;
+  }
+
+  .spinnerIcon {
+    animation: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.suggestionsDropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestionsDropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.suggestionsDropdown::-webkit-scrollbar-thumb {
+  background: var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-full);
+}
+
+.suggestionsDropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--ot-glass-edge-light);
+}

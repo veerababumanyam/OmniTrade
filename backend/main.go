@@ -8,6 +8,7 @@ import (
 
 	"github.com/firebase/genkit/go/genkit"
 
+	"github.com/v13478/omnitrade/backend/internal/action"
 	"github.com/v13478/omnitrade/backend/internal/agent"
 	"github.com/v13478/omnitrade/backend/internal/api"
 	"github.com/v13478/omnitrade/backend/internal/database"
@@ -25,22 +26,42 @@ func main() {
 	}
 	defer dbConn.Close()
 
+	// Initialize Redis Connection
+	redisDB, err := database.InitRedis()
+	if err != nil {
+		log.Printf("Warning: Failed to connect to Redis: %v (continuing without Redis logic)", err)
+	} else {
+		defer redisDB.Close()
+	}
+
+	// Initialize Action Plane Database (Write role)
+	actionDB, err := action.NewActionPlaneDB()
+	if err != nil {
+		log.Printf("Warning: Failed to connect Action Plane database: %v (continuing without write access)", err)
+		// Continue without action plane - some features will be disabled
+	} else {
+		defer actionDB.Close()
+	}
+
 	// Initialize Genkit
 	g := genkit.Init(ctx)
 
-	// Initialize Agent Orchestrator with the database connection and Genkit instance
-	agent.InitOrchestrator(dbConn, g)
+	// Initialize Agent Orchestrator with proper dependency injection
+	orchestrator := agent.NewOrchestrator(g, redisDB)
+	agent.InitOrchestrator(orchestrator)
 
-	// Setup REST API Core
-	apiServer := api.NewAPI(dbConn)
+	// Setup REST API Core with database connection
+	apiServer := api.NewAPI(dbConn, redisDB)
+
+	// Setup Action Plane routes if available
+	if actionDB != nil {
+		actionPlaneAPI := api.NewActionPlaneAPI(actionDB)
+		actionPlaneAPI.SetupActionRoutes(apiServer.Router)
+	}
 
 	// Start Data Ingestion Pipeline
 	tickEngine := ingestion.NewTickEngine(dbConn)
 	tickEngine.Start(ctx)
-
-	// Setup Genkit routes
-	// The frontend will interact with the Genkit flows directly via these routes.
-	// The frontend will interact with the Genkit flows directly via these routes.
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -48,5 +69,15 @@ func main() {
 	}
 
 	log.Printf("Starting OmniTrade Backend on port %s", port)
+	log.Printf("Intelligence Plane: Read-only database connection active")
+	litellmURL := os.Getenv("LITELLM_URL")
+	if litellmURL == "" {
+		litellmURL = "http://litellm:4000"
+	}
+	log.Printf("LLM Gateway: LiteLLM AI Gateway at %s", litellmURL)
+	if actionDB != nil {
+		log.Printf("Action Plane: Write database connection active (HITL enabled)")
+	}
+
 	log.Fatal(http.ListenAndServe(":"+port, apiServer.Router))
 }

@@ -1,0 +1,294 @@
+/**
+ * EmptyState Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Empty state display with illustration, message, and action
+ */
+
+/* ============================================
+   ROOT CONTAINER
+   ============================================ */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--ot-space-8);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Horizontal orientation */
+.horizontal {
+  flex-direction: row;
+  text-align: left;
+  gap: var(--ot-space-6);
+}
+
+/* ============================================
+   SIZE VARIANTS
+   ============================================ */
+
+.sizeSm {
+  padding: var(--ot-space-6);
+}
+
+.sizeSm .iconContainer {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--ot-space-3);
+}
+
+.sizeSm .title {
+  font-size: var(--ot-font-size-md);
+  margin-bottom: var(--ot-space-1);
+}
+
+.sizeSm .description {
+  font-size: var(--ot-font-size-sm);
+  margin-bottom: var(--ot-space-4);
+}
+
+.sizeMd {
+  padding: var(--ot-space-8);
+}
+
+.sizeLg {
+  padding: var(--ot-space-12);
+}
+
+.sizeLg .iconContainer {
+  width: 80px;
+  height: 80px;
+  margin-bottom: var(--ot-space-6);
+}
+
+.sizeLg .title {
+  font-size: var(--ot-font-size-2xl);
+}
+
+.sizeLg .description {
+  font-size: var(--ot-font-size-lg);
+  max-width: 400px;
+}
+
+/* ============================================
+   BACKGROUND VARIANTS
+   ============================================ */
+
+.backgroundNone {
+  background: transparent;
+}
+
+.backgroundGlass {
+  background: var(--ot-surface-glass);
+  backdrop-filter: blur(var(--ot-glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-md));
+  border: 1px solid var(--ot-border-subtle);
+  border-radius: var(--ot-radius-xl);
+}
+
+.backgroundSubtle {
+  background: var(--ot-surface-secondary);
+  border-radius: var(--ot-radius-xl);
+}
+
+/* ============================================
+   ICON CONTAINER
+   ============================================ */
+
+.iconContainer {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--ot-space-4);
+  border-radius: var(--ot-radius-full);
+  background: var(--ot-surface-glass);
+  color: var(--ot-text-muted);
+  flex-shrink: 0;
+}
+
+.iconContainer svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Horizontal layout icon adjustments */
+.horizontal .iconContainer {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   CONTENT CONTAINER
+   ============================================ */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 320px;
+}
+
+.horizontal .content {
+  align-items: flex-start;
+  max-width: none;
+}
+
+/* ============================================
+   TITLE
+   ============================================ */
+
+.title {
+  font-size: var(--ot-font-size-lg);
+  font-weight: var(--ot-font-weight-semibold);
+  color: var(--ot-text-primary);
+  margin: 0 0 var(--ot-space-2);
+}
+
+/* ============================================
+   DESCRIPTION
+   ============================================ */
+
+.description {
+  font-size: var(--ot-font-size-md);
+  color: var(--ot-text-secondary);
+  margin: 0 0 var(--ot-space-6);
+  line-height: var(--ot-line-height-relaxed);
+}
+
+/* ============================================
+   ACTIONS
+   ============================================ */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ot-space-3);
+}
+
+.horizontal .actions {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Primary action button */
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ot-space-2);
+  padding: var(--ot-space-3) var(--ot-space-6);
+  background: var(--ot-brand-primary-500);
+  color: var(--ot-color-white);
+  border: none;
+  border-radius: var(--ot-radius-md);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-semibold);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-gentle),
+    transform var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.primaryAction:hover {
+  background: var(--ot-brand-primary-600);
+}
+
+.primaryAction:active {
+  transform: scale(0.98);
+}
+
+.primaryAction:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* Secondary link */
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ot-space-1);
+  color: var(--ot-text-link);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  text-decoration: none;
+  transition: color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.secondaryLink:hover {
+  color: var(--ot-text-link-hover);
+  text-decoration: underline;
+}
+
+.secondaryLinkIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 479px) {
+  .horizontal {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .horizontal .content {
+    align-items: center;
+  }
+
+  .horizontal .iconContainer {
+    margin-bottom: var(--ot-space-4);
+  }
+
+  .horizontal .actions {
+    flex-direction: column;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.iconContainer {
+  animation: fadeIn var(--ot-duration-normal) var(--ot-spring-gentle);
+}
+
+.content {
+  animation: fadeIn var(--ot-duration-normal) var(--ot-spring-gentle);
+  animation-delay: 50ms;
+  animation-fill-mode: both;
+}
+
+.actions {
+  animation: fadeIn var(--ot-duration-normal) var(--ot-spring-gentle);
+  animation-delay: 100ms;
+  animation-fill-mode: both;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .iconContainer,
+  .content,
+  .actions {
+    animation: none;
+  }
+}

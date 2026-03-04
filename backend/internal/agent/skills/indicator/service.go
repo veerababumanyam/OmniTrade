@@ -1,5 +1,5 @@
 // Copyright (c) 2026 OmniTrade
-// Indicator Skills Service - Wrapper for github.com/cinar/indicator/v2
+// Indicator Skills Service - Wrapper for indicator/v2
 
 package indicator
 
@@ -7,11 +7,6 @@ import (
 	"context"
 	"fmt"
 	"sync"
-
-	"github.com/cinar/indicator/v2/momentum"
-	"github.com/cinar/indicator/v2/trend"
-	"github.com/cinar/indicator/v2/volatility"
-	"github.com/cinar/indicator/v2/volume"
 )
 
 // Service provides indicator calculation capabilities for AI agents
@@ -36,20 +31,20 @@ const (
 
 // IndicatorResult represents the result of an indicator calculation
 type IndicatorResult struct {
-	Type      IndicatorType       `json:"type"`
-	Name      string              `json:"name"`
-	Values    []float64           `json:"values,omitempty"`
-	LastValue float64             `json:"last_value,omitempty"`
-	Signals   map[string]float64  `json:"signals,omitempty"`
-	Metadata  map[string]any      `json:"metadata,omitempty"`
+	Type      IndicatorType      `json:"type"`
+	Name      string             `json:"name"`
+	Values    []float64          `json:"values,omitempty"`
+	LastValue float64            `json:"last_value,omitempty"`
+	Signals   map[string]float64 `json:"signals,omitempty"`
+	Metadata  map[string]any     `json:"metadata,omitempty"`
 }
 
 // CalculationRequest represents a request to calculate an indicator
 type CalculationRequest struct {
-	Indicator IndicatorType         `json:"indicator"`
-	Name      string                `json:"name"`
-	Params    map[string]any        `json:"params"`
-	Data      *OHLCVData            `json:"data"`
+	Indicator IndicatorType  `json:"indicator"`
+	Name      string         `json:"name"`
+	Params    map[string]any `json:"params"`
+	Data      *OHLCVData     `json:"data"`
 }
 
 // OHLCVData represents Open, High, Low, Close, Volume data

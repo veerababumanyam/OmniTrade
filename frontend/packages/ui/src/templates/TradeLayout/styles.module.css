@@ -1,0 +1,271 @@
+/**
+ * TradeLayout Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Resizable split panel layout for trading interface
+ */
+
+/* ============================================
+   ROOT LAYOUT
+   ============================================ */
+
+.tradeLayout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ot-surface-base);
+}
+
+/* Horizontal split (side by side) */
+.horizontal {
+  flex-direction: row;
+}
+
+/* Vertical split (stacked) */
+.vertical {
+  flex-direction: column;
+}
+
+/* ============================================
+   PANELS
+   ============================================ */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--ot-surface-primary);
+  border: 1px solid var(--ot-border-subtle);
+  transition: flex-basis var(--ot-duration-normal) var(--ot-spring-gentle);
+}
+
+.leftPanel {
+  /* Flex basis set via inline style */
+}
+
+.rightPanel {
+  /* Flex basis set via inline style */
+}
+
+/* Collapsed panels */
+.panelCollapsed {
+  flex-basis: 0 !important;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Fullscreen panels */
+.panelFullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ot-z-modal);
+  flex-basis: 100% !important;
+}
+
+/* Panel header */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ot-space-3) var(--ot-space-4);
+  background: var(--ot-surface-elevated);
+  border-bottom: 1px solid var(--ot-border-subtle);
+  min-height: 48px;
+}
+
+.panelTitle {
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-semibold);
+  color: var(--ot-text-primary);
+}
+
+.panelControls {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-1);
+}
+
+/* Panel control buttons */
+.panelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: var(--ot-radius-sm);
+  color: var(--ot-text-secondary);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-gentle),
+    color var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.panelButton:hover {
+  background: var(--ot-surface-interactive-hover);
+  color: var(--ot-text-primary);
+}
+
+.panelButtonActive {
+  background: var(--ot-surface-interactive-active);
+  color: var(--ot-brand-primary-500);
+}
+
+/* Panel content */
+.panelContent {
+  flex: 1;
+  overflow: auto;
+}
+
+/* ============================================
+   RESIZER
+   ============================================ */
+
+.resizer {
+  flex-shrink: 0;
+  background: var(--ot-border-default);
+  transition: background var(--ot-duration-fast) var(--ot-spring-gentle);
+  position: relative;
+  z-index: 1;
+}
+
+.resizer:hover,
+.resizerActive {
+  background: var(--ot-brand-primary-500);
+}
+
+/* Horizontal resizer (vertical divider) */
+.resizerHorizontal {
+  width: var(--ot-trade-resizer-size, 4px);
+  cursor: col-resize;
+}
+
+.resizerHorizontal::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 32px;
+  background: var(--ot-surface-interactive);
+  border-radius: var(--ot-radius-full);
+  opacity: 0;
+  transition: opacity var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.resizerHorizontal:hover::before,
+.resizerHorizontal.resizerActive::before {
+  opacity: 1;
+}
+
+/* Vertical resizer (horizontal divider) */
+.resizerVertical {
+  height: var(--ot-trade-resizer-size, 4px);
+  cursor: row-resize;
+}
+
+.resizerVertical::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 4px;
+  background: var(--ot-surface-interactive);
+  border-radius: var(--ot-radius-full);
+  opacity: 0;
+  transition: opacity var(--ot-duration-fast) var(--ot-spring-gentle);
+}
+
+.resizerVertical:hover::before,
+.resizerVertical.resizerActive::before {
+  opacity: 1;
+}
+
+/* Resizer hit area for easier grabbing */
+.resizerHitArea {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+}
+
+/* ============================================
+   COLLAPSED PANEL TOGGLE
+   ============================================ */
+
+.collapsedToggle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ot-surface-elevated);
+  border: 1px solid var(--ot-border-subtle);
+  color: var(--ot-text-secondary);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-gentle),
+    color var(--ot-duration-fast) var(--ot-spring-gentle);
+  z-index: 2;
+}
+
+.collapsedToggle:hover {
+  background: var(--ot-surface-interactive-hover);
+  color: var(--ot-text-primary);
+}
+
+/* Horizontal layout toggle positions */
+.horizontal .collapsedToggleLeft {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 48px;
+  border-radius: 0 var(--ot-radius-md) var(--ot-radius-md) 0;
+}
+
+.horizontal .collapsedToggleRight {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 48px;
+  border-radius: var(--ot-radius-md) 0 0 var(--ot-radius-md);
+}
+
+/* Vertical layout toggle positions */
+.vertical .collapsedToggleLeft {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 24px;
+  border-radius: 0 0 var(--ot-radius-md) var(--ot-radius-md);
+}
+
+.vertical .collapsedToggleRight {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 24px;
+  border-radius: var(--ot-radius-md) var(--ot-radius-md) 0 0;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes panelExpand {
+  from {
+    flex-basis: 0;
+  }
+  to {
+    flex-basis: var(--target-basis);
+  }
+}

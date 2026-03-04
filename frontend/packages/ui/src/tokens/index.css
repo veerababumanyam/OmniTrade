@@ -1,0 +1,303 @@
+/**
+ * OmniTrade Design Tokens
+ * Liquid Glass Design System with Photon Physics
+ * APCA Contrast Compliance
+ */
+
+:root {
+  /* ═══════════════════════════════════════════════════════════════
+     COLOR PRIMITIVES - Photon Physics Spectrum
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Core Spectrum */
+  --ot-color-white: #ffffff;
+  --ot-color-black: #000000;
+
+  /* Photon Blue - Primary Brand */
+  --ot-color-photon-50: #e6f0ff;
+  --ot-color-photon-100: #b3d1ff;
+  --ot-color-photon-200: #80b3ff;
+  --ot-color-photon-300: #4d94ff;
+  --ot-color-photon-400: #1a75ff;
+  --ot-color-photon-500: #0066ff;
+  --ot-color-photon-600: #0052cc;
+  --ot-color-photon-700: #003d99;
+  --ot-color-photon-800: #002966;
+  --ot-color-photon-900: #001433;
+
+  /* Quantum Green - Success/Positive */
+  --ot-color-quantum-50: #e6fff0;
+  --ot-color-quantum-100: #b3ffd6;
+  --ot-color-quantum-200: #80ffbd;
+  --ot-color-quantum-300: #4dffa3;
+  --ot-color-quantum-400: #1aff8a;
+  --ot-color-quantum-500: #00ff71;
+  --ot-color-quantum-600: #00cc5a;
+  --ot-color-quantum-700: #009944;
+  --ot-color-quantum-800: #00662d;
+  --ot-color-quantum-900: #003317;
+
+  /* Entropy Red - Danger/Negative */
+  --ot-color-entropy-50: #ffe6e6;
+  --ot-color-entropy-100: #ffb3b3;
+  --ot-color-entropy-200: #ff8080;
+  --ot-color-entropy-300: #ff4d4d;
+  --ot-color-entropy-400: #ff1a1a;
+  --ot-color-entropy-500: #ff0000;
+  --ot-color-entropy-600: #cc0000;
+  --ot-color-entropy-700: #990000;
+  --ot-color-entropy-800: #660000;
+  --ot-color-entropy-900: #330000;
+
+  /* Flux Yellow - Warning/Caution */
+  --ot-color-flux-50: #fffbe6;
+  --ot-color-flux-100: #fff5b3;
+  --ot-color-flux-200: #ffef80;
+  --ot-color-flux-300: #ffe94d;
+  --ot-color-flux-400: #ffe31a;
+  --ot-color-flux-500: #ffdd00;
+  --ot-color-flux-600: #ccb000;
+  --ot-color-flux-700: #998400;
+  --ot-color-flux-800: #665700;
+  --ot-color-flux-900: #332b00;
+
+  /* Neural Purple - Intelligence/AI */
+  --ot-color-neural-50: #f3e6ff;
+  --ot-color-neural-100: #dbb3ff;
+  --ot-color-neural-200: #c280ff;
+  --ot-color-neural-300: #a94dff;
+  --ot-color-neural-400: #911aff;
+  --ot-color-neural-500: #7900ff;
+  --ot-color-neural-600: #6000cc;
+  --ot-color-neural-700: #480099;
+  --ot-color-neural-800: #300066;
+  --ot-color-neural-900: #180033;
+
+  /* ═══════════════════════════════════════════════════════════════
+     LIQUID GLASS - Surface System
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Glass Surfaces - Light Mode */
+  --ot-glass-surface-0: rgba(255, 255, 255, 0.02);
+  --ot-glass-surface-1: rgba(255, 255, 255, 0.05);
+  --ot-glass-surface-2: rgba(255, 255, 255, 0.08);
+  --ot-glass-surface-3: rgba(255, 255, 255, 0.12);
+  --ot-glass-surface-4: rgba(255, 255, 255, 0.16);
+  --ot-glass-surface-5: rgba(255, 255, 255, 0.20);
+
+  /* Glass Edges - Refractive Borders */
+  --ot-glass-edge-light: rgba(255, 255, 255, 0.25);
+  --ot-glass-edge-dark: rgba(0, 0, 0, 0.08);
+  --ot-glass-edge-glow: rgba(0, 102, 255, 0.15);
+
+  /* Glass Blur Intensities */
+  --ot-glass-blur-sm: 8px;
+  --ot-glass-blur-md: 16px;
+  --ot-glass-blur-lg: 24px;
+  --ot-glass-blur-xl: 40px;
+
+  /* Glass Refraction */
+  --ot-glass-refraction-hover: rgba(255, 255, 255, 0.12);
+  --ot-glass-refraction-active: rgba(255, 255, 255, 0.18);
+
+  /* ═══════════════════════════════════════════════════════════════
+     TYPOGRAPHY - Inter Variable Font
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Font Families */
+  --ot-font-sans: 'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ot-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+
+  /* Font Sizes - Fluid Scale */
+  --ot-font-size-xs: 0.75rem;     /* 12px */
+  --ot-font-size-sm: 0.875rem;    /* 14px */
+  --ot-font-size-md: 1rem;        /* 16px */
+  --ot-font-size-lg: 1.125rem;    /* 18px */
+  --ot-font-size-xl: 1.25rem;     /* 20px */
+  --ot-font-size-2xl: 1.5rem;     /* 24px */
+  --ot-font-size-3xl: 1.875rem;   /* 30px */
+  --ot-font-size-4xl: 2.25rem;    /* 36px */
+
+  /* Line Heights */
+  --ot-line-height-tight: 1.2;
+  --ot-line-height-snug: 1.35;
+  --ot-line-height-normal: 1.5;
+  --ot-line-height-relaxed: 1.65;
+
+  /* Font Weights */
+  --ot-font-weight-regular: 400;
+  --ot-font-weight-medium: 500;
+  --ot-font-weight-semibold: 600;
+  --ot-font-weight-bold: 700;
+
+  /* Letter Spacing */
+  --ot-letter-spacing-tight: -0.025em;
+  --ot-letter-spacing-normal: 0;
+  --ot-letter-spacing-wide: 0.025em;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SPACING - 4px Base Unit
+     ═══════════════════════════════════════════════════════════════ */
+
+  --ot-space-0: 0;
+  --ot-space-1: 0.25rem;   /* 4px */
+  --ot-space-2: 0.5rem;    /* 8px */
+  --ot-space-3: 0.75rem;   /* 12px */
+  --ot-space-4: 1rem;      /* 16px */
+  --ot-space-5: 1.25rem;   /* 20px */
+  --ot-space-6: 1.5rem;    /* 24px */
+  --ot-space-8: 2rem;      /* 32px */
+  --ot-space-10: 2.5rem;   /* 40px */
+  --ot-space-12: 3rem;     /* 48px */
+  --ot-space-16: 4rem;     /* 64px */
+  --ot-space-20: 5rem;     /* 80px */
+  --ot-space-24: 6rem;     /* 96px */
+
+  /* ═══════════════════════════════════════════════════════════════
+     BORDER RADIUS - Soft Geometry
+     ═══════════════════════════════════════════════════════════════ */
+
+  --ot-radius-none: 0;
+  --ot-radius-sm: 0.25rem;   /* 4px */
+  --ot-radius-md: 0.5rem;    /* 8px */
+  --ot-radius-lg: 0.75rem;   /* 12px */
+  --ot-radius-xl: 1rem;      /* 16px */
+  --ot-radius-2xl: 1.5rem;   /* 24px */
+  --ot-radius-full: 9999px;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SHADOWS - Photon Depth
+     ═══════════════════════════════════════════════════════════════ */
+
+  --ot-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --ot-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --ot-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --ot-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
+  --ot-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Photon Glow Shadows */
+  --ot-glow-photon: 0 0 20px rgba(0, 102, 255, 0.3), 0 0 40px rgba(0, 102, 255, 0.15);
+  --ot-glow-quantum: 0 0 20px rgba(0, 255, 113, 0.3), 0 0 40px rgba(0, 255, 113, 0.15);
+  --ot-glow-entropy: 0 0 20px rgba(255, 0, 0, 0.3), 0 0 40px rgba(255, 0, 0, 0.15);
+  --ot-glow-neural: 0 0 20px rgba(121, 0, 255, 0.3), 0 0 40px rgba(121, 0, 255, 0.15);
+
+  /* ═══════════════════════════════════════════════════════════════
+     MOTION - Spring Physics
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Spring Presets - damping 0.7 base */
+  --ot-spring-default: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ot-spring-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ot-spring-snappy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ot-spring-bouncy: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Duration Scale */
+  --ot-duration-instant: 50ms;
+  --ot-duration-fast: 100ms;
+  --ot-duration-normal: 200ms;
+  --ot-duration-slow: 300ms;
+  --ot-duration-slower: 400ms;
+  --ot-duration-slowest: 500ms;
+
+  /* ═══════════════════════════════════════════════════════════════
+     Z-INDEX - Stacking Context
+     ═══════════════════════════════════════════════════════════════ */
+
+  --ot-z-base: 0;
+  --ot-z-dropdown: 100;
+  --ot-z-sticky: 200;
+  --ot-z-fixed: 300;
+  --ot-z-modal-backdrop: 400;
+  --ot-z-modal: 500;
+  --ot-z-popover: 600;
+  --ot-z-tooltip: 700;
+  --ot-z-toast: 800;
+  --ot-z-max: 9999;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SEMANTIC TOKENS - Component-Level
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Text Colors - APCA Compliant */
+  --ot-text-primary: rgba(0, 0, 0, 0.92);
+  --ot-text-secondary: rgba(0, 0, 0, 0.68);
+  --ot-text-tertiary: rgba(0, 0, 0, 0.52);
+  --ot-text-disabled: rgba(0, 0, 0, 0.32);
+  --ot-text-inverse: rgba(255, 255, 255, 0.95);
+
+  /* Interactive States */
+  --ot-interactive-hover: var(--ot-glass-surface-3);
+  --ot-interactive-active: var(--ot-glass-surface-4);
+  --ot-interactive-focus: var(--ot-color-photon-500);
+
+  /* Focus Ring */
+  --ot-focus-ring: 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-color-photon-500);
+  --ot-focus-ring-offset: 2px;
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPONENT TOKENS
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Button */
+  --ot-button-height-sm: 2rem;      /* 32px */
+  --ot-button-height-md: 2.5rem;    /* 40px */
+  --ot-button-height-lg: 3rem;      /* 48px */
+
+  --ot-button-padding-x-sm: var(--ot-space-3);
+  --ot-button-padding-x-md: var(--ot-space-4);
+  --ot-button-padding-x-lg: var(--ot-space-6);
+
+  /* Input */
+  --ot-input-height-sm: 2rem;       /* 32px */
+  --ot-input-height-md: 2.5rem;     /* 40px */
+  --ot-input-height-lg: 3rem;       /* 48px */
+
+  --ot-input-padding-x-sm: var(--ot-space-3);
+  --ot-input-padding-x-md: var(--ot-space-4);
+  --ot-input-padding-x-lg: var(--ot-space-4);
+
+  --ot-input-border-color: var(--ot-glass-edge-dark);
+  --ot-input-border-color-hover: rgba(0, 0, 0, 0.15);
+  --ot-input-border-color-focus: var(--ot-color-photon-500);
+  --ot-input-border-color-error: var(--ot-color-entropy-500);
+
+  /* Select */
+  --ot-select-height-sm: 2rem;
+  --ot-select-height-md: 2.5rem;
+  --ot-select-height-lg: 3rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE TOKENS
+   ══════════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"],
+.dark {
+  /* Glass Surfaces - Dark Mode */
+  --ot-glass-surface-0: rgba(0, 0, 0, 0.02);
+  --ot-glass-surface-1: rgba(0, 0, 0, 0.05);
+  --ot-glass-surface-2: rgba(0, 0, 0, 0.08);
+  --ot-glass-surface-3: rgba(0, 0, 0, 0.12);
+  --ot-glass-surface-4: rgba(0, 0, 0, 0.16);
+  --ot-glass-surface-5: rgba(0, 0, 0, 0.20);
+
+  /* Glass Edges - Dark Mode */
+  --ot-glass-edge-light: rgba(255, 255, 255, 0.08);
+  --ot-glass-edge-dark: rgba(0, 0, 0, 0.25);
+  --ot-glass-edge-glow: rgba(0, 102, 255, 0.25);
+
+  /* Text Colors - APCA Compliant for Dark */
+  --ot-text-primary: rgba(255, 255, 255, 0.95);
+  --ot-text-secondary: rgba(255, 255, 255, 0.72);
+  --ot-text-tertiary: rgba(255, 255, 255, 0.52);
+  --ot-text-disabled: rgba(255, 255, 255, 0.32);
+  --ot-text-inverse: rgba(0, 0, 0, 0.92);
+
+  /* Interactive States - Dark */
+  --ot-interactive-hover: rgba(255, 255, 255, 0.08);
+  --ot-interactive-active: rgba(255, 255, 255, 0.12);
+
+  /* Input Border - Dark */
+  --ot-input-border-color: rgba(255, 255, 255, 0.1);
+  --ot-input-border-color-hover: rgba(255, 255, 255, 0.18);
+}

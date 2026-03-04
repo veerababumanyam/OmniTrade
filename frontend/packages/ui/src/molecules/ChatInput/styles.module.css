@@ -1,0 +1,438 @@
+/**
+ * ChatInput Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Features:
+ * - Auto-growing textarea with Liquid Glass styling
+ * - Attachment and voice input buttons
+ * - Character count display
+ * - Suggestion dropdown
+ * - File drag and drop zone
+ */
+
+.chatInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Main container with Liquid Glass */
+.chatInput {
+  display: flex;
+  flex-direction: column;
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--ot-border-default, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-xl, 1.5rem);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.chatInput:focus-within {
+  border-color: var(--ot-brand-primary-500);
+  box-shadow: 0 0 0 3px var(--ot-focus-ring-color-subtle, rgba(0, 112, 243, 0.3));
+}
+
+.chatInput[data-disabled="true"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Drag and drop active state */
+.chatInput[data-dragging="true"] {
+  border-color: var(--ot-brand-accent-500);
+  background: var(--ot-brand-accent-500, rgba(139, 92, 246, 0.1));
+}
+
+/* Attachments preview area */
+.attachmentsArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ot-spacing-2, 0.5rem);
+  padding: var(--ot-spacing-3, 0.75rem);
+  padding-bottom: 0;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.attachment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ot-spacing-2, 0.5rem);
+  padding: var(--ot-spacing-2, 0.5rem) var(--ot-spacing-3, 0.75rem);
+  background: var(--ot-surface-interactive, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: var(--ot-radius-md, 0.5rem);
+  font-size: 0.8125rem;
+  color: var(--ot-text-secondary);
+}
+
+.attachmentImage {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ot-radius-sm, 0.25rem);
+  object-fit: cover;
+}
+
+.attachmentInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.attachmentName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.attachmentSize {
+  font-size: 0.6875rem;
+  color: var(--ot-text-muted);
+}
+
+.attachmentRemove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--ot-surface-interactive-hover);
+  border: none;
+  border-radius: var(--ot-radius-full, 9999px);
+  color: var(--ot-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.attachmentRemove:hover {
+  background: var(--ot-color-error-bg);
+  color: var(--ot-color-error-icon);
+}
+
+/* Main input area */
+.inputArea {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ot-spacing-2, 0.5rem);
+  padding: var(--ot-spacing-3, 0.75rem);
+}
+
+/* Textarea */
+.textarea {
+  flex: 1;
+  min-height: 1.5rem;
+  max-height: 200px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ot-text-primary);
+  caret-color: var(--ot-brand-primary-500);
+}
+
+.textarea::placeholder {
+  color: var(--ot-text-muted);
+}
+
+.textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+  background: var(--ot-border-emphasis);
+  border-radius: var(--ot-radius-full);
+}
+
+/* Button group */
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-spacing-1, 0.25rem);
+}
+
+/* Icon buttons */
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--ot-surface-interactive, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: var(--ot-radius-full, 9999px);
+  color: var(--ot-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: var(--ot-surface-interactive-hover, rgba(255, 255, 255, 0.1));
+  color: var(--ot-text-primary);
+  border-color: var(--ot-border-default, rgba(255, 255, 255, 0.1));
+}
+
+.iconButton:active:not(:disabled) {
+  background: var(--ot-surface-interactive-active, rgba(255, 255, 255, 0.15));
+}
+
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--ot-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Send button - primary action */
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--ot-brand-gradient-primary, linear-gradient(135deg, #0070f3 0%, #8b5cf6 100%));
+  border: none;
+  border-radius: var(--ot-radius-full, 9999px);
+  color: var(--ot-white, #ffffff);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 112, 243, 0.3);
+}
+
+.sendButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 112, 243, 0.4);
+}
+
+.sendButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sendButton:focus-visible {
+  outline: 2px solid var(--ot-focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* Voice button - recording state */
+.voiceButton[data-recording="true"] {
+  background: var(--ot-color-error-bg);
+  color: var(--ot-color-error-icon);
+  border-color: var(--ot-color-error-border);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+/* Footer area - character count */
+.footerArea {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--ot-spacing-3, 0.75rem) var(--ot-spacing-2, 0.5rem);
+}
+
+.charCount {
+  font-size: 0.6875rem;
+  color: var(--ot-text-muted);
+}
+
+.charCount[data-warning="true"] {
+  color: var(--ot-color-warning-icon);
+}
+
+.charCount[data-error="true"] {
+  color: var(--ot-color-error-icon);
+}
+
+/* Suggestion dropdown */
+.suggestionsDropdown {
+  position: absolute;
+  bottom: calc(100% + var(--ot-spacing-2, 0.5rem));
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--ot-surface-elevated, rgba(39, 39, 42, 0.95));
+  border: 1px solid var(--ot-border-default, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-lg, 1rem);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: slideUp 0.15s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestionList {
+  list-style: none;
+  margin: 0;
+  padding: var(--ot-spacing-1, 0.25rem);
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-spacing-3, 0.75rem);
+  padding: var(--ot-spacing-2, 0.5rem) var(--ot-spacing-3, 0.75rem);
+  border-radius: var(--ot-radius-md, 0.5rem);
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.suggestionItem:hover,
+.suggestionItem[data-selected="true"] {
+  background: var(--ot-surface-interactive-hover, rgba(255, 255, 255, 0.1));
+}
+
+.suggestionIcon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ot-surface-interactive);
+  border-radius: var(--ot-radius-md, 0.5rem);
+  font-size: 1rem;
+}
+
+.suggestionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestionLabel {
+  font-size: 0.875rem;
+  color: var(--ot-text-primary);
+}
+
+.suggestionDescription {
+  font-size: 0.75rem;
+  color: var(--ot-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Keyboard shortcut hint */
+.shortcutHint {
+  display: none;
+  align-items: center;
+  gap: var(--ot-spacing-1, 0.25rem);
+  padding: var(--ot-spacing-1, 0.25rem) var(--ot-spacing-2, 0.5rem);
+  font-size: 0.6875rem;
+  color: var(--ot-text-muted);
+  background: var(--ot-surface-interactive);
+  border-radius: var(--ot-radius-sm, 0.25rem);
+}
+
+@media (min-width: 768px) {
+  .shortcutHint {
+    display: flex;
+  }
+}
+
+.shortcutKey {
+  padding: 0.125rem 0.25rem;
+  background: var(--ot-surface-interactive-hover);
+  border-radius: var(--ot-radius-sm, 0.25rem);
+  font-family: monospace;
+  font-size: 0.625rem;
+}
+
+/* Drag overlay */
+.dragOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ot-spacing-2, 0.5rem);
+  background: var(--ot-surface-overlay, rgba(0, 0, 0, 0.6));
+  border-radius: var(--ot-radius-xl, 1.5rem);
+  color: var(--ot-text-primary);
+  font-size: 0.875rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dragOverlay svg {
+  width: 2rem;
+  height: 2rem;
+  color: var(--ot-brand-accent-500);
+}
+
+/* Compact variant */
+.chatInput[data-variant="compact"] .inputArea {
+  padding: var(--ot-spacing-2, 0.5rem);
+}
+
+.chatInput[data-variant="compact"] .textarea {
+  font-size: 0.875rem;
+}
+
+.chatInput[data-variant="compact"] .iconButton {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.chatInput[data-variant="compact"] .sendButton {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Expanded variant */
+.chatInput[data-variant="expanded"] .textarea {
+  min-height: 4rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .shortcutHint {
+    display: none;
+  }
+
+  .iconButton {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .sendButton {
+    width: 2rem;
+    height: 2rem;
+  }
+}

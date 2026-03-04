@@ -1,0 +1,190 @@
+/**
+ * Icon Component Styles
+ * Liquid Glass Design System - OmniTrade
+ * Atomic Component
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Base Icon
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  color: currentColor;
+  flex-shrink: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0;
+}
+
+/* Stroke-based icons */
+.icon--stroke svg {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Size Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon--xs {
+  font-size: 12px;
+}
+
+.icon--sm {
+  font-size: 16px;
+}
+
+.icon--md {
+  font-size: 20px;
+}
+
+.icon--lg {
+  font-size: 24px;
+}
+
+.icon--xl {
+  font-size: 32px;
+}
+
+.icon--xxl {
+  font-size: 48px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Color Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon--primary {
+  color: var(--ot-color-photon-500);
+}
+
+.icon--success {
+  color: var(--ot-color-quantum-500);
+}
+
+.icon--warning {
+  color: var(--ot-color-flux-500);
+}
+
+.icon--error {
+  color: var(--ot-color-entropy-500);
+}
+
+.icon--info {
+  color: var(--ot-color-photon-400);
+}
+
+.icon--muted {
+  color: var(--ot-text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Animation Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon--spin {
+  animation: iconSpin 1s linear infinite;
+}
+
+.icon--pulse {
+  animation: iconPulse 1.5s ease-in-out infinite;
+}
+
+.icon--bounce {
+  animation: iconBounce 1s ease-in-out infinite;
+}
+
+.icon--shake {
+  animation: iconShake 0.5s ease-in-out infinite;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes iconBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25%);
+  }
+}
+
+@keyframes iconShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10%);
+  }
+  75% {
+    transform: translateX(10%);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Hover Effects
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon--hoverable {
+  cursor: pointer;
+  transition:
+    transform var(--ot-duration-fast) var(--ot-spring-bouncy),
+    color var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.icon--hoverable:hover {
+  transform: scale(1.1);
+  color: var(--ot-color-photon-400);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .icon--spin,
+  .icon--pulse,
+  .icon--bounce,
+  .icon--shake {
+    animation: none;
+  }
+
+  .icon--hoverable {
+    transition: none;
+  }
+}

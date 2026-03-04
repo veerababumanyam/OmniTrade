@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/tokens/*": ["src/tokens/*"],
+      "@/atoms/*": ["src/atoms/*"],
+      "@/molecules/*": ["src/molecules/*"],
+      "@/organisms/*": ["src/organisms/*"],
+      "@/templates/*": ["src/templates/*"],
+      "@/primitives/*": ["src/primitives/*"],
+      "@/registry/*": ["src/registry/*"],
+      "@/signal-bus/*": ["src/signal-bus/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/utils/*": ["src/utils/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}

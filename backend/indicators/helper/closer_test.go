@@ -1,0 +1,22 @@
+// Copyright (c) 2021-2026 Onur Cinar.
+// The source code is provided under GNU AGPLv3 License.
+// https://indicator
+
+package helper_test
+
+import (
+	"os"
+	"testing"
+
+	"indicator/v2/helper"
+)
+
+func TestCloseAndLogError(t *testing.T) {
+	file, err := os.CreateTemp(os.TempDir(), "closer")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	helper.CloseAndLogError(file, "")
+	helper.CloseAndLogError(file, "")
+}

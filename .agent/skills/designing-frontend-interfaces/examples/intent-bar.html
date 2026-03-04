@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTrade 2026 - Intent Bar (GenUI Zero-State)</title>
+    <style>
+        :root {
+            /* Color Tokens */
+            --ot-bg: hsl(230, 20%, 5%);
+            --ot-intent-bar-bg: rgba(255, 255, 255, 0.05);
+            --ot-primary-text: hsl(0, 0%, 98%);
+            --ot-secondary-text: hsl(230, 10%, 75%);
+            --ot-brand-blue: hsl(210, 100%, 55%);
+            --ot-brand-green: hsl(140, 70%, 50%);
+            --ot-brand-purple: hsl(270, 60%, 60%);
+
+            /* Spatial Tokens */
+            --z-flat: 0px;
+            --z-step-1: 4px;
+            --z-step-2: 12px;
+            --z-step-3: 24px;
+            --z-step-extreme: 48px;
+
+            /* Spring Physics */
+            --ot-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+            /* Neuro-Adaptive */
+            --ot-hesitation-threshold: 5000ms;
+        }
+
+        /* Calm Mode (Neuro-Diverse) */
+        .calm-mode {
+            --ot-bg: #1a1a1a;
+            --ot-intent-bar-bg: #2a2a2a;
+            --ot-primary-text: #ffffff;
+            --ot-secondary-text: #cccccc;
+        }
+
+        .calm-mode * {
+            backdrop-filter: none !important;
+            animation: none !important;
+            box-shadow: none !important;
+        }
+
+        body {
+            background: var(--ot-bg);
+            color: var(--ot-primary-text);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--ot-secondary-text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--ot-primary-text);
+        }
+
+        .mode-btn.active {
+            background: var(--ot-brand-blue);
+            border-color: var(--ot-brand-blue);
+            color: white;
+        }
+
+        /* Intent Bar Container */
+        .intent-bar-container {
+            width: 90%;
+            max-width: 700px;
+            transform-style: preserve-3d;
+        }
+
+        /* Intent Bar - The Zero-State Input */
+        .intent-bar {
+            background: var(--ot-intent-bar-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            transform: translateZ(var(--z-step-3));
+            transition: all var(--ot-spring);
+        }
+
+        .intent-bar:hover {
+            transform: translateZ(32px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .intent-bar:focus-within {
+            transform: translateZ(var(--z-step-extreme)) scale(1.02);
+            border-color: var(--ot-brand-blue);
+            box-shadow:
+                0 0 0 2px rgba(33, 150, 243, 0.2),
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(33, 150, 243, 0.1);
+        }
+
+        /* Shimmer Animation */
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 4s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* GenUI Badge */
+        .intent-badge {
+            background: linear-gradient(135deg, var(--ot-brand-blue), var(--ot-brand-purple));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .intent-badge::before {
+            content: '◆';
+            opacity: 0.8;
+        }
+
+        /* Intent Input */
+        .intent-input {
+            background: transparent;
+            border: none;
+            color: var(--ot-primary-text);
+            font-size: 1.2rem;
+            width: 100%;
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .intent-input::placeholder {
+            color: var(--ot-secondary-text);
+            opacity: 0.6;
+        }
+
+        /* AI Status Indicator */
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .intent-bar:focus-within .ai-status {
+            opacity: 1;
+        }
+
+        .ai-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ot-brand-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .ai-label {
+            font-size: 0.75rem;
+            color: var(--ot-secondary-text);
+        }
+
+        /* Generated Components Container (Just-In-Time Scaffolding) */
+        .generated-ui {
+            margin-top: 24px;
+            opacity: 0;
+            transform: translateZ(0) translateY(20px);
+            transition: all var(--ot-spring);
+            pointer-events: none;
+        }
+
+        .generated-ui.visible {
+            opacity: 1;
+            transform: translateZ(var(--z-step-2)) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Quick Action Chips */
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            color: var(--ot-secondary-text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--ot-primary-text);
+            transform: translateY(-2px);
+        }
+
+        .action-chip .icon {
+            font-size: 1rem;
+        }
+
+        /* Hesitation Helper (appears after 5s idle) */
+        .hesitation-helper {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 0.85rem;
+            color: var(--ot-secondary-text);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        .hesitation-helper.visible {
+            opacity: 1;
+        }
+
+        /* Eco-Fidelity Badge */
+        .eco-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.7rem;
+            color: var(--ot-secondary-text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .eco-badge::before {
+            content: '🌱';
+        }
+
+        /* Dyslexic-Adaptive Mode */
+        .dyslexic-mode .intent-input {
+            letter-spacing: 0.12em;
+            font-weight: 450;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="mode-toggle">
+        <button class="mode-btn active" onclick="setMode('normal')">Normal</button>
+        <button class="mode-btn" onclick="setMode('calm')">Calm Mode</button>
+        <button class="mode-btn" onclick="setMode('dyslexic')">Dyslexic</button>
+    </div>
+
+    <div class="intent-bar-container">
+        <div class="intent-bar">
+            <div class="shimmer"></div>
+            <div class="intent-badge">GEN-UI 2026</div>
+            <input
+                type="text"
+                class="intent-input"
+                placeholder="What is your intent? (e.g., Buy 10 ETH if price drops to $2500)"
+                id="intentInput"
+                autofocus
+            >
+            <div class="ai-status">
+                <div class="ai-dot"></div>
+                <span class="ai-label">AI Ready</span>
+            </div>
+        </div>
+
+        <div class="hesitation-helper" id="hesitationHelper">
+            Try: "Show me ETH price" or "What's my portfolio worth?"
+        </div>
+
+        <!-- Generated UI (Just-In-Time Scaffolding) -->
+        <div class="generated-ui" id="generatedUI">
+            <div class="quick-actions">
+                <div class="action-chip">
+                    <span class="icon">📊</span>
+                    View Portfolio
+                </div>
+                <div class="action-chip">
+                    <span class="icon">💹</span>
+                    Market Overview
+                </div>
+                <div class="action-chip">
+                    <span class="icon">🔄</span>
+                    Trade History
+                </div>
+                <div class="action-chip">
+                    <span class="icon">⚙️</span>
+                    Settings
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="eco-badge" data-energy-cost="0.02J">
+        Energy: 0.02J
+    </div>
+
+    <script>
+        const input = document.getElementById('intentInput');
+        const generatedUI = document.getElementById('generatedUI');
+        const hesitationHelper = document.getElementById('hesitationHelper');
+        const HESITATION_THRESHOLD = 5000; // 5 seconds
+        let hesitationTimer;
+
+        // Show generated UI when input is focused
+        input.addEventListener('focus', () => {
+            generatedUI.classList.add('visible');
+            resetHesitationTimer();
+        });
+
+        input.addEventListener('blur', () => {
+            clearTimeout(hesitationTimer);
+            hesitationHelper.classList.remove('visible');
+        });
+
+        input.addEventListener('input', () => {
+            resetHesitationTimer();
+        });
+
+        // Hesitation Logic - Show helper after 5s of idle
+        function resetHesitationTimer() {
+            clearTimeout(hesitationTimer);
+            hesitationHelper.classList.remove('visible');
+
+            hesitationTimer = setTimeout(() => {
+                if (document.activeElement === input && input.value === '') {
+                    hesitationHelper.classList.add('visible');
+                }
+            }, HESITATION_THRESHOLD);
+        }
+
+        // Mode Toggle
+        function setMode(mode) {
+            document.body.classList.remove('calm-mode', 'dyslexic-mode');
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+
+            if (mode === 'calm') {
+                document.body.classList.add('calm-mode');
+            } else if (mode === 'dyslexic') {
+                document.body.classList.add('dyslexic-mode');
+            }
+
+            event.target.classList.add('active');
+        }
+
+        // Initialize
+        resetHesitationTimer();
+    </script>
+</body>
+</html>

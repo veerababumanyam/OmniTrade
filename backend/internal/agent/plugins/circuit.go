@@ -279,28 +279,28 @@ func (m *CircuitBreakerMiddleware) Metadata() PluginMetadata {
 
 // Initialize initializes the plugin
 func (m *CircuitBreakerMiddleware) Initialize(ctx *PluginContext, config PluginConfig) error {
-	return m.cb.Execute(ctx.Context, func(ctx context.Context) error {
+	return m.cb.Execute(ctx.Context, func(_ context.Context) error {
 		return m.plugin.Initialize(ctx, config)
 	})
 }
 
 // Start starts the plugin
 func (m *CircuitBreakerMiddleware) Start(ctx *PluginContext) error {
-	return m.cb.Execute(ctx.Context, func(ctx context.Context) error {
+	return m.cb.Execute(ctx.Context, func(_ context.Context) error {
 		return m.plugin.Start(ctx)
 	})
 }
 
 // Stop stops the plugin
 func (m *CircuitBreakerMiddleware) Stop(ctx *PluginContext) error {
-	return m.cb.Execute(ctx.Context, func(ctx context.Context) error {
+	return m.cb.Execute(ctx.Context, func(_ context.Context) error {
 		return m.plugin.Stop(ctx)
 	})
 }
 
 // Shutdown shuts down the plugin
 func (m *CircuitBreakerMiddleware) Shutdown(ctx *PluginContext) error {
-	return m.cb.Execute(ctx.Context, func(ctx context.Context) error {
+	return m.cb.Execute(ctx.Context, func(_ context.Context) error {
 		return m.plugin.Shutdown(ctx)
 	})
 }
@@ -312,7 +312,7 @@ func (m *CircuitBreakerMiddleware) State() PluginState {
 
 // Health checks plugin health
 func (m *CircuitBreakerMiddleware) Health(ctx *PluginContext) (*PluginResult, error) {
-	result, err := m.cb.ExecuteWithResult(ctx.Context, func(ctx context.Context) (interface{}, error) {
+	result, err := m.cb.ExecuteWithResult(ctx.Context, func(_ context.Context) (interface{}, error) {
 		return m.plugin.Health(ctx)
 	})
 	if err != nil {
@@ -323,7 +323,7 @@ func (m *CircuitBreakerMiddleware) Health(ctx *PluginContext) (*PluginResult, er
 
 // Execute executes the plugin
 func (m *CircuitBreakerMiddleware) Execute(ctx *PluginContext, input interface{}) (*PluginResult, error) {
-	result, err := m.cb.ExecuteWithResult(ctx.Context, func(ctx context.Context) (interface{}, error) {
+	result, err := m.cb.ExecuteWithResult(ctx.Context, func(_ context.Context) (interface{}, error) {
 		return m.plugin.Execute(ctx, input)
 	})
 	if err != nil {

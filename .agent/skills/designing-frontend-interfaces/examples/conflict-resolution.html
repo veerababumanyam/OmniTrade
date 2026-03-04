@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTrade 2026 - Agent Conflict Resolution Volume</title>
+    <style>
+        :root {
+            --ot-bg: hsl(230, 20%, 5%);
+            --ot-card-bg: rgba(255, 255, 255, 0.05);
+            --ot-primary-text: hsl(0, 0%, 98%);
+            --ot-secondary-text: hsl(230, 10%, 75%);
+            --ot-brand-green: hsl(140, 70%, 50%);
+            --ot-brand-red: hsl(350, 75%, 55%);
+            --ot-brand-blue: hsl(210, 100%, 55%);
+            --ot-brand-purple: hsl(270, 60%, 60%);
+            --ot-brand-orange: hsl(30, 80%, 55%);
+            --ot-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--ot-bg);
+            color: var(--ot-primary-text);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        .conflict-resolution-volume {
+            width: 100%;
+            max-width: 600px;
+            background: var(--ot-card-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 24px;
+            transform: translateZ(24px);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .volume-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .volume-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .conflict-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--ot-brand-orange), var(--ot-brand-red));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .title-text h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .title-text span {
+            font-size: 0.8rem;
+            color: var(--ot-secondary-text);
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--ot-secondary-text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--ot-primary-text);
+        }
+
+        /* Transaction Context */
+        .transaction-context {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .transaction-type {
+            font-size: 0.75rem;
+            color: var(--ot-secondary-text);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .transaction-amount {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .transaction-asset {
+            color: var(--ot-brand-blue);
+        }
+
+        /* Agent Opinions */
+        .agent-opinions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .agent-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid transparent;
+            transition: all var(--ot-spring);
+            cursor: pointer;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .agent-card.selected {
+            border-color: var(--ot-brand-blue);
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .agent-card[data-stance="bullish"] .stance-indicator {
+            background: var(--ot-brand-green);
+        }
+
+        .agent-card[data-stance="bearish"] .stance-indicator {
+            background: var(--ot-brand-red);
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .agent-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .agent-card[data-stance="bullish"] .agent-avatar {
+            background: linear-gradient(135deg, var(--ot-brand-green), #059669);
+        }
+
+        .agent-card[data-stance="bearish"] .agent-avatar {
+            background: linear-gradient(135deg, var(--ot-brand-red), #dc2626);
+        }
+
+        .agent-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .agent-role {
+            font-size: 0.7rem;
+            color: var(--ot-secondary-text);
+        }
+
+        .stance-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        .agent-reasoning {
+            font-size: 0.85rem;
+            color: var(--ot-secondary-text);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .confidence-meter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .confidence-label {
+            font-size: 0.7rem;
+            color: var(--ot-secondary-text);
+        }
+
+        .confidence-track {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .confidence-value {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* User Decision Panel */
+        .decision-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .decision-label {
+            font-size: 0.8rem;
+            color: var(--ot-secondary-text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .human-badge {
+            background: var(--ot-brand-purple);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .decision-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .decision-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-approve {
+            background: var(--ot-brand-green);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-modify {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--ot-primary-text);
+        }
+
+        .btn-modify:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-reject {
+            background: var(--ot-brand-red);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(239, 68, 68, 0.3);
+        }
+
+        /* AI Provenance Marker */
+        .ai-generated::after {
+            content: '◆';
+            font-size: 0.7em;
+            margin-left: 4px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="conflict-resolution-volume">
+        <div class="volume-header">
+            <div class="volume-title">
+                <div class="conflict-icon">⚖️</div>
+                <div class="title-text">
+                    <h2>Agent Disagreement Detected</h2>
+                    <span>2 agents have conflicting recommendations</span>
+                </div>
+            </div>
+            <button class="close-btn">✕</button>
+        </div>
+
+        <div class="transaction-context">
+            <div class="transaction-type">Proposed Trade</div>
+            <div class="transaction-amount">
+                Buy 5.0 <span class="transaction-asset">ETH</span> @ $3,245.67
+            </div>
+        </div>
+
+        <div class="agent-opinions">
+            <div class="agent-card" data-stance="bullish" onclick="selectAgent(this)">
+                <div class="agent-header">
+                    <div class="agent-avatar">TA</div>
+                    <div>
+                        <div class="agent-name">Technical Agent</div>
+                        <div class="agent-role">Pattern Analysis</div>
+                    </div>
+                    <div class="stance-indicator"></div>
+                </div>
+                <div class="agent-reasoning">
+                    <span class="ai-generated">Strong bullish divergence on 4H RSI. Price above 50 EMA with increasing volume. Recommend immediate entry.</span>
+                </div>
+                <div class="confidence-meter">
+                    <span class="confidence-label">Confidence</span>
+                    <div class="confidence-track">
+                        <div style="width: 82%; height: 100%; background: var(--ot-brand-green); border-radius: 2px;"></div>
+                    </div>
+                    <span class="confidence-value">82%</span>
+                </div>
+            </div>
+
+            <div class="agent-card" data-stance="bearish" onclick="selectAgent(this)">
+                <div class="agent-header">
+                    <div class="agent-avatar">FA</div>
+                    <div>
+                        <div class="agent-name">Fundamental Agent</div>
+                        <div class="agent-role">On-Chain Analysis</div>
+                    </div>
+                    <div class="stance-indicator"></div>
+                </div>
+                <div class="agent-reasoning">
+                    <span class="ai-generated">Large whale wallet activity indicates potential sell-off. Exchange inflows increasing. Recommend waiting for confirmation.</span>
+                </div>
+                <div class="confidence-meter">
+                    <span class="confidence-label">Confidence</span>
+                    <div class="confidence-track">
+                        <div style="width: 68%; height: 100%; background: var(--ot-brand-red); border-radius: 2px;"></div>
+                    </div>
+                    <span class="confidence-value">68%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="decision-panel">
+            <div class="decision-label">
+                <span class="human-badge">HITL</span>
+                Your decision is required
+            </div>
+            <div class="decision-actions">
+                <button class="decision-btn btn-approve">Approve</button>
+                <button class="decision-btn btn-modify">Modify</button>
+                <button class="decision-btn btn-reject">Reject</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectAgent(card) {
+            // Remove selected from all
+            document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
+            // Add selected to clicked
+            card.classList.add('selected');
+        }
+    </script>
+</body>
+</html>

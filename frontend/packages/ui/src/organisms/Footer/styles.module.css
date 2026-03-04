@@ -1,0 +1,473 @@
+/**
+ * Footer Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Macro-Volume with Z-axis: translateZ(0px) (base level)
+ * Features: Multi-column links, social icons, legal links, responsive layout
+ */
+
+/* ============================================
+   BASE FOOTER
+   Liquid Glass at base level
+   ============================================ */
+.footer {
+  position: relative;
+  width: 100%;
+  background: var(--ot-surface-base, rgba(9, 9, 11, 0.85));
+  border-top: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  transform: translateZ(0px);
+}
+
+/* Top Divider */
+.footerWithDivider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ot-brand-primary-500, #0070f3) 50%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+/* ============================================
+   FOOTER INNER CONTAINER
+   ============================================ */
+.footerInner {
+  width: 100%;
+  max-width: var(--ot-container-xl, 1440px);
+  margin: 0 auto;
+  padding: var(--ot-footer-padding, 64px) var(--ot-space-6, 24px);
+}
+
+.footerInnerCompact {
+  padding: var(--ot-space-6, 24px) var(--ot-space-6, 24px);
+}
+
+/* ============================================
+   FOOTER TOP SECTION
+   Contains logo, tagline, newsletter
+   ============================================ */
+.footerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ot-space-8, 32px);
+  padding-bottom: var(--ot-space-8, 32px);
+  margin-bottom: var(--ot-space-8, 32px);
+  border-bottom: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+}
+
+.footerTopCompact {
+  padding-bottom: var(--ot-space-4, 16px);
+  margin-bottom: var(--ot-space-4, 16px);
+}
+
+/* Brand Section */
+.brandSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ot-space-4, 16px);
+  max-width: 320px;
+}
+
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-3, 12px);
+}
+
+.brandLogoIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.brandLogoText {
+  font-family: var(--ot-font-display);
+  font-size: var(--ot-font-size-xl, 20px);
+  font-weight: var(--ot-font-weight-bold, 700);
+  background: var(--ot-brand-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brandTagline {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  line-height: var(--ot-line-height-relaxed, 1.65);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+}
+
+/* ============================================
+   NEWSLETTER SECTION
+   ============================================ */
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ot-space-3, 12px);
+}
+
+.newsletterTitle {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.newsletterForm {
+  display: flex;
+  gap: var(--ot-space-2, 8px);
+}
+
+.newsletterInput {
+  width: 240px;
+  height: 40px;
+  padding: 0 var(--ot-space-4, 16px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--ot-border-default, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-md, 8px);
+  outline: none;
+  transition:
+    background var(--ot-duration-fast, 100ms) ease,
+    border-color var(--ot-duration-fast, 100ms) ease;
+}
+
+.newsletterInput::placeholder {
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.newsletterInput:focus {
+  background: var(--ot-surface-glass-active, rgba(255, 255, 255, 0.08));
+  border-color: var(--ot-brand-primary-500, #0070f3);
+}
+
+.newsletterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 var(--ot-space-5, 20px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-medium, 500);
+  color: var(--ot-white, #ffffff);
+  background: var(--ot-brand-primary-500, #0070f3);
+  border: none;
+  border-radius: var(--ot-radius-md, 8px);
+  cursor: pointer;
+  transition:
+    background var(--ot-duration-fast, 100ms) ease,
+    transform var(--ot-duration-fast, 100ms) ease;
+}
+
+.newsletterButton:hover {
+  background: var(--ot-brand-primary-400, #218bff);
+}
+
+.newsletterButton:active {
+  transform: scale(0.98);
+}
+
+.newsletterSuccess {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  color: var(--ot-color-success-text, #4ade80);
+}
+
+/* ============================================
+   LINKS SECTION
+   ============================================ */
+.footerMain {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ot-space-8, 32px);
+  padding-bottom: var(--ot-space-8, 32px);
+  margin-bottom: var(--ot-space-8, 32px);
+  border-bottom: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+}
+
+.footerMainCompact {
+  padding-bottom: var(--ot-space-4, 16px);
+  margin-bottom: var(--ot-space-4, 16px);
+}
+
+/* Link Columns */
+.linksContainer {
+  display: flex;
+  gap: var(--ot-space-12, 48px);
+  flex: 1;
+}
+
+.linkColumn {
+  min-width: 140px;
+}
+
+.linkColumnTitle {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  margin-bottom: var(--ot-space-4, 16px);
+}
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ot-space-3, 12px);
+}
+
+.linkItem {
+  /* Individual link item */
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ot-space-2, 8px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  text-decoration: none;
+  transition: color var(--ot-duration-fast, 100ms) ease;
+}
+
+.link:hover {
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.linkIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.linkExternal {
+  /* External link indicator */
+}
+
+.linkDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ============================================
+   SOCIAL SECTION
+   ============================================ */
+.socialSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--ot-space-4, 16px);
+}
+
+.socialLabel {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.socialLinks {
+  display: flex;
+  gap: var(--ot-space-3, 12px);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.5));
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--ot-border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: var(--ot-radius-md, 8px);
+  text-decoration: none;
+  transition:
+    color var(--ot-duration-fast, 100ms) ease,
+    background var(--ot-duration-fast, 100ms) ease,
+    border-color var(--ot-duration-fast, 100ms) ease;
+}
+
+.socialLink:hover {
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-surface-interactive-hover, rgba(255, 255, 255, 0.1));
+  border-color: var(--ot-border-default, rgba(255, 255, 255, 0.1));
+}
+
+/* ============================================
+   FOOTER BOTTOM SECTION
+   ============================================ */
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ot-space-4, 16px);
+}
+
+/* Copyright */
+.copyright {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-xs, 12px);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.4));
+}
+
+/* Version */
+.version {
+  font-family: var(--ot-font-mono);
+  font-size: var(--ot-font-size-xs, 12px);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.4));
+  padding: var(--ot-space-1, 4px) var(--ot-space-2, 8px);
+  background: var(--ot-surface-glass, rgba(255, 255, 255, 0.03));
+  border-radius: var(--ot-radius-sm, 4px);
+}
+
+/* Legal Links */
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-4, 16px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.legalLink {
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-xs, 12px);
+  color: var(--ot-text-muted, rgba(255, 255, 255, 0.4));
+  text-decoration: none;
+  transition: color var(--ot-duration-fast, 100ms) ease;
+}
+
+.legalLink:hover {
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+@media (max-width: 1024px) {
+  .footerTop {
+    flex-direction: column;
+    gap: var(--ot-space-6, 24px);
+  }
+
+  .brandSection {
+    max-width: 100%;
+  }
+
+  .newsletter {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .newsletterForm {
+    width: 100%;
+  }
+
+  .newsletterInput {
+    flex: 1;
+    width: auto;
+  }
+
+  .footerMain {
+    flex-direction: column;
+    gap: var(--ot-space-6, 24px);
+  }
+
+  .linksContainer {
+    flex-wrap: wrap;
+    gap: var(--ot-space-8, 32px);
+  }
+
+  .socialSection {
+    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ot-space-4, 16px);
+  }
+}
+
+@media (max-width: 768px) {
+  .footerInner {
+    padding: var(--ot-space-8, 32px) var(--ot-space-4, 16px);
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ot-space-3, 12px);
+  }
+
+  .linksContainer {
+    flex-direction: column;
+    gap: var(--ot-space-6, 24px);
+  }
+
+  .linkColumn {
+    min-width: 100%;
+  }
+
+  .newsletterForm {
+    flex-direction: column;
+  }
+
+  .newsletterInput {
+    width: 100%;
+  }
+
+  .newsletterButton {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+.link:focus-visible,
+.socialLink:focus-visible,
+.newsletterInput:focus-visible,
+.newsletterButton:focus-visible,
+.legalLink:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-brand-primary-500));
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .newsletterButton {
+    transition: none;
+  }
+}
+
+/* ============================================
+   AI-READABLE DATA ATTRIBUTES
+   Helper classes for AI agents
+   ============================================ */
+[data-ai-footer] {
+  /* Exposes footer structure for AI parsing */
+}
+
+[data-ai-footer-section] {
+  /* Exposes individual sections */
+}
+
+[data-ai-link-category] {
+  /* Exposes link category */
+}

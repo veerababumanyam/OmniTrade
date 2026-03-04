@@ -1,0 +1,598 @@
+/**
+ * Notification Component Styles
+ * Liquid Glass Design System
+ * Macro-Volume Organism - Z-axis: translateZ(48px)
+ *
+ * Enhanced toast notifications with rich content support
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Container (Position Wrapper)
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  position: fixed;
+  z-index: var(--ot-z-toast, 9999);
+  display: flex;
+  pointer-events: none;
+  font-family: var(--ot-font-sans);
+}
+
+/* Position: Top */
+.container--top {
+  top: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Position: Bottom */
+.container--bottom {
+  bottom: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Position: Top variants */
+.container--top-left {
+  top: var(--ot-space-6);
+  left: var(--ot-space-6);
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.container--top-right {
+  top: var(--ot-space-6);
+  right: var(--ot-space-6);
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+
+.container--top-center {
+  top: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+/* Position: Bottom variants */
+.container--bottom-left {
+  bottom: var(--ot-space-6);
+  left: var(--ot-space-6);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.container--bottom-right {
+  bottom: var(--ot-space-6);
+  right: var(--ot-space-6);
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.container--bottom-center {
+  bottom: var(--ot-space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Position: Side variants */
+.container--left {
+  top: 50%;
+  left: var(--ot-space-6);
+  transform: translateY(-50%);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.container--right {
+  top: 50%;
+  right: var(--ot-space-6);
+  transform: translateY(-50%);
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Position: Center */
+.container--center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Notification Item
+   ═══════════════════════════════════════════════════════════════ */
+
+.notification {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ot-space-3);
+  width: 380px;
+  max-width: calc(100vw - var(--ot-space-12));
+  padding: var(--ot-space-4);
+  background: var(--ot-surface-elevated, rgba(30, 30, 40, 0.95));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-xl, 16px);
+  box-shadow:
+    var(--ot-shadow-xl, 0 20px 40px rgba(0, 0, 0, 0.25)),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  transform: translateZ(48px);
+  pointer-events: auto;
+  overflow: hidden;
+  transition: box-shadow var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.notification:hover {
+  box-shadow:
+    var(--ot-shadow-xl, 0 20px 40px rgba(0, 0, 0, 0.3)),
+    0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Animation states */
+.notification[data-state='entering'] {
+  animation: notificationEnter var(--ot-duration-slow, 300ms) var(--ot-spring-bouncy, cubic-bezier(0.34, 1.56, 0.64, 1)) forwards;
+}
+
+.notification[data-state='entered'] {
+  opacity: 1;
+  transform: translateZ(48px) translateX(0) scale(1);
+}
+
+.notification[data-state='exiting'] {
+  animation: notificationExit var(--ot-duration-fast, 200ms) var(--ot-spring-gentle, ease-out) forwards;
+}
+
+/* Position-specific animations */
+.notification--position-top-right[data-state='entering'],
+.notification--position-top-left[data-state='entering'],
+.notification--position-right[data-state='entering'],
+.notification--position-bottom-right[data-state='entering'],
+.notification--position-bottom-left[data-state='entering'],
+.notification--position-left[data-state='entering'] {
+  animation: notificationSlideInRight var(--ot-duration-slow, 300ms) var(--ot-spring-bouncy, cubic-bezier(0.34, 1.56, 0.64, 1)) forwards;
+}
+
+.notification--position-top-center[data-state='entering'],
+.notification--position-bottom-center[data-state='entering'],
+.notification--position-center[data-state='entering'],
+.notification--position-top[data-state='entering'],
+.notification--position-bottom[data-state='entering'] {
+  animation: notificationFadeIn var(--ot-duration-slow, 300ms) var(--ot-spring-bouncy, cubic-bezier(0.34, 1.56, 0.64, 1)) forwards;
+}
+
+@keyframes notificationSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) translateX(100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) translateX(0) scale(1);
+  }
+}
+
+@keyframes notificationSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) translateX(-100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) translateX(0) scale(1);
+  }
+}
+
+@keyframes notificationFadeIn {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) translateY(0) scale(1);
+  }
+}
+
+@keyframes notificationEnter {
+  from {
+    opacity: 0;
+    transform: translateZ(48px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(48px) scale(1);
+  }
+}
+
+@keyframes notificationExit {
+  from {
+    opacity: 1;
+    transform: translateZ(48px) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateZ(48px) scale(0.95);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Type variants - left border accent */
+.notification--success {
+  border-left: 3px solid var(--ot-color-quantum-500, #10b981);
+}
+
+.notification--error {
+  border-left: 3px solid var(--ot-color-entropy-500, #ef4444);
+}
+
+.notification--warning {
+  border-left: 3px solid var(--ot-color-flux-500, #f59e0b);
+}
+
+.notification--info {
+  border-left: 3px solid var(--ot-color-photon-500, #3b82f6);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Icon
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+}
+
+.icon--success {
+  color: var(--ot-color-quantum-500, #10b981);
+}
+
+.icon--error {
+  color: var(--ot-color-entropy-500, #ef4444);
+}
+
+.icon--warning {
+  color: var(--ot-color-flux-500, #f59e0b);
+}
+
+.icon--info {
+  color: var(--ot-color-photon-500, #3b82f6);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Image
+   ═══════════════════════════════════════════════════════════════ */
+
+.image {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--ot-radius-md, 8px);
+  object-fit: cover;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Content
+   ═══════════════════════════════════════════════════════════════ */
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ot-font-size-sm, 14px);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  line-height: var(--ot-line-height-snug, 1.35);
+}
+
+.description {
+  margin: var(--ot-space-1, 4px) 0 0;
+  font-size: var(--ot-font-size-sm, 14px);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+  line-height: var(--ot-line-height-normal, 1.5);
+  word-wrap: break-word;
+}
+
+/* Rich HTML content */
+.description h1,
+.description h2,
+.description h3,
+.description h4 {
+  margin: var(--ot-space-2, 8px) 0 var(--ot-space-1, 4px);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.description p {
+  margin: var(--ot-space-1, 4px) 0;
+}
+
+.description a {
+  color: var(--ot-color-photon-400, #60a5fa);
+  text-decoration: underline;
+}
+
+.description a:hover {
+  color: var(--ot-color-photon-300, #93c5fd);
+}
+
+.description strong {
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.description code {
+  padding: 2px 6px;
+  background: var(--ot-glass-surface-2, rgba(255, 255, 255, 0.08));
+  border-radius: var(--ot-radius-sm, 4px);
+  font-family: var(--ot-font-mono);
+  font-size: 0.9em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Countdown Timer
+   ═══════════════════════════════════════════════════════════════ */
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-1, 4px);
+  margin-top: var(--ot-space-2, 8px);
+  font-size: var(--ot-font-size-xs, 12px);
+  color: var(--ot-text-tertiary, rgba(255, 255, 255, 0.5));
+}
+
+.countdownIcon {
+  width: 12px;
+  height: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Actions
+   ═══════════════════════════════════════════════════════════════ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-2, 8px);
+  margin-top: var(--ot-space-3, 12px);
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ot-space-1, 4px);
+  padding: var(--ot-space-1, 4px) var(--ot-space-3, 12px);
+  background: transparent;
+  border: 1px solid var(--ot-glass-edge-dark, rgba(255, 255, 255, 0.1));
+  border-radius: var(--ot-radius-md, 8px);
+  font-size: var(--ot-font-size-xs, 12px);
+  font-weight: var(--ot-font-weight-medium, 500);
+  font-family: var(--ot-font-sans);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+  cursor: pointer;
+  transition: all var(--ot-duration-fast, 150ms) var(--ot-spring-default, ease-out);
+}
+
+.actionButton:hover {
+  background: var(--ot-interactive-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--ot-glass-edge-light, rgba(255, 255, 255, 0.15));
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.actionButton:active {
+  background: var(--ot-interactive-active, rgba(255, 255, 255, 0.12));
+}
+
+.actionButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-color-photon-500));
+}
+
+.actionButton--primary {
+  background: var(--ot-color-photon-500, #3b82f6);
+  border-color: var(--ot-color-photon-500, #3b82f6);
+  color: var(--ot-text-inverse, #ffffff);
+}
+
+.actionButton--primary:hover {
+  background: var(--ot-color-photon-600, #2563eb);
+  border-color: var(--ot-color-photon-600, #2563eb);
+}
+
+.actionButton--danger {
+  background: var(--ot-color-entropy-500, #ef4444);
+  border-color: var(--ot-color-entropy-500, #ef4444);
+  color: var(--ot-text-inverse, #ffffff);
+}
+
+.actionButton--danger:hover {
+  background: var(--ot-color-entropy-600, #dc2626);
+  border-color: var(--ot-color-entropy-600, #dc2626);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Close Button
+   ═══════════════════════════════════════════════════════════════ */
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-md, 8px);
+  color: var(--ot-text-tertiary, rgba(255, 255, 255, 0.5));
+  cursor: pointer;
+  transition: all var(--ot-duration-fast, 150ms) var(--ot-spring-default, ease-out);
+  flex-shrink: 0;
+}
+
+.closeButton:hover {
+  background: var(--ot-interactive-hover, rgba(255, 255, 255, 0.08));
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+.closeButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-color-photon-500));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Progress Bar
+   ═══════════════════════════════════════════════════════════════ */
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--ot-color-photon-500, #3b82f6);
+  border-radius: 0 var(--ot-radius-sm, 4px) 0 0;
+  transform-origin: left;
+  transition: transform linear;
+}
+
+.progressBar--success {
+  background: var(--ot-color-quantum-500, #10b981);
+}
+
+.progressBar--error {
+  background: var(--ot-color-entropy-500, #ef4444);
+}
+
+.progressBar--warning {
+  background: var(--ot-color-flux-500, #f59e0b);
+}
+
+.progressBar--info {
+  background: var(--ot-color-photon-500, #3b82f6);
+}
+
+.progressBar--paused {
+  animation-play-state: paused;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Queue Indicator
+   ═══════════════════════════════════════════════════════════════ */
+
+.queueIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ot-space-2, 8px) var(--ot-space-3, 12px);
+  background: var(--ot-glass-surface-3, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--ot-glass-edge-dark, rgba(255, 255, 255, 0.08));
+  border-radius: var(--ot-radius-lg, 12px);
+  font-size: var(--ot-font-size-xs, 12px);
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+  pointer-events: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .container {
+    left: var(--ot-space-2, 8px);
+    right: var(--ot-space-2, 8px);
+  }
+
+  .container--top,
+  .container--top-left,
+  .container--top-right,
+  .container--top-center {
+    top: var(--ot-space-2, 8px);
+    transform: none;
+  }
+
+  .container--bottom,
+  .container--bottom-left,
+  .container--bottom-right,
+  .container--bottom-center {
+    bottom: var(--ot-space-2, 8px);
+    transform: none;
+  }
+
+  .container--top-center,
+  .container--bottom-center,
+  .container--center {
+    left: var(--ot-space-2, 8px);
+    transform: none;
+  }
+
+  .container--left {
+    left: var(--ot-space-2, 8px);
+    transform: translateY(-50%);
+  }
+
+  .container--right {
+    right: var(--ot-space-2, 8px);
+    transform: translateY(-50%);
+  }
+
+  .notification {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .notification[data-state='entering'],
+  .notification[data-state='exiting'] {
+    animation: none;
+  }
+
+  .progressBar {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .notification {
+    border-width: 2px;
+  }
+
+  .notification--success,
+  .notification--error,
+  .notification--warning,
+  .notification--info {
+    border-left-width: 4px;
+  }
+}
+
+.notification:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring, 0 0 0 2px var(--ot-color-white), 0 0 0 4px var(--ot-color-photon-500));
+}

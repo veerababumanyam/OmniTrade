@@ -8,8 +8,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/cinar/indicator/v2/strategy"
-	"github.com/cinar/indicator/v2/strategy/compound"
+	"indicator/v2/strategy"
 )
 
 // Service provides strategy execution capabilities for AI agents
@@ -28,6 +27,7 @@ type StrategyType string
 const (
 	StrategyBuyAndHold StrategyType = "buy_and_hold"
 	StrategyMACDRSI    StrategyType = "macd_rsi"
+	StrategyLynch5     StrategyType = "lynch_5"
 	StrategyAnd        StrategyType = "and"
 	StrategyOr         StrategyType = "or"
 	StrategyMajority   StrategyType = "majority"
@@ -44,16 +44,16 @@ const (
 
 // StrategyResult represents the result of a strategy execution
 type StrategyResult struct {
-	Name      string              `json:"name"`
-	Actions   []Action            `json:"actions"`
-	LastAction Action             `json:"last_action"`
-	Signals   map[string]any      `json:"signals"`
-	Metadata  map[string]any      `json:"metadata,omitempty"`
+	Name       string         `json:"name"`
+	Actions    []Action       `json:"actions"`
+	LastAction Action         `json:"last_action"`
+	Signals    map[string]any `json:"signals"`
+	Metadata   map[string]any `json:"metadata,omitempty"`
 }
 
 // ExecutionRequest represents a request to execute a strategy
 type ExecutionRequest struct {
-	Strategy StrategyType  `json:"strategy"`
+	Strategy StrategyType   `json:"strategy"`
 	Params   map[string]any `json:"params"`
 	Data     *OHLCVData     `json:"data"`
 }
@@ -82,6 +82,8 @@ func (s *Service) Execute(ctx context.Context, req *ExecutionRequest) (*Strategy
 		return s.executeBuyAndHold(ctx, req)
 	case StrategyMACDRSI:
 		return s.executeMACDRSI(ctx, req)
+	case StrategyLynch5:
+		return s.executeLynch5(ctx, req)
 	default:
 		return nil, fmt.Errorf("unknown strategy type: %s", req.Strategy)
 	}

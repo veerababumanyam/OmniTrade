@@ -2,41 +2,41 @@
   "PreToolUse": [
     {
       "match": "Bash",
-      "command": "bash -c \"echo '[PreToolUse] About to run: $CLAUDE_TOOL_INVOCATION' >> C:\\Users\\admin\\Desktop\\OmniTrade\\.claude\\hooks\\debug.log\""
+      "command": "bash -c 'echo \"[PreToolUse] About to run: $CLAUDE_TOOL_INVOCATION\" >> \"$HOME/.claude/hooks/debug.log\"'"
     }
   ],
   "PostToolUse": [
     {
       "match": "Write|Edit",
-      "command": "bash -c \"if [[ '$CLAUDE_TOOL_NAME' == 'Write' ]] || [[ '$CLAUDE_TOOL_NAME' == 'Edit' ]]; then cd 'C:\\Users\\admin\\Desktop\\OmniTrade' && if [[ '$CLAUDE_FILE_PATH' == *.go ]]; then gofmt -w '$CLAUDE_FILE_PATH' 2>> .claude/hooks/format-errors.log; elif [[ '$CLAUDE_FILE_PATH' == *.tsx ]] || [[ '$CLAUDE_FILE_PATH' == *.ts ]]; then npx prettier --write '$CLAUDE_FILE_PATH' 2>> .claude/hooks/format-errors.log; fi; fi\""
+      "command": "bash -c 'file=\"$CLAUDE_FILE_PATH\"; ext=\"${file##*.}\"; if [ \"$ext\" = \"go\" ]; then gofmt -w \"$file\" 2>> \"$HOME/.claude/hooks/format-errors.log\"; elif [ \"$ext\" = \"ts\" ] || [ \"$ext\" = \"tsx\" ]; then cd \"${file%/*}\" && npx prettier --write \"$file\" 2>> \"$HOME/.claude/hooks/format-errors.log\"; fi'"
     },
     {
       "match": "Write|Edit",
-      "command": "bash -c \"if [[ '$CLAUDE_TOOL_NAME' == 'Write' ]] || [[ '$CLAUDE_TOOL_NAME' == 'Edit' ]]; then cd 'C:\\Users\\admin\\Desktop\\OmniTrade' && if [[ '$CLAUDE_FILE_PATH' == *.go ]]; then golangci-lint run --out-format= '$CLAUDE_FILE_PATH' 2>> .claude/hooks/lint-errors.log; elif [[ '$CLAUDE_FILE_PATH' == *.tsx ]] || [[ '$CLAUDE_FILE_PATH' == *.ts ]]; then npx eslint '$CLAUDE_FILE_PATH' 2>> .claude/hooks/lint-errors.log; fi; fi\""
+      "command": "bash -c 'file=\"$CLAUDE_FILE_PATH\"; ext=\"${file##*.}\"; if [ \"$ext\" = \"go\" ]; then golangci-lint run --out-format= \"$file\" 2>> \"$HOME/.claude/hooks/lint-errors.log\"; elif [ \"$ext\" = \"ts\" ] || [ \"$ext\" = \"tsx\" ]; then cd \"${file%/*}\" && npx eslint \"$file\" 2>> \"$HOME/.claude/hooks/lint-errors.log\"; fi'"
     }
   ],
   "UserPromptSubmit": [
     {
       "match": ".*",
-      "command": "bash -c \"echo '[UserPromptSubmit] User submitted: $CLAUDE_USER_MESSAGE' >> C:\\Users\\admin\\Desktop\\OmniTrade\\.claude\\hooks\\conversation.log\""
+      "command": "bash -c 'echo \"[UserPromptSubmit] User submitted: $CLAUDE_USER_MESSAGE\" >> \"$HOME/.claude/hooks/conversation.log\"'"
     }
   ],
   "SessionStart": [
     {
       "match": ".*",
-      "command": "bash -c \"echo '[SessionStart] New session started at $(date -Iseconds)' >> C:\\Users\\admin\\Desktop\\OmniTrade\\.claude\\hooks\\session.log\""
+      "command": "bash -c 'echo \"[SessionStart] New session started at $(date -Iseconds)\" >> \"$HOME/.claude/hooks/session.log\"'"
     }
   ],
   "AgentTaskStart": [
     {
       "match": ".*",
-      "command": "bash -c \"echo '[AgentTaskStart] Agent: $CLAUDE_AGENT_NAME, Task: $CLAUDE_TASK_DESCRIPTION' >> C:\\Users\\admin\\Desktop\\OmniTrade\\.claude\\hooks\\agent-tasks.log\""
+      "command": "bash -c 'echo \"[AgentTaskStart] Agent: $CLAUDE_AGENT_NAME, Task: $CLAUDE_TASK_DESCRIPTION\" >> \"$HOME/.claude/hooks/agent-tasks.log\"'"
     }
   ],
   "AgentTaskComplete": [
     {
       "match": ".*",
-      "command": "bash -c \"echo '[AgentTaskComplete] Agent: $CLAUDE_AGENT_NAME, Duration: $CLAUDE_TASK_DURATION' >> C:\\Users\\admin\\Desktop\\OmniTrade\\.claude\\hooks\\agent-tasks.log\""
+      "command": "bash -c 'echo \"[AgentTaskComplete] Agent: $CLAUDE_AGENT_NAME, Duration: $CLAUDE_TASK_DURATION\" >> \"$HOME/.claude/hooks/agent-tasks.log\"'"
     }
   ]
 }

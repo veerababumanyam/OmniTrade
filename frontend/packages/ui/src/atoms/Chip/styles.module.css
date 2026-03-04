@@ -1,0 +1,332 @@
+/**
+ * Chip Component Styles
+ * Liquid Glass Design System - OmniTrade
+ * Atomic Component - Z-axis: translateZ(2px)
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Base Chip
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ot-space-2);
+  height: 32px;
+  padding: var(--ot-space-1) var(--ot-space-3);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--ot-glass-surface-2);
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-full);
+  color: var(--ot-text-primary);
+  backdrop-filter: blur(var(--ot-glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-sm));
+  transform: translateZ(2px);
+  transition:
+    background var(--ot-duration-fast) var(--ot-spring-default),
+    border-color var(--ot-duration-fast) var(--ot-spring-default),
+    box-shadow var(--ot-duration-fast) var(--ot-spring-default),
+    transform var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Size Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip--sm {
+  height: 24px;
+  padding: 2px var(--ot-space-2);
+  font-size: var(--ot-font-size-xs);
+  gap: var(--ot-space-1);
+}
+
+.chip--md {
+  height: 32px;
+  padding: var(--ot-space-1) var(--ot-space-3);
+  font-size: var(--ot-font-size-sm);
+}
+
+.chip--lg {
+  height: 40px;
+  padding: var(--ot-space-2) var(--ot-space-4);
+  font-size: var(--ot-font-size-base);
+  gap: var(--ot-space-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Color Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip--default {
+  background: var(--ot-glass-surface-2);
+  border-color: var(--ot-glass-edge-dark);
+  color: var(--ot-text-primary);
+}
+
+.chip--primary {
+  background: rgba(0, 102, 255, 0.1);
+  border-color: var(--ot-color-photon-500);
+  color: var(--ot-color-photon-400);
+}
+
+.chip--success {
+  background: rgba(0, 255, 110, 0.1);
+  border-color: var(--ot-color-quantum-500);
+  color: var(--ot-color-quantum-400);
+}
+
+.chip--warning {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: var(--ot-color-flux-500);
+  color: var(--ot-color-flux-500);
+}
+
+.chip--error {
+  background: rgba(255, 51, 51, 0.1);
+  border-color: var(--ot-color-entropy-500);
+  color: var(--ot-color-entropy-400);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Selected State
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip--selected {
+  background: rgba(0, 102, 255, 0.2);
+  border-color: var(--ot-color-photon-400);
+  box-shadow:
+    0 0 12px rgba(0, 102, 255, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.chip--selected.chip--primary {
+  background: rgba(0, 102, 255, 0.25);
+  box-shadow:
+    0 0 12px rgba(0, 102, 255, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.chip--selected.chip--success {
+  background: rgba(0, 255, 110, 0.25);
+  border-color: var(--ot-color-quantum-400);
+  box-shadow:
+    0 0 12px rgba(0, 255, 110, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.chip--selected.chip--warning {
+  background: rgba(255, 204, 0, 0.25);
+  border-color: var(--ot-color-flux-400);
+  box-shadow:
+    0 0 12px rgba(255, 204, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.chip--selected.chip--error {
+  background: rgba(255, 51, 51, 0.25);
+  border-color: var(--ot-color-entropy-400);
+  box-shadow:
+    0 0 12px rgba(255, 51, 51, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Clickable State
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.chip--clickable:hover {
+  transform: translateZ(4px);
+  box-shadow:
+    var(--ot-shadow-md),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+.chip--clickable:active {
+  transform: translateZ(2px) scale(0.98);
+}
+
+.chip--clickable:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Disabled State
+   ═══════════════════════════════════════════════════════════════ */
+
+.chip--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Avatar
+   ═══════════════════════════════════════════════════════════════ */
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: calc(var(--ot-space-1) * -1);
+}
+
+.chip--sm .avatar {
+  margin-left: -2px;
+}
+
+.chip--lg .avatar {
+  margin-left: calc(var(--ot-space-2) * -1);
+}
+
+/* Style the avatar element within chip */
+.avatar :global(.avatar),
+.avatar > * {
+  width: 24px;
+  height: 24px;
+  font-size: var(--ot-font-size-xs);
+}
+
+.chip--sm .avatar :global(.avatar),
+.chip--sm .avatar > * {
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+
+.chip--lg .avatar :global(.avatar),
+.chip--lg .avatar > * {
+  width: 28px;
+  height: 28px;
+  font-size: var(--ot-font-size-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Icon
+   ═══════════════════════════════════════════════════════════════ */
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+.chip--sm .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.chip--lg .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Label
+   ═══════════════════════════════════════════════════════════════ */
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dismiss Button
+   ═══════════════════════════════════════════════════════════════ */
+
+.dismissButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: calc(var(--ot-space-1) * -1);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-sm);
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  transition:
+    opacity var(--ot-duration-fast) var(--ot-spring-default),
+    background var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.chip--sm .dismissButton {
+  width: 14px;
+  height: 14px;
+  margin-right: -2px;
+}
+
+.chip--lg .dismissButton {
+  width: 22px;
+  height: 22px;
+  margin-right: calc(var(--ot-space-2) * -1);
+}
+
+.dismissButton:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dismissButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ot-focus-ring);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Close Icon Sizes
+   ═══════════════════════════════════════════════════════════════ */
+
+.closeIcon {
+  width: 10px;
+  height: 10px;
+}
+
+.closeIcon--sm {
+  width: 8px;
+  height: 8px;
+}
+
+.closeIcon--lg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition: none;
+  }
+
+  .chip--clickable:hover {
+    transform: none;
+  }
+
+  .chip--clickable:active {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .chip {
+    border-width: 2px;
+  }
+}

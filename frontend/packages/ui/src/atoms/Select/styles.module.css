@@ -1,0 +1,217 @@
+/**
+ * Select Component Styles
+ * Liquid Glass Design System - OmniTrade
+ * Atomic Component - Z-axis: translateZ(2px)
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   Container
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ot-space-1);
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Label
+   ═══════════════════════════════════════════════════════════════ */
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-1);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-medium);
+  color: var(--ot-text-primary);
+  font-family: var(--ot-font-sans);
+}
+
+.required {
+  color: var(--ot-color-entropy-500);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Select Wrapper
+   ═══════════════════════════════════════════════════════════════ */
+
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Native Select
+   ═══════════════════════════════════════════════════════════════ */
+
+.select {
+  width: 100%;
+  margin: 0;
+  padding: 0 var(--ot-space-8) 0 var(--ot-space-3);
+  height: var(--ot-input-height-md, 40px);
+  font-family: var(--ot-font-sans);
+  font-size: var(--ot-font-size-sm);
+  font-weight: var(--ot-font-weight-normal);
+  color: var(--ot-text-primary);
+  background: var(--ot-glass-surface-1);
+  background-image: none;
+  border: 1px solid var(--ot-glass-edge-dark);
+  border-radius: var(--ot-radius-lg);
+  backdrop-filter: blur(var(--ot-glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-sm));
+  transform: translateZ(2px);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    border-color var(--ot-duration-fast) var(--ot-spring-default),
+    box-shadow var(--ot-duration-fast) var(--ot-spring-default),
+    background var(--ot-duration-fast) var(--ot-spring-default);
+  outline: none;
+}
+
+.select::-ms-expand {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Size Variants
+   ═══════════════════════════════════════════════════════════════ */
+
+.select--sm {
+  height: var(--ot-input-height-sm, 32px);
+  padding: 0 var(--ot-space-6) 0 var(--ot-space-2);
+  font-size: var(--ot-font-size-xs);
+  border-radius: var(--ot-radius-md);
+}
+
+.select--md {
+  height: var(--ot-input-height-md, 40px);
+  padding: 0 var(--ot-space-8) 0 var(--ot-space-3);
+}
+
+.select--lg {
+  height: var(--ot-input-height-lg, 48px);
+  padding: 0 var(--ot-space-10) 0 var(--ot-space-4);
+  font-size: var(--ot-font-size-base);
+  border-radius: var(--ot-radius-xl);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   States
+   ═══════════════════════════════════════════════════════════════ */
+
+.select:hover:not(:disabled):not(:focus) {
+  border-color: var(--ot-glass-edge-light);
+  background: var(--ot-glass-surface-2);
+}
+
+.select:focus {
+  border-color: var(--ot-color-photon-500);
+  background: var(--ot-glass-surface-2);
+  box-shadow: var(--ot-focus-ring);
+}
+
+.select--error {
+  border-color: var(--ot-color-entropy-500);
+  background: rgba(255, 0, 0, 0.05);
+}
+
+.select--error:focus {
+  border-color: var(--ot-color-entropy-500);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--ot-glass-surface-1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dropdown Icon
+   ═══════════════════════════════════════════════════════════════ */
+
+.dropdownIcon {
+  position: absolute;
+  right: var(--ot-space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ot-text-tertiary);
+  pointer-events: none;
+  transition: transform var(--ot-duration-fast) var(--ot-spring-default);
+}
+
+.selectWrapper--open .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Placeholder Option
+   ═══════════════════════════════════════════════════════════════ */
+
+.select option {
+  background: var(--ot-surface-elevated);
+  color: var(--ot-text-primary);
+  padding: var(--ot-space-2);
+}
+
+.select option:disabled {
+  color: var(--ot-text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Helper Text & Error
+   ═══════════════════════════════════════════════════════════════ */
+
+.hint {
+  font-size: var(--ot-font-size-xs);
+  color: var(--ot-text-tertiary);
+  font-family: var(--ot-font-sans);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--ot-space-1);
+  font-size: var(--ot-font-size-xs);
+  color: var(--ot-color-entropy-500);
+  font-family: var(--ot-font-sans);
+}
+
+.errorIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .select {
+    transition: none;
+  }
+
+  .dropdownIcon {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .select {
+    border-width: 2px;
+  }
+
+  .select:focus {
+    border-width: 2px;
+  }
+}

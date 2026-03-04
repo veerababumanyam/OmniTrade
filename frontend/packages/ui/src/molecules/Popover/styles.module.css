@@ -1,0 +1,421 @@
+/**
+ * Popover Component Styles
+ * Liquid Glass Design System - OmniTrade
+ *
+ * Features:
+ * - Multiple placement variants
+ * - Focus trap support
+ * - Arrow pointer
+ * - Liquid glass styling
+ */
+
+/* ========================================
+   Trigger Wrapper
+   ======================================== */
+
+.popoverTrigger {
+  display: inline-flex;
+  cursor: pointer;
+  outline: none;
+}
+
+.popoverTrigger:disabled {
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Popover Content (Portal Container)
+   ======================================== */
+
+.popoverContent {
+  z-index: var(--popover-z-index, var(--ot-z-popover, 60));
+  min-width: var(--popover-min-width, 200px);
+  max-width: var(--popover-max-width, 400px);
+  padding: var(--ot-space-4, 1rem);
+  font-family: var(--ot-font-sans, inherit);
+  font-size: var(--ot-font-size-md, 1rem);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-glass-surface-3, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  -webkit-backdrop-filter: blur(var(--ot-glass-blur-lg, 24px));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.12));
+  border-radius: var(--ot-radius-lg, 0.75rem);
+  box-shadow: var(--ot-shadow-xl, 0 20px 40px -10px rgba(0, 0, 0, 0.5));
+  outline: none;
+}
+
+/* ========================================
+   Position Variants - Offset
+   ======================================== */
+
+/* Top positions */
+.popoverContent[data-side="top"] {
+  margin-bottom: var(--popover-offset, 8px);
+}
+
+/* Bottom positions */
+.popoverContent[data-side="bottom"] {
+  margin-top: var(--popover-offset, 8px);
+}
+
+/* Left positions */
+.popoverContent[data-side="left"] {
+  margin-right: var(--popover-offset, 8px);
+}
+
+/* Right positions */
+.popoverContent[data-side="right"] {
+  margin-left: var(--popover-offset, 8px);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+.popoverContent[data-state="open"] {
+  animation: popoverFadeIn var(--ot-duration-normal, 200ms) var(--ot-ease-out, ease-out);
+}
+
+.popoverContent[data-state="closed"] {
+  animation: popoverFadeOut var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Top animations */
+.popoverContent[data-side="top"][data-state="open"] {
+  animation: popoverSlideInTop var(--ot-duration-normal, 200ms) var(--ot-spring-gentle);
+}
+
+.popoverContent[data-side="top"][data-state="closed"] {
+  animation: popoverSlideOutTop var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Bottom animations */
+.popoverContent[data-side="bottom"][data-state="open"] {
+  animation: popoverSlideInBottom var(--ot-duration-normal, 200ms) var(--ot-spring-gentle);
+}
+
+.popoverContent[data-side="bottom"][data-state="closed"] {
+  animation: popoverSlideOutBottom var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Left animations */
+.popoverContent[data-side="left"][data-state="open"] {
+  animation: popoverSlideInLeft var(--ot-duration-normal, 200ms) var(--ot-spring-gentle);
+}
+
+.popoverContent[data-side="left"][data-state="closed"] {
+  animation: popoverSlideOutLeft var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+/* Right animations */
+.popoverContent[data-side="right"][data-state="open"] {
+  animation: popoverSlideInRight var(--ot-duration-normal, 200ms) var(--ot-spring-gentle);
+}
+
+.popoverContent[data-side="right"][data-state="closed"] {
+  animation: popoverSlideOutRight var(--ot-duration-fast, 150ms) var(--ot-ease-in, ease-in);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popoverFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes popoverSlideInTop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popoverSlideOutTop {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes popoverSlideInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popoverSlideOutBottom {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+
+@keyframes popoverSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes popoverSlideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(8px) scale(0.96);
+  }
+}
+
+@keyframes popoverSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes popoverSlideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.96);
+  }
+}
+
+/* ========================================
+   Arrow
+   ======================================== */
+
+.popoverArrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--ot-glass-surface-3, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--ot-glass-edge-light, rgba(255, 255, 255, 0.12));
+  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Arrow position adjustments */
+.popoverContent[data-side="top"] .popoverArrow {
+  bottom: -6px;
+  border-top: none;
+  border-left: none;
+}
+
+.popoverContent[data-side="bottom"] .popoverArrow {
+  top: -6px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.popoverContent[data-side="left"] .popoverArrow {
+  right: -6px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.popoverContent[data-side="right"] .popoverArrow {
+  left: -6px;
+  border-right: none;
+  border-top: none;
+}
+
+/* Arrow alignment */
+.popoverContent[data-align="start"] .popoverArrow {
+  left: 16px;
+}
+
+.popoverContent[data-align="center"] .popoverArrow {
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.popoverContent[data-align="end"] .popoverArrow {
+  right: 16px;
+  left: auto;
+}
+
+/* ========================================
+   Close Button
+   ======================================== */
+
+.popoverClose {
+  position: absolute;
+  top: var(--ot-space-2, 0.5rem);
+  right: var(--ot-space-2, 0.5rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--ot-text-tertiary, rgba(255, 255, 255, 0.5));
+  background: transparent;
+  border: none;
+  border-radius: var(--ot-radius-md, 0.5rem);
+  cursor: pointer;
+  transition:
+    color var(--ot-duration-fast, 100ms),
+    background-color var(--ot-duration-fast, 100ms);
+}
+
+.popoverClose:hover {
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+  background: var(--ot-interactive-hover, rgba(255, 255, 255, 0.1));
+}
+
+.popoverClose:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ot-surface-base-solid, #09090b),
+              0 0 0 4px var(--ot-brand-primary-500);
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.popoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ot-space-3, 0.75rem);
+  padding-bottom: var(--ot-space-3, 0.75rem);
+  border-bottom: 1px solid var(--ot-glass-edge-dark, rgba(255, 255, 255, 0.06));
+}
+
+.popoverTitle {
+  margin: 0;
+  font-size: var(--ot-font-size-md, 1rem);
+  font-weight: var(--ot-font-weight-semibold, 600);
+  color: var(--ot-text-primary, rgba(255, 255, 255, 0.95));
+}
+
+/* ========================================
+   Body
+   ======================================== */
+
+.popoverBody {
+  color: var(--ot-text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.popoverFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ot-space-2, 0.5rem);
+  margin-top: var(--ot-space-4, 1rem);
+  padding-top: var(--ot-space-3, 0.75rem);
+  border-top: 1px solid var(--ot-glass-edge-dark, rgba(255, 255, 255, 0.06));
+}
+
+/* ========================================
+   Overlay (for modal mode)
+   ======================================== */
+
+.popoverOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--popover-z-index, var(--ot-z-popover, 60)) - 1);
+  background: transparent;
+}
+
+/* ========================================
+   Reduced Motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .popoverContent {
+    animation: none !important;
+  }
+
+  .popoverContent[data-state="open"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .popoverContent[data-state="closed"] {
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   Dark Mode Adjustments
+   ======================================== */
+
+[data-theme="dark"] .popoverContent {
+  background: var(--ot-glass-surface-4, rgba(0, 0, 0, 0.85));
+}
+
+[data-theme="dark"] .popoverArrow {
+  background: var(--ot-glass-surface-4, rgba(0, 0, 0, 0.85));
+}
+
+/* ========================================
+   Light Mode Adjustments
+   ======================================== */
+
+[data-theme="light"] .popoverContent {
+  color: var(--ot-text-primary-light, rgba(0, 0, 0, 0.9));
+  background: var(--ot-surface-elevated-light, rgba(255, 255, 255, 0.95));
+  border-color: var(--ot-border-subtle-light, rgba(0, 0, 0, 0.1));
+}
+
+[data-theme="light"] .popoverArrow {
+  background: var(--ot-surface-elevated-light, rgba(255, 255, 255, 0.95));
+  border-color: var(--ot-border-subtle-light, rgba(0, 0, 0, 0.1));
+}
+
+[data-theme="light"] .popoverClose {
+  color: var(--ot-text-tertiary-light, rgba(0, 0, 0, 0.5));
+}
+
+[data-theme="light"] .popoverClose:hover {
+  color: var(--ot-text-primary-light, rgba(0, 0, 0, 0.9));
+  background: var(--ot-interactive-hover-light, rgba(0, 0, 0, 0.05));
+}

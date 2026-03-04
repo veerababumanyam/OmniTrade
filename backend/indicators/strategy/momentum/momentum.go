@@ -9,7 +9,7 @@
 //
 //	Copyright (c) 2021-2026 Onur Cinar.
 //	The source code is provided under GNU AGPLv3 License.
-//	https://github.com/cinar/indicator
+//	https://indicator
 //
 // # Disclaimer
 //
@@ -18,7 +18,7 @@
 // advice or solicitation to buy or sell any security.
 package momentum
 
-import "github.com/cinar/indicator/v2/strategy"
+import "indicator/v2/strategy"
 
 // AllStrategies returns a slice containing references to all available momentum strategies.
 func AllStrategies() []strategy.Strategy {

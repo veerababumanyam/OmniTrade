@@ -16,29 +16,29 @@
             </h1>
 
             <div id="dashboard">
-                
+
                 <div class="box">
                     <div id="chart0"></div>
-                    
+
                     <div id="controls"></div>
-                    
+
                 </div>
-                
+
                 <div class="box">
                     <div id="chart1"></div>
-                    
+
                 </div>
-                
+
                 <div class="box">
                     <div id="chart2"></div>
-                    
+
                 </div>
-                
+
                 <div class="box">
                     <div id="chart3"></div>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </section>
@@ -46,11 +46,12 @@
     <footer class="footer">
         <div class="content has-text-centered">
             <p>
-                <strong><a href="https://github.com/cinar/indicator">Indicator</a></strong> Copyright (c) 2021-2023 Onur Cinar. The source code is provided under GNU AGPLv3 License. 
+                <strong><a href="https://indicator">Indicator</a></strong> Copyright (c) 2021-2023 Onur Cinar. The
+                source code is provided under GNU AGPLv3 License.
             </p>
-			<p>
-				2026-02-24 22:52:54.914834612 -0800 PST m=+0.088833868
-			</p>
+            <p>
+                2026-02-24 22:52:54.914834612 -0800 PST m=+0.088833868
+            </p>
         </div>
     </footer>
 
@@ -68,7 +69,7 @@
         function drawDashboard() {
             var dashboard = new google.visualization.Dashboard(document.getElementById("dashboard"));
 
-            
+
             var chart0 = new google.visualization.ChartWrapper({
                 "chartType": "LineChart",
                 "containerId": "chart0",
@@ -77,21 +78,21 @@
                     "legend": {
                         "position": "right",
                     },
-                    "height": 
+                    "height":
                         400,
                 },
                 "view": {
                     "columns": [
                         0,
-                        
+
                         1,
-                        
+
                         4,
-                        
+
                     ]
                 },
             });
-            
+
             var chart1 = new google.visualization.ChartWrapper({
                 "chartType": "LineChart",
                 "containerId": "chart1",
@@ -100,21 +101,21 @@
                     "legend": {
                         "position": "right",
                     },
-                    "height": 
+                    "height":
                         200,
                 },
                 "view": {
                     "columns": [
                         0,
-                        
+
                         2,
-                        
+
                         4,
-                        
+
                     ]
                 },
             });
-            
+
             var chart2 = new google.visualization.ChartWrapper({
                 "chartType": "LineChart",
                 "containerId": "chart2",
@@ -123,21 +124,21 @@
                     "legend": {
                         "position": "right",
                     },
-                    "height": 
+                    "height":
                         200,
                 },
                 "view": {
                     "columns": [
                         0,
-                        
+
                         3,
-                        
+
                         4,
-                        
+
                     ]
                 },
             });
-            
+
             var chart3 = new google.visualization.ChartWrapper({
                 "chartType": "LineChart",
                 "containerId": "chart3",
@@ -146,19 +147,19 @@
                     "legend": {
                         "position": "right",
                     },
-                    "height": 
+                    "height":
                         200,
                 },
                 "view": {
                     "columns": [
                         0,
-                        
+
                         5,
-                        
+
                     ]
                 },
             });
-            
+
 
             var rangeFilter = new google.visualization.ControlWrapper({
                 "controlType": "ChartRangeFilter",
@@ -179,40 +180,40 @@
             // Create the data table.
             var data = new google.visualization.DataTable();
             data.addColumn("date", "Date");
-            
+
             data.addColumn({
                 "type": "number",
                 "label": "Close",
                 "role": "data",
             });
-            
+
             data.addColumn({
                 "type": "number",
                 "label": "Money Flow Index",
                 "role": "data",
             });
-            
+
             data.addColumn({
                 "type": "number",
                 "label": "%B",
                 "role": "data",
             });
-            
+
             data.addColumn({
                 "type": "string",
                 "label": "",
                 "role": "annotation",
             });
-            
+
             data.addColumn({
                 "type": "number",
                 "label": "Outcome",
                 "role": "data",
             });
-            
 
-            
+
+
             data.addRow([
                 new Date("2022-12-20"),
-                
-                
+
+    
