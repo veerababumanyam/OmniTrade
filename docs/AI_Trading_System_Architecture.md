@@ -1,0 +1,81 @@
+# AI Trading System Architecture & Research
+
+## 1. Executive Summary
+This document outlines the findings from an extensive research phase covering state-of-the-art AI trading repositories and frameworks. Based on these insights, we present a comprehensive architecture proposal for developing a modern, AI-powered quantitative trading and analysis application.
+
+## 2. Key Research Findings
+
+Our research surveyed several cutting-edge open-source projects including FinGPT, Qlib, Claude Code Trading Terminal, AI Hedge Fund, FinMem, and various agentic frameworks. 
+
+### 2.1 Multi-Agent Systems (MAS)
+Modern financial AI heavily relies on multi-agent architectures rather than monolithic LLMs.
+- **Specialized Roles**: Systems like `ai-hedge-fund` and `equity-research-agent` utilize distinct agents for specific tasks (e.g., Fundamental Analyst, Technical Analyst, Risk Manager, Portfolio Manager).
+- **Debate and Consensus**: Agents often debate or aggregated their signals to form a final trading decision, reducing hallucinations and improving robustness.
+
+### 2.2 Retrieval-Augmented Generation (RAG)
+LLMs are inherently limited by their training data cutoff. RAG is critical for real-time finance.
+- **News & Sentiment**: Using APIs (like Tavily, NewsAPI) to fetch current articles and feeding them to LLMs for sentiment scoring.
+- **Financial Documents**: Parsing SEC filings, earnings call transcripts, and research reports to extract fundamental data.
+
+### 2.3 Financial LLMs and Fine-tuning
+- **FinGPT**: Demonstrates that lightweight adaptation (LoRA/QLoRA) of open-source models (like LLaMA-3) on financial data is more cost-effective and sometimes more performant than using general-purpose models like GPT-4 for specific financial tasks.
+- **Sentiment & Forecasting**: Models fine-tuned specifically for financial sentiment analysis and stock price forecasting are readily available.
+
+### 2.4 Quantitative Pipelines
+- **Qlib Componentization**: A full quantitative pipeline requires distinct components: Data Processing (feature engineering), ML Model Training (supervised/RL), Backtesting, and Online Serving (live trading).
+- **Model Variety**: Integrating traditional quant models (LightGBM, XGBoost) alongside deep learning and LLM-based signals provides a balanced approach.
+
+### 2.5 Real-Time Trading Terminals
+- **Institutional Grade Pipelines**: Projects like `claude-code-trading-terminal` highlight the need for robust real-time data ingestion using WebSockets, data normalization, and message queues (like Redis/Kafka).
+- **Execution & Risk Management**: Dedicated modules for executing trades across exchanges (CEX/DEX) and monitoring risk limits in real-time are essential.
+
+## 3. Proposed Application Architecture
+
+Based on the research, we propose a modular, three-plane architecture for the application, adhering to the "Liquid Glass" design principles and prioritizing security/auditability.
+
+### 3.1 The Three-Plane Architecture
+
+1. **Data Plane (Read-Only AI Access)**
+   - **Market Data ingestion**: Real-time WebSockets (e.g., Binance, Polygon) and historical data APIs.
+   - **Alternative Data**: News feeds, SEC filings, social sentiment.
+   - **Database**: PostgreSQL (via `sqlx`) for structured data, vector database (e.g., pgvector or Milvus) for RAG document embeddings.
+   - *Constraint*: AI agents operate with a strictly read-only database role (`medisync_readonly`).
+
+2. **Intelligence Plane (Genkit Flows)**
+   - **Multi-Agent Orchestrator**: Built using Google Genkit, managing specialized agents.
+   - **Agents**:
+     - *Data Retrieval Agent*: Fetches live price/news data.
+     - *Fundamental Agent*: Analyzes financial statements via RAG.
+     - *Quantitative Agent*: Runs statistical/ML models.
+     - *Risk Analyst*: Evaluates portfolio exposure.
+     - *Portfolio Manager*: Aggregates signals and proposes trades.
+   - **LLM Options**: Support for multiple providers (Anthropic, Gemini, OpenAI, local Ollama) based on the task's complexity vs. cost.
+
+3. **Action Plane (Human-in-the-loop)**
+   - **Trade Proposal Generation**: The Intelligence Plane proposes trades with full reasoning and confidence scores.
+   - **Approval Workflow**: No trades are executed without explicit human approval.
+   - **Execution Engine**: Interfaces with broker APIs once approved.
+   - **Audit Log**: Every AI decision, retrieved context, and human action is logged to an immutable audit table.
+
+### 3.2 Tech Stack
+- **Backend**: Go (1.26+), `go-chi` for routing, `sqlx` for database access, Google Genkit (Go SDK) for AI workflows.
+- **Frontend**: React 19, Vite, Vanilla CSS with "Liquid Glass" aesthetic (glassmorphism, modern typography, micro-animations).
+- **Infrastructure**: Docker for containerization, Redis for caching/queues.
+
+## 4. Development Roadmap
+
+1. **Phase 1: Foundation & Data**
+   - Setup Go backend and React frontend.
+   - Implement database schema and read-only roles.
+   - Build data ingestion pipelines for historical and real-time stock data.
+2. **Phase 2: Intelligence Plane (Core Agents)**
+   - Initialize Google Genkit.
+   - Develop the Data Retrieval and Quantitative Analyst agents.
+   - Implement basic RAG for financial news sentiment.
+3. **Phase 3: Multi-Agent Orchestration & Action Plane**
+   - Develop the Portfolio Manager agent to synthesize signals.
+   - Build the Human-In-The-Loop approval UI.
+   - Implement the immutable audit logging system.
+4. **Phase 4: Refinement & Premium UI**
+   - Polish the React frontend to achieve the "Liquid Glass" standard.
+   - Add comprehensive backtesting visualization.
