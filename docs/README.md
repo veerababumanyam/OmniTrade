@@ -32,3 +32,4 @@ This documentation is organized by domain for optimal semantic retrieval:
 - **guides/** - Procedural and how-to content
 - **plans/** - Active design work and ADRs
 - **reference/** - Static reference material
+- **TradingAgent/** - Trading agent documentation
