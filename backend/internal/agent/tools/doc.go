@@ -1,7 +1,7 @@
 // Package tools provides a plugin architecture for AI agent tools in the OmniTrade platform.
 //
 // The tools package implements a layered architecture for tool registration, execution, and permission management
-// with proper Google Genkit/ADK wrapping. It is designed to support the Three-Plane Architecture of OmniTrade:
+// with proper LiteLLM integration. It is designed to support the Three-Plane Architecture of OmniTrade:
 // Data Plane (Read-Only), Intelligence Plane, and Action Plane (HITL).
 //
 // # Architecture Overview
@@ -10,7 +10,7 @@
 //
 //   - definition.go: Core tool definition types and interfaces
 //   - registry.go: Central registry for tool registration and discovery
-//   - executor.go: Tool execution with Genkit integration
+//   - executor.go: Tool execution with batch and streaming support
 //   - permissions.go: Role-based access control and permission management
 //   - categories/: Tool implementations organized by functional category
 //
@@ -108,12 +108,10 @@
 //   - high: Significant impact, requires HITL approval
 //   - critical: Maximum impact, always requires human approval
 //
-// # Genkit Integration
+// # LiteLLM Integration
 //
-// Tools are automatically registered as Genkit flows for AI orchestration:
-//
-//	executor := tools.NewGenkitExecutor(g, registry, config)
-//	executor.RegisterWithGenkit()
+// Tools are executed through the registry and can be orchestrated via the LiteLLM Gateway
+// for AI-powered analysis and decision making.
 //
 // # Best Practices
 //

@@ -6,7 +6,6 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=for-the-badge&logo=go)](https://go.dev/)
 [![React Version](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![Genkit](https://img.shields.io/badge/Google-Genkit_1.4-4285F4?style=for-the-badge&logo=google)](https://firebase.google.com/docs/genkit)
 [![Quality](https://img.shields.io/badge/Quality-90%25+-success?style=for-the-badge)](./.specswarm/quality-standards.md)
 [![Design](https://img.shields.io/badge/Design-GenUI_%26_Spatial-FF69B4?style=for-the-badge)](./docs/frontend/08_UI_UX_Design_Standards_2026.md)
 
@@ -32,7 +31,7 @@ Our UI follows the **2026 Generative, Spatial, and Neuro-Adaptive Standards**. I
 OmniTrade is engineered for security and precision:
 
 1.  **📡 Data Plane (Read-Only)**: Real-time ingestion of market OHLCV, SEC filings, and global news. Agents operate via the `medisync_readonly` role, ensuring zero unauthorized mutations.
-2.  **🧠 Intelligence Plane**: A Google Genkit-powered Multi-Agent System (MAS). Specialized analysts (Fundamental, Technical, Sentiment) engage in a "Debate Topology" to reach high-conviction consensus.
+2.  **🧠 Intelligence Plane**: A Multi-Agent System (MAS) powered by LiteLLM. Specialized analysts (Fundamental, Technical, Sentiment) engage in a "Debate Topology" to reach high-conviction consensus.
 3.  **🛡️ Action Plane (HITL)**: The execution layer. AI proposes, human approves. Every trade includes a full **Chain-of-Thought (CoT)** reasoning audit and confidence score.
 
 ---
@@ -62,12 +61,59 @@ OmniTrade is engineered for security and precision:
 
 | Component | Technology |
 | :--- | :--- |
-| **Foundation** | Go 1.26+, `go-chi`, `sqlx`, Genkit Go SDK 1.4+, Google ADK Go |
-| **Intelligence** | Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
+| **Foundation** | Go 1.26+, `go-chi`, `sqlx`, LiteLLM Gateway |
+| **Intelligence** | Google ADK-Go, Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
 | **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit, GenUI & Spatial Standards |
 | **Plugin Systems** | Claude Code Plugin, Internal Agent Plugin System, MCP Servers (5) |
 | **Protocols** | A2A (Agent-to-Agent), MCP (Model Context), ACP (Agent Client) |
 | **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs, Circuit Breaker Patterns |
+
+### Google ADK + LiteLLM Integration
+
+The Intelligence Plane is powered by **Google ADK for Go** integrated with **LiteLLM Gateway**:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      OmniTrade Intelligence Plane               │
+├─────────────────────────────────────────────────────────────────┤
+│   ┌─────────────────────────────────────────────────────────┐   │
+│   │              Google ADK-Go Agent Layer                   │   │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │   │
+│   │  │ DataFetcher │  │  RAGAgent   │  │ PortfolioMgr│      │   │
+│   │  │   Agent     │  │             │  │   Agent     │      │   │
+│   │  └─────────────┘  └─────────────┘  └─────────────┘      │   │
+│   │         │                │                │              │   │
+│   │         └────────────────┼────────────────┘              │   │
+│   │                          │                               │   │
+│   │  ┌───────────────────────▼───────────────────────┐      │   │
+│   │  │           SequentialAgent (Orchestrator)       │      │   │
+│   │  └───────────────────────┬───────────────────────┘      │   │
+│   └──────────────────────────┼──────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────▼──────────────────────────────┐   │
+│   │              LiteLLMModel (implements model.LLM)         │   │
+│   │  ┌─────────────────────────────────────────────────┐    │   │
+│   │  │  • Converts genai.Content → OpenAI format       │    │   │
+│   │  │  • Calls LiteLLM Gateway API                    │    │   │
+│   │  │  • Converts OpenAI response → LLMResponse       │    │   │
+│   │  │  • Supports SSE streaming for real-time UX      │    │   │
+│   │  └─────────────────────────────────────────────────┘    │   │
+│   └──────────────────────────┬──────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────▼──────────────────────────────┐   │
+│   │                  LiteLLM Gateway                         │   │
+│   │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐       │   │
+│   │  │ GPT-5.3 │ │Claude 4│ │Gemini 3 │ │Llama 4  │       │   │
+│   │  └─────────┘ └─────────┘ └─────────┘ └─────────┘       │   │
+│   └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Key Components:**
+- **`LiteLLMModel`**: Custom ADK model implementing `model.LLM` interface
+- **Trading Agents**: DataFetcher, RAGAnalysis, RiskAssessment, PortfolioManager
+- **TradingWorkflow**: Orchestrates multi-phase agent execution
+- **Tool Adapter**: Wraps OmniTrade tools as ADK-compatible tools
 
 ---
 

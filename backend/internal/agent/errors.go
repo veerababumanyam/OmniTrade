@@ -235,7 +235,7 @@ type AgentError struct {
 	// AgentName is the human-readable name of the agent.
 	AgentName string
 
-	// FlowName is the Genkit flow that was executing (if applicable).
+	// FlowName is the orchestration flow that was executing (if applicable).
 	FlowName string
 
 	// ExecutionPhase indicates where in the lifecycle the error occurred.

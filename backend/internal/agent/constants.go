@@ -43,15 +43,15 @@ const (
 	// Hooks can implement custom retry delay or logging.
 	HookOnToolRetry = "tool.on_retry"
 
-	// PreFlowExecute is triggered before a Genkit flow starts.
-	// Flow-level hooks are specific to Genkit orchestration.
+	// PreFlowExecute is triggered before a flow starts.
+	// Flow-level hooks are specific to orchestration.
 	HookPreFlowExecute = "flow.pre_execute"
 
-	// PostFlowExecute is triggered after a Genkit flow completes.
+	// PostFlowExecute is triggered after a flow completes.
 	// Hooks receive the flow output and can perform post-processing.
 	HookPostFlowExecute = "flow.post_execute"
 
-	// OnFlowError is triggered when a Genkit flow encounters an error.
+	// OnFlowError is triggered when a flow encounters an error.
 	// Hooks can implement flow-level error handling.
 	HookOnFlowError = "flow.on_error"
 
@@ -265,7 +265,7 @@ const (
 	// DefaultAgentTimeout is the default timeout for agent execution.
 	DefaultAgentTimeout = 2 * time.Minute
 
-	// DefaultFlowTimeout is the default timeout for Genkit flows.
+	// DefaultFlowTimeout is the default timeout for orchestration flows.
 	DefaultFlowTimeout = 5 * time.Minute
 
 	// DefaultPluginInitTimeout is the timeout for plugin initialization.
@@ -417,10 +417,10 @@ const (
 	// MetricHookErrors counts hook errors.
 	MetricHookErrors = "omnitrade.hook.errors"
 
-	// MetricFlowInvocations counts Genkit flow invocations.
+	// MetricFlowInvocations counts orchestration flow invocations.
 	MetricFlowInvocations = "omnitrade.flow.invocations"
 
-	// MetricFlowDuration records Genkit flow duration.
+	// MetricFlowDuration records orchestration flow duration.
 	MetricFlowDuration = "omnitrade.flow.duration"
 
 	// MetricPluginHealth records plugin health status.
@@ -684,10 +684,10 @@ const (
 )
 
 // ============================================================
-// GENKIT FLOW NAMES
+// FLOW NAMES
 // ============================================================
 
-// Genkit flow names for the orchestration system.
+// Flow names for the orchestration system.
 const (
 	// FlowGenerateTradeProposal is the trade proposal generation flow.
 	FlowGenerateTradeProposal = "GenerateTradeProposal"

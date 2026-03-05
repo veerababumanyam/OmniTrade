@@ -509,6 +509,12 @@ backend/
     │   ├── constants.go             # Agent roles, thresholds, configs
     │   ├── types.go                 # Typed I/O structs for all agents
     │   ├── errors.go                # Error types and handling
+    │   ├── adk/                     # Google ADK-Go Integration
+    │   │   ├── doc.go               # Package documentation
+    │   │   ├── litellm_model.go     # LiteLLM adapter implementing model.LLM
+    │   │   ├── tool_adapter.go      # OmniTrade tools → ADK tools
+    │   │   ├── agents.go            # Trading agent definitions
+    │   │   └── workflow.go          # TradingWorkflow orchestration
     │   ├── tools/                   # Genkit tools
     │   │   ├── definition.go        # Tool schema definitions
     │   │   ├── executor.go          # Tool execution logic
@@ -553,6 +559,66 @@ backend/
 ```
 Request → Logger → Recoverer → RequestID → RealIP → CORS → JWT Auth → Handler
 ```
+
+---
+
+## 4.5 Google ADK-Go Integration (New)
+
+OmniTrade integrates **Google Agent Development Kit (ADK) for Go** to provide structured multi-agent orchestration while maintaining LiteLLM Gateway for LLM routing.
+
+### Architecture
+
+```mermaid
+graph TB
+    subgraph "ADK Agent Layer"
+        DF["DataFetcher<br/>Agent"]
+        RAG["RAGAnalysis<br/>Agent"]
+        RA["RiskAssessment<br/>Agent"]
+        PM["PortfolioManager<br/>Agent"]
+        WF["TradingWorkflow<br/>(Orchestrator)"]
+    end
+
+    subgraph "ADK Model Layer"
+        LLM["LiteLLMModel<br/>(implements model.LLM)"]
+    end
+
+    subgraph "LLM Gateway"
+        LITELLM["LiteLLM Gateway<br/>:4000"]
+        PROVIDERS["OpenAI, Anthropic,<br/>Google, DeepSeek"]
+    end
+
+    DF --> WF
+    RAG --> WF
+    RA --> WF
+    PM --> WF
+    WF --> LLM
+    LLM --> LITELLM
+    LITELLM --> PROVIDERS
+```
+
+### Key Components
+
+| Component | File | Purpose |
+|:----------|:-----|:--------|
+| **LiteLLMModel** | `adk/litellm_model.go` | Implements `model.LLM` interface, routes to LiteLLM |
+| **OmniTradeTool** | `adk/tool_adapter.go` | Wraps OmniTrade tools as ADK-compatible tools |
+| **TradingAgents** | `adk/agents.go` | Defines DataFetcher, RAGAnalysis, RiskAssessment, PortfolioManager |
+| **TradingWorkflow** | `adk/workflow.go` | Orchestrates multi-phase agent execution |
+
+### Workflow Phases
+
+1. **DataFetcher**: Fetches market data (price, volume, orderbook)
+2. **RAGAnalysis**: Queries vector DB for historical context and sentiment
+3. **RiskAssessment**: Calculates VaR, Sharpe ratio, position sizing
+4. **PortfolioManager**: Synthesizes analysis into trade proposals
+
+### Benefits
+
+- **Native Go**: No Python bridge needed for agent orchestration
+- **Model Flexibility**: LiteLLM routes to best LLM provider
+- **Structured Agents**: ADK provides clean multi-agent patterns
+- **Tool Reuse**: Existing OmniTrade tools wrapped as ADK tools
+- **Streaming Support**: SSE streaming for real-time response display
 
 ---
 

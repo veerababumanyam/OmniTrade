@@ -1,8 +1,8 @@
 # OmniTrade Tech Stack
 
-> **Last Updated**: 2026-03-04
+> **Last Updated**: 2026-03-05
 > **Auto-Generated**: Yes
-> **Detection Source**: package.json, go.mod, README.md
+> **Detection Source**: package.json, go.mod, README.md, pyproject.toml
 
 ---
 
@@ -11,6 +11,7 @@
 - **Name**: OmniTrade
 - **Type**: Monorepo (Frontend + Backend)
 - **Architecture**: Three-Plane (Data, Intelligence, Action)
+- **Agent Framework**: Google ADK for Go + LiteLLM Gateway
 
 ---
 
@@ -72,9 +73,25 @@
 
 ### AI/ML
 
-- **Google Genkit Go SDK 1.4+**
-  - Purpose: Multi-agent orchestration
-  - Notes: Supports GPT-5.3, Claude 4.6, Gemini 3.1, Llama 4
+- **Google ADK for Go**
+  - Purpose: Multi-agent orchestration framework
+  - Notes: Native Go agent framework with `model.LLM` interface
+
+- **LiteLLM Gateway**
+  - Purpose: Multi-provider LLM routing
+  - Notes: Supports GPT-5.3, Claude 4.6, Gemini 3.1, Llama 4 via unified API
+
+- **pgvector**
+  - Purpose: Vector similarity search for PostgreSQL
+  - Notes: HNSW index for semantic search, embeddings
+
+- **pg_trgm**
+  - Purpose: Trigram-based fuzzy text matching
+  - Notes: GIN index for full-text search
+
+- **Hybrid Search (RRF)**
+  - Purpose: Dense + Sparse retrieval combination
+  - Notes: Reciprocal Rank Fusion for best-of-both search
 
 ### Testing
 
@@ -137,6 +154,8 @@
 "github.com/lib/pq"                  // PostgreSQL driver
 "github.com/redis/go-redis/v9"       // Redis client
 "github.com/google/uuid"             // UUID generation
+"google.golang.org/adk"              // Google ADK for agent orchestration
+"google.golang.org/genai"            // Google GenAI types for ADK
 ```
 
 ---

@@ -50,7 +50,7 @@ type HookEvent struct {
 	// AgentName is the human-readable name of the agent.
 	AgentName string
 
-	// FlowName is the Genkit flow being executed (if applicable).
+	// FlowName is the orchestration flow being executed (if applicable).
 	FlowName string
 
 	// Input contains the original input data for the agent execution.

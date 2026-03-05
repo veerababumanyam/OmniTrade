@@ -4,151 +4,31 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"time"
-
-	"github.com/firebase/genkit/go/genkit"
 )
 
 // ExecutorConfig configures the tool executor
 type ExecutorConfig struct {
-	DefaultTimeout     time.Duration
-	EnableCaching      bool
-	CacheTTL           time.Duration
-	MaxConcurrent      int
-	EnableRetries      bool
-	MaxRetries         int
-	RetryDelay         time.Duration
+	DefaultTimeout time.Duration
+	EnableCaching  bool
+	CacheTTL       time.Duration
+	MaxConcurrent  int
+	EnableRetries  bool
+	MaxRetries     int
+	RetryDelay     time.Duration
 }
 
 // DefaultExecutorConfig returns the default executor configuration
 func DefaultExecutorConfig() ExecutorConfig {
 	return ExecutorConfig{
-		DefaultTimeout:     30 * time.Second,
-		EnableCaching:      true,
-		CacheTTL:           5 * time.Minute,
-		MaxConcurrent:      100,
-		EnableRetries:      true,
-		MaxRetries:         3,
-		RetryDelay:         100 * time.Millisecond,
+		DefaultTimeout: 30 * time.Second,
+		EnableCaching:  true,
+		CacheTTL:       5 * time.Minute,
+		MaxConcurrent:  100,
+		EnableRetries:  true,
+		MaxRetries:     3,
+		RetryDelay:     100 * time.Millisecond,
 	}
-}
-
-// GenkitExecutor wraps tools for Google Genkit/ADK integration
-type GenkitExecutor struct {
-	registry *Registry
-	config   ExecutorConfig
-	g        *genkit.Genkit
-}
-
-// NewGenkitExecutor creates a new Genkit executor
-func NewGenkitExecutor(g *genkit.Genkit, registry *Registry, config ExecutorConfig) *GenkitExecutor {
-	if registry == nil {
-		registry = GetGlobalRegistry()
-	}
-
-	return &GenkitExecutor{
-		registry: registry,
-		config:   config,
-		g:        g,
-	}
-}
-
-// RegisterWithGenkit registers all tools as Genkit flows
-func (e *GenkitExecutor) RegisterWithGenkit() error {
-	definitions := e.registry.GetDefinitions()
-
-	for _, def := range definitions {
-		if err := e.registerToolAsFlow(def); err != nil {
-			return fmt.Errorf("failed to register tool %s: %w", def.ID, err)
-		}
-	}
-
-	log.Printf("[GenkitExecutor] Registered %d tools as Genkit flows", len(definitions))
-	return nil
-}
-
-// registerToolAsFlow registers a single tool as a Genkit flow
-func (e *GenkitExecutor) registerToolAsFlow(def *ToolDefinition) error {
-	// Create a closure to capture the tool definition
-	toolID := def.ID
-	registry := e.registry
-
-	genkit.DefineFlow(e.g,
-		fmt.Sprintf("tool_%s", toolID),
-		func(ctx context.Context, input ToolFlowInput) (*ToolFlowOutput, error) {
-			// Build execution input
-			execInput := &ExecutionInput{
-				ToolID:    toolID,
-				Arguments: input.Arguments,
-				Context: &ExecutionContext{
-					RequestID:     input.RequestID,
-					UserID:        input.UserID,
-					SessionID:     input.SessionID,
-					CorrelationID: input.CorrelationID,
-					Timestamp:     time.Now(),
-					Metadata:      input.Metadata,
-				},
-			}
-
-			// Execute via registry
-			result, err := registry.Execute(ctx, execInput)
-			if err != nil {
-				return nil, fmt.Errorf("tool execution failed: %w", err)
-			}
-
-			// Convert to flow output
-			output := &ToolFlowOutput{
-				ToolID:    result.ToolID,
-				RequestID: result.RequestID,
-				Success:   result.Success,
-				Metadata:  result.Metadata,
-			}
-
-			if result.Error != nil {
-				output.Error = &FlowError{
-					Code:    result.Error.Code,
-					Message: result.Error.Message,
-					Type:    result.Error.Type,
-				}
-			}
-
-			if result.Data != nil {
-				output.Data = result.Data
-			}
-
-			return output, nil
-		},
-	)
-
-	return nil
-}
-
-// ToolFlowInput is the input for Genkit tool flows
-type ToolFlowInput struct {
-	Arguments     map[string]interface{} `json:"arguments"`
-	RequestID     string                 `json:"request_id"`
-	UserID        string                 `json:"user_id"`
-	SessionID     string                 `json:"session_id"`
-	CorrelationID string                 `json:"correlation_id"`
-	Metadata      map[string]string      `json:"metadata,omitempty"`
-}
-
-// ToolFlowOutput is the output from Genkit tool flows
-type ToolFlowOutput struct {
-	ToolID    string          `json:"tool_id"`
-	RequestID string          `json:"request_id"`
-	Success   bool            `json:"success"`
-	Data      json.RawMessage `json:"data,omitempty"`
-	Error     *FlowError      `json:"error,omitempty"`
-	Metadata  ResultMetadata  `json:"metadata"`
-}
-
-// FlowError represents an error in a Genkit flow
-type FlowError struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-	Type    string `json:"type"`
 }
 
 // BatchExecutor handles batch execution of multiple tools
@@ -171,9 +51,9 @@ func NewBatchExecutor(registry *Registry, config ExecutorConfig) *BatchExecutor 
 
 // BatchRequest represents a batch execution request
 type BatchRequest struct {
-	Requests []*ExecutionInput `json:"requests"`
-	StopOnError bool           `json:"stop_on_error"`
-	Parallel    bool           `json:"parallel"`
+	Requests    []*ExecutionInput `json:"requests"`
+	StopOnError bool              `json:"stop_on_error"`
+	Parallel    bool              `json:"parallel"`
 }
 
 // BatchResult represents the result of a batch execution
@@ -355,20 +235,20 @@ func (se *StreamingExecutor) ExecuteStream(ctx context.Context, input *Execution
 
 // RetryPolicy defines how retries should be handled
 type RetryPolicy struct {
-	MaxRetries     int           `json:"max_retries"`
-	InitialDelay   time.Duration `json:"initial_delay"`
-	MaxDelay       time.Duration `json:"max_delay"`
-	Multiplier     float64       `json:"multiplier"`
-	RetryableErrors []string     `json:"retryable_errors"`
+	MaxRetries      int           `json:"max_retries"`
+	InitialDelay    time.Duration `json:"initial_delay"`
+	MaxDelay        time.Duration `json:"max_delay"`
+	Multiplier      float64       `json:"multiplier"`
+	RetryableErrors []string      `json:"retryable_errors"`
 }
 
 // DefaultRetryPolicy returns the default retry policy
 func DefaultRetryPolicy() RetryPolicy {
 	return RetryPolicy{
-		MaxRetries:     3,
-		InitialDelay:   100 * time.Millisecond,
-		MaxDelay:       5 * time.Second,
-		Multiplier:     2.0,
+		MaxRetries:      3,
+		InitialDelay:    100 * time.Millisecond,
+		MaxDelay:        5 * time.Second,
+		Multiplier:      2.0,
 		RetryableErrors: []string{"TIMEOUT", "RATE_LIMIT", "TEMPORARY"},
 	}
 }

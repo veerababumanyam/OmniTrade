@@ -1,6 +1,6 @@
 // Package tools provides a plugin architecture for AI agent tools in the OmniTrade platform.
 // This package implements a layered architecture for tool registration, execution, and permission management
-// with proper Google Genkit/ADK wrapping.
+// with proper LiteLLM integration.
 package tools
 
 import (

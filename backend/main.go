@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/firebase/genkit/go/genkit"
-
 	"github.com/v13478/omnitrade/backend/internal/action"
 	"github.com/v13478/omnitrade/backend/internal/agent"
 	"github.com/v13478/omnitrade/backend/internal/api"
@@ -43,12 +41,9 @@ func main() {
 		defer actionDB.Close()
 	}
 
-	// Initialize Genkit
-	g := genkit.Init(ctx)
-
-	// Initialize Agent Orchestrator with proper dependency injection
-	orchestrator := agent.NewOrchestrator(g, redisDB)
-	agent.InitOrchestrator(orchestrator)
+	// Initialize Agent Orchestrator with Redis for caching and memory
+	orchestrator := agent.NewOrchestrator(redisDB)
+	_ = orchestrator // Available for future API endpoints
 
 	// Setup REST API Core with database connection
 	apiServer := api.NewAPI(dbConn, redisDB)

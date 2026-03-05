@@ -111,9 +111,88 @@ Redis 8.x is used heavily to prevent expensive database or LLM queries for repea
 - **Semantic Caching**: Stores vectorized embeddings of recently asked Genkit queries. If a new query is highly similar (cosine similarity > 0.95), the LLM is bypassed.
 - **Session Cache**: Stores conversation context for the frontend interface.
 
-## 3. Intelligence Plane: Dify Orchestrated Agent Flows
+## 3. Intelligence Plane: Google ADK-Go + LiteLLM Gateway
 
-The orchestration relies on **Dify** as the visual control plane to manage agent interactions, utilizing Google Genkit under the hood, and **Phoenix** for observability and trace evaluation.
+The Intelligence Plane uses **Google Agent Development Kit (ADK) for Go** for multi-agent orchestration, with **LiteLLM Gateway** providing unified LLM routing.
+
+### 3.1 Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      OmniTrade Intelligence Plane               │
+├─────────────────────────────────────────────────────────────────┤
+│   ┌─────────────────────────────────────────────────────────┐   │
+│   │              Google ADK-Go Agent Layer                   │   │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐      │   │
+│   │  │ DataFetcher │  │  RAGAgent   │  │ PortfolioMgr│      │   │
+│   │  │   Agent     │  │             │  │   Agent     │      │   │
+│   │  └─────────────┘  └─────────────┘  └─────────────┘      │   │
+│   │         │                │                │              │   │
+│   │         └────────────────┼────────────────┘              │   │
+│   │                          │                               │   │
+│   │  ┌───────────────────────▼───────────────────────┐      │   │
+│   │  │           TradingWorkflow (Orchestrator)       │      │   │
+│   │  └───────────────────────┬───────────────────────┘      │   │
+│   └──────────────────────────┼──────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────▼──────────────────────────────┐   │
+│   │              LiteLLMModel (implements model.LLM)         │   │
+│   │  ┌─────────────────────────────────────────────────┐    │   │
+│   │  │  • Converts genai.Content → OpenAI format       │    │   │
+│   │  │  • Calls LiteLLM Gateway API                    │    │   │
+│   │  │  • Converts OpenAI response → LLMResponse       │    │   │
+│   │  │  • Supports SSE streaming for real-time UX      │    │   │
+│   │  └─────────────────────────────────────────────────┘    │   │
+│   └──────────────────────────┬──────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────▼──────────────────────────────┐   │
+│   │                  LiteLLM Gateway                         │   │
+│   │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐       │   │
+│   │  │ GPT-5.3 │ │Claude 4│ │Gemini 3 │ │Llama 4  │       │   │
+│   │  └─────────┘ └─────────┘ └─────────┘ └─────────┘       │   │
+│   └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 3.2 ADK Package Structure
+
+```
+backend/internal/agent/adk/
+├── doc.go              # Package documentation
+├── litellm_model.go    # LiteLLM adapter implementing model.LLM interface
+├── tool_adapter.go     # OmniTrade tools → ADK tools wrapper
+├── agents.go           # Trading agent definitions (DataFetcher, RAG, Risk, PM)
+└── workflow.go         # TradingWorkflow orchestration
+```
+
+### 3.3 Key Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| **LiteLLMModel** | `litellm_model.go` | Custom model implementing `model.LLM`, routes to LiteLLM Gateway |
+| **OmniTradeTool** | `tool_adapter.go` | Wraps OmniTrade tools as ADK-compatible tools |
+| **TradingAgents** | `agents.go` | Defines DataFetcher, RAGAnalysis, RiskAssessment, PortfolioManager |
+| **TradingWorkflow** | `workflow.go` | Orchestrates multi-phase agent execution |
+
+### 3.4 Workflow Phases
+
+1. **DataFetcher**: Fetches market data (price, volume, orderbook)
+2. **RAGAnalysis**: Queries vector DB for historical context and sentiment
+3. **RiskAssessment**: Calculates VaR, Sharpe ratio, position sizing
+4. **PortfolioManager**: Synthesizes analysis into trade proposals
+
+### 3.5 LiteLLM Gateway Integration
+
+All LLM calls route through **LiteLLM Gateway** (`http://litellm:4000`), which provides:
+- **Unified API**: OpenAI-compatible `/chat/completions` endpoint for all providers
+- **Load Balancing**: Latency-based routing, round-robin, least-busy
+- **Fallback Chains**: Automatic failover (e.g., Claude 500 → GPT-5 → DeepSeek)
+- **Cost Tracking**: Per-key, per-model token and cost tracking
+- **Virtual Keys**: Per-agent API keys with rate limits and budgets
+- **Response Caching**: Redis-backed semantic caching (TTL: 5min)
+- **Streaming Support**: SSE streaming for real-time response display
+
+### 3.6 Flow: `GenerateTradeProposal` (via ADK Workflow)
 
 ### 3.1 Flow: `GenerateTradeProposal`
 **Input Schema:**
