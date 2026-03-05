@@ -55,8 +55,8 @@ Based on the research, we propose a modular, three-plane architecture for the ap
      - China/Asia providers: DeepSeek, Zhipu, Moonshot, ByteDance, Alibaba, Baidu, Tencent, Minimax, SiliconFlow, Z.ai
      - Aggregators: OpenRouter, Together, Groq, Fireworks
      - Local: Ollama, LM Studio, vLLM, custom endpoints
-   - **Per-Agent Configuration**: Users can assign any model to any agent role.
-   - **Zero Hardcoding**: No LLM models, providers, API keys, prompts, or temperatures are hardcoded in the codebase. All configuration is stored in the database (`llm_providers`, `llm_models`, `agent_model_config`, `agent_skills` tables) and managed via the Agent Management UI at runtime.
+   - **Per-Agent Configuration**: Managed visually through Dify.
+   - **Zero Hardcoding**: No LLM models, providers, API keys, prompts, or temperatures are hardcoded in the codebase. All configuration is managed via the **Dify Dashboard** and **A2A Agent Cards** at runtime.
 
 3. **Action Plane (Human-in-the-loop)**
    - **Trade Proposal Generation**: The Intelligence Plane proposes trades with full reasoning and confidence scores.
@@ -94,4 +94,4 @@ Based on the research, we propose a modular, three-plane architecture for the ap
 5. **Phase 5: Refinement & Premium UI**
    - Polish the React frontend to achieve the "Liquid Glass" standard.
    - Add comprehensive backtesting visualization.
-   - Build the Agent Management UI for dynamic config.
+   - Integrate Phoenix observability dashboards and finalize Dify configurations.

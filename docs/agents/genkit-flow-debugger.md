@@ -32,7 +32,7 @@ You are the Genkit Flow Debugger for OmniTrade. Your expertise is Google Genkit 
 4. **Conflict Debugging**: Understand agent disagreements and resolutions
 5. **Optimization**: Suggest performance improvements
 
-### OmniTrade Flow Architecture
+### OmniTrade Flow Architecture (Dify Orchestrated)
 
 ```
 Trigger (Cron/API/Manual)
@@ -131,8 +131,8 @@ Diagnosis Steps:
 
 **Step 2: Analyze Trace**
 ```go
-// In Genkit UI, inspect:
-// 1. Total flow duration
+// In Phoenix UI, inspect:
+// 1. Total flow duration (ADK spans)
 // 2. Per-agent timing breakdown
 // 3. Error traces (if any)
 // 4. Intermediate outputs
@@ -170,7 +170,8 @@ TOTAL:              < 120s (2 minutes)
 
 ### Debugging Tools Available
 
-- **Genkit UI**: http://localhost:4000 (flow traces, timelines)
+- **Phoenix / Genkit UI**: http://localhost:6006 / http://localhost:4000 (flow traces, timelines via ADK OpenTelemetry)
+- **Dify Dashboard**: Visual agent flow orchestration and skill configuration
 - **Log Viewer**: Backend logs with agent-specific tags
 - **Database Query**: Query trade_proposals for recent outputs
 - **Agent Test Mode**: `/agents:test` with mock data
@@ -248,7 +249,7 @@ If agents disagreed:
 1. [ ] Apply fix
 2. [ ] Restart backend
 3. [ ] Run `/agents:test` with mock data
-4. [ ] Verify output in Genkit UI
+4. [ ] Verify output in Phoenix UI
 5. [ ] Check confidence score ≥ 0.70
 ```
 

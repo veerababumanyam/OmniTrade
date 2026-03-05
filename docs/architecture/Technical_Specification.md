@@ -111,9 +111,9 @@ Redis 8.x is used heavily to prevent expensive database or LLM queries for repea
 - **Semantic Caching**: Stores vectorized embeddings of recently asked Genkit queries. If a new query is highly similar (cosine similarity > 0.95), the LLM is bypassed.
 - **Session Cache**: Stores conversation context for the frontend interface.
 
-## 3. Intelligence Plane: Genkit Agent Flows
+## 3. Intelligence Plane: Dify Orchestrated Agent Flows
 
-The orchestration relies on Google Genkit to manage agent interactions.
+The orchestration relies on **Dify** as the visual control plane to manage agent interactions, utilizing Google Genkit under the hood, and **Phoenix** for observability and trace evaluation.
 
 ### 3.1 Flow: `GenerateTradeProposal`
 **Input Schema:**
@@ -156,7 +156,7 @@ The orchestration relies on Google Genkit to manage agent interactions.
 ### 4.2 Key Views
 1. **Dashboard**: High-level overview of portfolio value and currently active LLM models.
 2. **Signal Review (HITL)**: A dedicated inbox of `PENDING` trade proposals. Displays the AI's "chain-of-thought", references (links to filings), and [Approve]/[Reject] buttons.
-3. **LLM Configuration Panel**: Interface to manage LLM providers, configure API keys, and assign specific models to specific agent roles.
+3. **Dify Dashboard**: External interface (Dify) to visually orchestrate agent flows, configure LLM parameters, and connect custom tools.
 
 ## 5. Universal LLM Provider Abstraction Layer
 
@@ -583,7 +583,7 @@ func (r *AgentRouter) getProvider(providerID string) (Provider, error) {
 
 ### 6.1 LLM Routing Configuration
 
-Users configure agent-to-model mappings via the UI or configuration file:
+While Dify manages visual flows and assignments, the platform maintains default routing configurations that Dify can interact with via API:
 
 ```yaml
 # config/llm_routing.yaml
@@ -1484,13 +1484,13 @@ VLLM_BASE_URL=http://localhost:8000
 - [ ] Implement database schema with read-only roles
 - [ ] Build data ingestion pipelines
 
-### Phase 2: LLM Abstraction (Week 3-4)
-- [ ] Implement LLM Provider interface
+### Phase 2: LLM Abstraction & Orchestration (Week 3-4)
+- [ ] Implement LLM Provider interface & A2A schemas
 - [ ] Build OpenAI-compatible base provider
 - [ ] Add support for all cloud providers
-- [ ] Add support for local providers (Ollama, LMStudio)
+- [ ] Set up Dify for visual agent flow management
 - [ ] Build Agent Router with configurable mappings
-- [ ] Create LLM configuration UI
+- [ ] Setup Phoenix for trace observability
 
 ### Phase 3: Intelligence Plane (Week 5-6)
 - [ ] Initialize Google Genkit

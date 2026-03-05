@@ -51,7 +51,9 @@ graph TB
     end
 
     subgraph "Intelligence Plane — AI Orchestration"
-        GENKIT["Google Genkit<br/>Go SDK 1.4+"]
+        DIFY["Dify<br/>Control Plane (Visual UI)"]
+        GENKIT["Google Genkit & ADK<br/>Go SDK 1.4+ + OTel"]
+        PHOENIX["Phoenix<br/>LLM Observability"]
         SEMANTIC_CACHE["Semantic Cache<br/>(Redis Vector Search)"]
         ORCH["Agent Orchestrator"]
         FA["Fundamental<br/>Analyst"]
@@ -82,14 +84,16 @@ graph TB
     PG -- "readonly" --> RAG
     RAG --> FA
     RAG --> SA
+    DIFY --> ORCH
+    GENKIT --> PHOENIX
     GENKIT --> SEMANTIC_CACHE
     SEMANTIC_CACHE -- "Cache Miss" --> ORCH
     SEMANTIC_CACHE -- "Cache Hit" --> PM
-    ORCH --> FA & TA & SA & QA & RM
+    ORCH -. "A2A Protocol" .-> FA & TA & SA & QA & RM
     PG -- "readonly" --> ML
     ML --> QA
     MLFLOW -.-> ML
-    FA & TA & SA & QA & RM --> PM
+    FA & TA & SA & QA & RM -. "A2A Protocol" .-> PM
     PM --> API
     API --> FE
     FE -- "Approve/Reject" --> AUDIT
@@ -126,18 +130,16 @@ This is a foundational design principle that applies to **every layer** of the p
 | **Agent Skills** | Hardcoded tool lists | Fetch from `agent_skills` table (dynamic tool assignment) |
 | **Context Window** | Fixed values in code | Read from `llm_models.context_window` at runtime |
 
-### Agent Management UI
+### Dify Dashboard & Model Configuration
 
-A dedicated **Agent Management** view in the frontend allows users to:
+The **Dify Dashboard** provides a central control plane to visually manage the intelligence layer:
 
-1. **Add/Remove LLM Providers** — Register new providers with API keys (encrypted at rest)
-2. **Browse & Assign Models** — Assign any registered model to any agent role
-3. **Edit Agent Prompts** — Customize system prompts per agent with a live editor
-4. **Tune Parameters** — Adjust temperature, max tokens, top-p, frequency penalty per agent
-5. **Manage Skills/Tools** — Enable or disable specific tools for each agent
-6. **Test Configuration** — Send test prompts to verify agent behavior before going live
-7. **A/B Compare** — Run two model configurations side-by-side for the same agent
-8. **Import/Export** — Export agent configurations as YAML for version control
+1. **Visual Flow Builder** — Orchestrate agent reasoning steps and debate topologies via drag-and-drop.
+2. **LLM Provider Management** — Configure diverse models (OpenAI, Anthropic, Gemini, local).
+3. **Agent Prompts & Parameters** — Customize system prompts, temperature, and tokens dynamically.
+4. **Tool & Skill Assignment** — Manage the tools each agent can access during analysis.
+5. **Testing & Debugging** — Step through agent logic and trace token outputs using Phoenix integration.
+6. **Import/Export** — Manage multi-agent configurations and flows efficiently.
 
 ### Database Schema for Dynamic Configuration
 
@@ -242,6 +244,8 @@ graph LR
         TRAEFIK["Traefik 3.x<br/>Reverse Proxy<br/>:80 / :443"]
         BACKEND["Go Backend<br/>:8080"]
         LITELLM["LiteLLM AI Gateway<br/>(MIT License)<br/>:4000"]
+        DIFY["Dify<br/>Control Plane<br/>:3000"]
+        PHOENIX["Phoenix<br/>Observability<br/>:6006"]
         ML_SVC["ML Service<br/>Python/FastAPI<br/>:8000"]
         MLFLOW_SVC["MLflow<br/>:5000"]
         FRONTEND["React/Vite<br/>:5173"]
@@ -260,6 +264,8 @@ graph LR
     TRAEFIK --> FRONTEND
     TRAEFIK --> ML_SVC
     TRAEFIK --> LITELLM
+    TRAEFIK --> DIFY
+    TRAEFIK --> PHOENIX
     BACKEND --> LITELLM
     LITELLM --> OLLAMA
     LITELLM --> DB
@@ -268,6 +274,8 @@ graph LR
     BACKEND --> REDIS2
     BACKEND --> MINIO2
     BACKEND --> ML_SVC
+    BACKEND -. "OTel Traces" .-> PHOENIX
+    DIFY --> BACKEND
     ML_SVC --> DB
     ML_SVC --> REDIS2
     MLFLOW_SVC --> DB
@@ -389,6 +397,38 @@ services:
       - "5000:5000"
     volumes:
       - mlflow_artifacts:/mlflow-artifacts
+
+  # ── Dify AI Workflow Builder ────────────────────
+  dify:
+    image: langgenius/dify:latest
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_started }
+    ports:
+      - "3000:3000"    # Web UI
+      - "5001:5001"    # API
+    environment:
+      DB_USERNAME: omnitrade
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: omnitrade_dify
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    labels:
+      - "traefik.http.routers.dify.rule=PathPrefix(`/dify`)"
+
+  # ── Phoenix AI Observability ────────────────────
+  phoenix:
+    image: arizeai/phoenix:latest
+    ports:
+      - "6006:6006"
+      - "4317:4317"    # OTLP gRPC for ADK traces
+      - "4318:4318"    # OTLP HTTP for ADK traces
+    environment:
+      PHOENIX_COLLECTOR_ENDPOINT: "http://0.0.0.0:4317"
+    labels:
+      - "traefik.http.routers.phoenix.rule=PathPrefix(`/phoenix`)"
 
   # ── LiteLLM AI Gateway (MIT License) ────────────────────
   # Universal LLM proxy supporting 100+ providers.
@@ -668,7 +708,7 @@ graph TD
 |:-----|:--------|
 | **Dashboard** | Portfolio P&L, live prices, active agent models |
 | **Signal Review (HITL Inbox)** | Queue of PENDING trade proposals with Chain-of-Thought, source citations, and Approve/Reject buttons |
-| **Agent Management** | Configure agent models, prompts, temperatures, skills, A/B compare (see [§2.1](#21-architectural-invariant-zero-hardcoding)) |
+| **Agent Management** | Embedded Dify dashboard for visual flow building, agent configuration, and skill orchestration (see [§2.1](#21-architectural-invariant-zero-hardcoding)) |
 | **LLM Provider Management** | Add/remove providers, API keys (encrypted), enable/disable models |
 | **Natural Language Command Bar** | `Cmd+K` spotlight for agent queries, chart rendering, portfolio queries |
 | **Customizable Command Center** | Draggable, resizable widget panels |
@@ -879,7 +919,14 @@ graph TD
     PM --> HITL["Action Plane<br/>HITL Approval"]
 ```
 
-### 9.2 Agent Specifications
+### 9.2 Google A2A Protocol
+
+OmniTrade uses the **Google Agent-to-Agent (A2A) Protocol** to structure all inter-agent communications. 
+- **Agent Cards:** Every agent publishes its identity, skills, and input/output schema.
+- **Interoperability:** Any agent can dynamically discover and request tasks from other agents, regardless of their underlying LLM implementation.
+- **Routing:** LiteLLM serves as the gateway to route A2A requests between locally hosted agents and external services.
+
+### 9.3 Agent Specifications
 
 | Agent ID | Role | Default Model | Timeout | Required | Key Tools |
 |:---------|:-----|:-------------|:--------|:---------|:----------|
@@ -895,7 +942,7 @@ graph TD
 | `day_trading_specialist` | Intraday optimization | `gemini-3-flash` | 15s | ❌ | — |
 | `positional_specialist` | Long-term optimization | `gpt-5-mini` | 30s | ❌ | — |
 
-### 9.3 Risk Manager Circuit Breakers
+### 9.4 Risk Manager Circuit Breakers
 
 | Rule | Condition | Action |
 |:-----|:----------|:-------|
@@ -905,7 +952,7 @@ graph TD
 | VIX threshold (extreme) | VIX > 40 | **HOLD ONLY** — no buying |
 | Max daily loss | Daily P&L < -5% | **HALT** all proposals |
 
-### 9.4 Trade Proposal Output Schema
+### 9.5 Trade Proposal Output Schema
 
 ```json
 {
@@ -978,7 +1025,7 @@ graph LR
 - **Virtual Keys**: Per-agent or per-team API keys with rate limits and spend budgets
 - **Response Caching**: Redis-backed semantic caching reduces duplicate LLM calls (TTL: 5min)
 
-### 10.4 Default Routing Configuration
+### 10.5 Default Routing Configuration
 
 | Agent | Provider | Model | Rationale |
 |:------|:---------|:------|:----------|
@@ -1151,7 +1198,7 @@ graph LR
 | Metrics | **Prometheus** | Time-series metrics collection | Apache 2.0 |
 | Visualization | **Grafana** | Dashboards and alerting | AGPL 3.0 |
 | Log Aggregation | **Loki** | Centralized log collection | AGPL 3.0 |
-| Tracing | **Jaeger** | Distributed tracing for Genkit flows | Apache 2.0 |
+| Tracing & Eval | **Phoenix** | LLM observability via Google ADK OpenTelemetry | CC-BY-NC 4.0 |
 | Uptime | **Uptime Kuma** | Service health monitoring | MIT |
 
 ### 14.2 Key Metrics
@@ -1218,7 +1265,7 @@ graph LR
 | **HTTP Client** | Axios | HTTP requests (MCP servers) | MIT | latest |
 | **Monitoring** | Prometheus + Grafana | Metrics + dashboards | Apache/AGPL | latest |
 | **Logging** | Loki | Log aggregation | AGPL 3.0 | latest |
-| **Tracing** | Jaeger | Distributed tracing | Apache 2.0 | latest |
+| **Tracing** | Phoenix + Google ADK | AI evaluation, tracing, observability | Open/AGPL | latest |
 | **MCP Protocol** | @modelcontextprotocol/sdk | Tool protocol for AI agents | MIT | latest |
 
 ### 15.2 External Data APIs

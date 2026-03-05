@@ -51,7 +51,7 @@ OmniTrade is engineered for security and precision:
 - **Internal Agent Plugin System**: Google ADK-based plugin architecture with hooks, tools registry, and lifecycle management
 - **25+ Built-in Tools**: Market data, sentiment analysis, technical indicators, risk assessment, and portfolio management
 - **40+ Hook Events**: Complete observability into agent lifecycles with circuit breaker patterns
-- **React Management UI**: Generative Dashboard for plugin, tool, and hook management.
+- **Dify Dashboard**: Central Control Plane for visual plugin, tool, hook, and agent flow management.
 
 ### Internationalization
 - **Full i18n Support**: Native English (LTR) and Arabic (RTL) capabilities.
@@ -250,7 +250,7 @@ Google ADK-based plugin architecture for the application's AI agents:
 | **Plugins System** | 5 | Lifecycle management, hot reload, circuit breakers |
 | **Tools Registry** | 12 | 25+ tools across 8 categories |
 | **Google ADK** | 6 | Agent creation, tool wrapping, flow definitions |
-| **React UI** | 12 | Generative dashboard for management |
+| **Dify UI** | N/A | Central Control Plane for agent flow management |
 
 **Location:** `backend/internal/agent/`, `frontend/src/plugins/`
 

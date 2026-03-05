@@ -1189,7 +1189,7 @@ This document outlines the complete user interface requirements for the StockPul
 2.  [Dashboard Pages](#2-dashboard-pages)
 3.  [Stock Analysis Pages](#3-stock-analysis-pages)
 4.  [Analyst Intelligence Pages](#4-analyst-intelligence-pages)
-5.  [Agent Management Pages](#5-agent-management-pages)
+5.  [Dify Dashboard Integration](#5-dify-dashboard-integration)
 6.  [Trading Modules Pages](#6-trading-modules-pages)
 7.  [Stock Screener Pages](#7-stock-screener-pages)
 8.  [Risk Management Pages](#8-risk-management-pages)
@@ -1432,17 +1432,14 @@ This document outlines the complete user interface requirements for the StockPul
 -   Rating aggregation by firm and individual analyst
 -   Historical recommendation accuracy metrics
 
-## 5. Agent Management Pages
+## 5. Dify Dashboard Integration
 
-### 5.1 Agent Overview Page
-
--   Agent catalog with status indicators
--   Performance metrics for each agent
--   Agent configuration controls
--   Activation/deactivation toggles
--   Agent resource usage monitoring
--   Agent version management
--   Agent dependency visualization
+The Agent Management pages have been replaced by the integration of the **Dify Dashboard**. 
+OmniTrade leverages Dify as its visual orchestrator for:
+- Agent catalog and capability management
+- Visual flow building and debugging
+- Performance and resource usage monitoring
+- Prompt engineering and LLM configuration
 -   Health status monitoring
 -   Activity logs for each agent
 -   Agent performance history charts

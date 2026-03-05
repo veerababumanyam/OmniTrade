@@ -111,30 +111,21 @@ All components of the internal agent plugin system for OmniTrade's Google ADK-ba
 - Complete hook integration for all lifecycle events
 - Genkit flow definitions for complex orchestrations
 
-### 6. React UI Components ✅
-**Location:** `frontend/src/plugins/`
+### 6. Dify Orchestration UI ✅
+**Location:** `frontend/src/plugins/dify/`
 
 | File | Description |
 |------|-------------|
-| `PluginDashboard.tsx` | Plugin catalog, installed plugins, configuration panel, health monitoring, version management |
-| `ToolBrowser.tsx` | Tool discovery with category grouping, search, detail view, analytics dashboard |
-| `HookMonitor.tsx` | Real-time hook execution stream, performance metrics (p50, p95, p99), error logs, enable/disable controls |
-| `PluginCard.tsx` | Reusable plugin card with health status, metrics, actions |
-| `ToolTester.tsx` | Interactive tool testing with form/JSON modes, parameter validation, sample presets |
-| `HookTimeline.tsx` | Visual hook execution timeline, latency charts, execution details |
-| `types/index.ts` | Complete TypeScript type definitions |
-| `hooks/usePluginManager.ts` | Custom React hooks (usePluginManager, useToolManager, useHookMonitor, useDebounce, useKeyboardShortcut) |
-| `styles/liquid-glass.css` | Liquid Glass design system (glassmorphism, backdrop blur, CSS custom properties) |
-| `styles/components.css` | Component-specific styles with responsive breakpoints |
+| `DifyDashboard.tsx` | Main integration component for the Dify iframe/API |
+| `types/index.ts` | Complete TypeScript type definitions for Dify API |
+| `hooks/useDifyManager.ts` | Custom React hooks for Dify interaction |
+| `styles/dify-integration.css` | Styles for seamless Dify embedding |
 
 **Key Features:**
-- Liquid Glass design system (dark theme, glassmorphism)
-- Full TypeScript support
-- Real-time monitoring and updates
-- Interactive tool testing
-- Responsive design (desktop, tablet, mobile)
-- Keyboard navigation and accessibility
-- High performance (memoized callbacks, debounced search)
+- Seamless Dify visual builder integration
+- Orchestration of agent reasoning steps
+- Real-time flow debugging
+- Centralized LLM configuration
 
 ### 7. Documentation ✅
 **Location:** `docs/plugins/internal/`
@@ -235,7 +226,7 @@ docs/plugins/internal/
 | **Plugins System** | 5 | ~2,000 | - |
 | **Tools Registry** | 12 | ~3,500 | - |
 | **Google ADK** | 6 | ~2,000 | Included |
-| **React UI** | 12 | ~3,000 | - |
+| **Dify UI Integration** | 4 | ~800 | - |
 | **Documentation** | 12 | ~50 pages | - |
 | **Examples** | 3 | ~800 | - |
 | **TOTAL** | **59** | **~14,600** | **Comprehensive** |
@@ -288,7 +279,7 @@ docs/plugins/internal/
 2. **Plugins ↔ Tools**: Plugins register tools via `RegisterTools()` method
 3. **Tools ↔ ADK**: Tools wrapped as `functiontool` for Google ADK
 4. **ADK ↔ Hooks**: Agent execution triggers lifecycle hooks
-5. **All ↔ UI**: REST API for dashboard management
+5. **All ↔ Dify**: Dify Orchestration API for flow management
 6. **All ↔ Database**: `omnitrade_readonly` role for agent operations
 
 ---

@@ -60,7 +60,19 @@ services:
       timeout: 10s
       retries: 5
       start_period: 120s
+  # ── Phoenix LLM Observability ────────────────────────
+  phoenix:
+    image: arizephoenix/phoenix:latest
+    ports:
+      - "6006:6006" # UI
+      - "4317:4317" # OTLP gRPC for ADK traces
+      - "4318:4318" # OTLP HTTP
+    environment:
+      - PHOENIX_HOST=0.0.0.0
 
+  # Note: Dify orchestration services (API, Worker, Web) are complex and typically run via
+  # a separate docker-compose stack provided by Dify. For full agent orchestration,
+  # see the Dify integration documentation or run the specific dify/docker/docker-compose.yaml.
   minio:
     image: minio/minio:latest
     container_name: minio

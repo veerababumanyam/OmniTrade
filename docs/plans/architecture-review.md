@@ -171,7 +171,7 @@ r.Use(middleware.Throttle(100))
 
 **Problem:** Uses basic `log` package.
 
-**Recommendation:** Implement structured logging with `slog` or `zap`, add OpenTelemetry tracing.
+**Recommendation:** Implement structured logging with `slog` or `zap`, add Google ADK OpenTelemetry tracing + Phoenix.
 
 ---
 
@@ -399,7 +399,7 @@ func (a *API) HandleWS(w http.ResponseWriter, r *http.Request) {
 
 **Recommendation:** Implement structured logging:
 - Use `slog` (Go 1.21+) or `zap`
-- Add request tracing (OpenTelemetry)
+- Add request tracing (Google ADK OpenTelemetry + Phoenix)
 - Integrate with SpecSwarm quality gates
 
 ---

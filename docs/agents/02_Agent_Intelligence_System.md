@@ -57,7 +57,23 @@ graph TD
 
 ---
 
-## 2. LLM Model Configuration
+## 2. Orchestration & Interoperability (Dify & A2A)
+
+OmniTrade uses **Dify** as the visual orchestration engine and the **Google Agent-to-Agent (A2A) Protocol** for standardized inter-agent communication.
+
+### 2.1 Dify Orchestration
+- **Visual Flow Builder:** Complex agent workflows (like the Debate Topology) are designed and monitored visually in Dify.
+- **Skill Management:** Tools (e.g., fetching market data, web search) are integrated into Dify as connectable nodes.
+- **Agent Lifecycle:** Dify acts as the central control plane, orchestrating when and how each specialist agent is invoked.
+
+### 2.2 Google A2A Protocol
+- **Agent Cards:** Every analyst agent exposes its identity, required inputs, and outputs via an `AgentCard` following the A2A spec. This card acts as a discoverable REST endpoint.
+- **Dynamic Discovery:** Dify and the Portfolio Manager use Agent Cards to discover available agents and their schemas dynamically, enabling zero-hardcoding agent integration.
+- **LiteLLM Routing:** A2A requests are routed through LiteLLM to ensure uniform access and centralized cost tracking, regardless of whether the agent runs locally or via cloud providers.
+
+---
+
+## 3. LLM Model Configuration
 
 The system uses a configurable routing layer to assign specific models to each agent role based on task complexity and cost efficiency.
 
@@ -78,9 +94,9 @@ The system uses a configurable routing layer to assign specific models to each a
 
 ---
 
-## 3. Agent Specifications
+## 4. Agent Specifications
 
-### 3.1 Fundamental Analyst
+### 4.1 Fundamental Analyst
 - **Capabilities**: Financial metrics analysis, valuation models, growth rate calculations.
 - **System Prompt**: 
   > You are the Fundamental Data Analyst. Analyze SEC filings, earnings transcripts, and financial health. Extract core valuation drivers (revenue growth, margins, P/E ratios) and note forward-looking guidance. Cite specific document IDs.
@@ -98,7 +114,7 @@ The system uses a configurable routing layer to assign specific models to each a
   }
   ```
 
-### 3.2 Technical Analyst
+### 4.2 Technical Analyst
 - **Capabilities**: Price pattern recognition, technical indicator interpretation (RSI, MACD, Bollinger Bands), support/resistance detection.
 - **System Prompt**: 
   > You are the Quantitative Technical Analyst. Given recent OHLCV data, volume profiles, and computed indicators (RSI, MACD, BBands), determine the market regime (Trend, Mean-Reverting, Breakout). Identify key price levels.
@@ -117,7 +133,7 @@ The system uses a configurable routing layer to assign specific models to each a
   }
   ```
 
-### 3.3 Sentiment Analyst
+### 4.3 Sentiment Analyst
 - **Capabilities**: News sentiment analysis, social media monitoring (X, Reddit), market sentiment indicators.
 - **System Prompt**: 
   > You are the Sentiment Analyst. Gauge the "Market Mood" from recent news headlines, social media mentions, and analyst ratings. Identify themes driving short-term momentum.
@@ -133,7 +149,7 @@ The system uses a configurable routing layer to assign specific models to each a
   }
   ```
 
-### 3.4 Alternative Data Analyst
+### 4.4 Alternative Data Analyst
 - **Capabilities**: Analysis of non-traditional data sources, satellite imagery summaries, commodities correlations, and macro-economic indicators (CPI, Fed rates).
 - **Primary Tool**: `GetAlternativeData`.
 - **Output Schema**:
@@ -145,7 +161,7 @@ The system uses a configurable routing layer to assign specific models to each a
   }
   ```
 
-### 3.5 Risk Manager (The Circuit Breaker)
+### 4.5 Risk Manager (The Circuit Breaker)
 - **Capabilities**: Capital preservation, multi-level risk assessment (asset, sector, macro). Holds **MANDATORY VETO** power.
 - **Rules**:
     - Single position max: 10% | Sector exposure max: 25%.
@@ -160,7 +176,7 @@ The system uses a configurable routing layer to assign specific models to each a
   }
   ```
 
-### 3.6 Portfolio Manager (The Synthesizer)
+### 4.6 Portfolio Manager (The Synthesizer)
 - **Capabilities**: Signal aggregation and weighting, conflict resolution, portfolio optimization, decision synthesis.
 - **Requirement**: Must output a final trade proposal with full **Chain of Thought (CoT)** reasoning.
 - **Final Trade Proposal Schema**:
@@ -180,17 +196,17 @@ The system uses a configurable routing layer to assign specific models to each a
 
 ---
 
-## 4. Strategy Layer Specialists
+## 5. Strategy Layer Specialists
 
-### 4.1 Day Trading Specialist
+### 5.1 Day Trading Specialist
 - **Focus**: Intraday volatility, order flow, liquidity, and rapid execution patterns.
 
-### 4.2 Positional Specialist
+### 5.2 Positional Specialist
 - **Focus**: Swing trading, long-term holds, macro trends, and sector rotation cycles.
 
 ---
 
-## 5. Implementation Standards
+## 6. Implementation Standards
 
 - **Structured I/O**: All contracts use Genkit JSON schemas.
 - **Audit Integrity**: Every agent's contribution is logged to an immutable `audit_log` table.
