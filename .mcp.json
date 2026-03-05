@@ -60,16 +60,6 @@
         "--workspace",
         "C:\\Users\\admin\\Desktop\\OmniTrade"
       ]
-    },
-    "omnitrade-gateway": {
-      "command": "npx",
-      "args": [
-        "litellm-agent-mcp",
-        "--base_url",
-        "http://localhost:4000",
-        "--api_key",
-        "sk-omnitrade-master-key"
-      ]
     }
   }
 }

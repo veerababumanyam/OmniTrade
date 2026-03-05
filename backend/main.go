@@ -11,6 +11,7 @@ import (
 	"github.com/v13478/omnitrade/backend/internal/api"
 	"github.com/v13478/omnitrade/backend/internal/database"
 	"github.com/v13478/omnitrade/backend/internal/ingestion"
+	"github.com/v13478/omnitrade/backend/internal/portfolio"
 )
 
 func main() {
@@ -45,14 +46,21 @@ func main() {
 	orchestrator := agent.NewOrchestrator(redisDB)
 	_ = orchestrator // Available for future API endpoints
 
-	// Setup REST API Core with database connection
-	apiServer := api.NewAPI(dbConn, redisDB)
+	// Initialize WebSocket Hub for real-time price streaming
+	wsHub := api.NewWebSocketHub()
+	go wsHub.Run()
+	defer wsHub.Close()
 
-	// Setup Action Plane routes if available
-	if actionDB != nil {
-		actionPlaneAPI := api.NewActionPlaneAPI(actionDB)
-		actionPlaneAPI.SetupActionRoutes(apiServer.Router)
+	// Initialize Portfolio Service (read/write connections)
+	portfolioService, err := portfolio.NewService()
+	if err != nil {
+		log.Printf("Warning: Failed to initialize portfolio service: %v (continuing without portfolio features)", err)
+	} else {
+		defer portfolioService.Close()
 	}
+
+	// Setup REST API Core with database connections (Read-Only and Write roles)
+	apiServer := api.NewAPI(dbConn, redisDB, actionDB, portfolioService, wsHub)
 
 	// Start Data Ingestion Pipeline
 	tickEngine := ingestion.NewTickEngine(dbConn)

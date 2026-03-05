@@ -60,6 +60,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 120s
+
   # ── Phoenix LLM Observability ────────────────────────
   phoenix:
     image: arizephoenix/phoenix:latest
@@ -70,9 +71,6 @@ services:
     environment:
       - PHOENIX_HOST=0.0.0.0
 
-  # Note: Dify orchestration services (API, Worker, Web) are complex and typically run via
-  # a separate docker-compose stack provided by Dify. For full agent orchestration,
-  # see the Dify integration documentation or run the specific dify/docker/docker-compose.yaml.
   minio:
     image: minio/minio:latest
     container_name: minio
@@ -90,6 +88,43 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
+
+  # ── ML Microservice: Tabular (Fast Brain) ────────────────────
+  ml-inference-tabular:
+    build:
+      context: ./ml-inference-tabular
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@database:5432/omnitrade"
+      REDIS_URL: "redis://redis:6379"
+    restart: always
+
+  # ── ML Microservice: Deep Learning (Slow Brain) ───────────────────
+  ml-inference-deep:
+    build:
+      context: ./ml-inference-deep
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@database:5432/omnitrade"
+      REDIS_URL: "redis://redis:6379"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
     restart: always
 
 volumes:

@@ -116,10 +116,10 @@ func (a *ActionPlaneDB) ApproveProposal(ctx context.Context, id, userID string) 
 
 	// Create audit log
 	return a.CreateAuditLog(ctx, &AuditLog{
-		ID:         uuid.New().String(),
-		ProposalID: id,
+		ID:          uuid.New().String(),
+		ProposalID:  id,
 		ActionTaken: "APPROVED",
-		UserID:     userID,
+		UserID:      userID,
 	})
 }
 
@@ -132,10 +132,10 @@ func (a *ActionPlaneDB) RejectProposal(ctx context.Context, id, userID string) e
 
 	// Create audit log
 	return a.CreateAuditLog(ctx, &AuditLog{
-		ID:         uuid.New().String(),
-		ProposalID: id,
+		ID:          uuid.New().String(),
+		ProposalID:  id,
 		ActionTaken: "REJECTED",
-		UserID:     userID,
+		UserID:      userID,
 	})
 }
 
@@ -148,10 +148,10 @@ func (a *ActionPlaneDB) ExecuteProposal(ctx context.Context, id, userID string) 
 
 	// Create audit log
 	return a.CreateAuditLog(ctx, &AuditLog{
-		ID:         uuid.New().String(),
-		ProposalID: id,
+		ID:          uuid.New().String(),
+		ProposalID:  id,
 		ActionTaken: "EXECUTED",
-		UserID:     userID,
+		UserID:      userID,
 	})
 }
 
@@ -182,6 +182,34 @@ func (a *ActionPlaneDB) CreateAuditLog(ctx context.Context, entry *AuditLog) err
 	return nil
 }
 
+// FetchAuditLogs retrieves audit logs, optionally filtered by proposal ID
+func (a *ActionPlaneDB) FetchAuditLogs(ctx context.Context, proposalID string) ([]AuditLog, error) {
+	var logs []AuditLog
+	var query string
+	var args []interface{}
+
+	if proposalID != "" {
+		query = `
+			SELECT id, proposal_id, action_taken, user_id, metadata, executed_at 
+			FROM audit_logs 
+			WHERE proposal_id = $1 
+			ORDER BY executed_at DESC`
+		args = []interface{}{proposalID}
+	} else {
+		query = `
+			SELECT id, proposal_id, action_taken, user_id, metadata, executed_at 
+			FROM audit_logs 
+			ORDER BY executed_at DESC`
+	}
+
+	err := a.db.SelectContext(ctx, &logs, query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch audit logs: %w", err)
+	}
+
+	return logs, nil
+}
+
 // Close closes the database connection
 func (a *ActionPlaneDB) Close() error {
 	return a.db.Close()
@@ -200,9 +228,10 @@ type TradeProposal struct {
 
 // AuditLog represents an immutable audit log entry
 type AuditLog struct {
-	ID         string `db:"id"`
-	ProposalID string `db:"proposal_id"`
+	ID          string `db:"id"`
+	ProposalID  string `db:"proposal_id"`
 	ActionTaken string `db:"action_taken"`
-	UserID     string `db:"user_id"`
-	Metadata   string `db:"metadata"`
+	UserID      string `db:"user_id"`
+	Metadata    string `db:"metadata"`
+	ExecutedAt  string `db:"executed_at"`
 }

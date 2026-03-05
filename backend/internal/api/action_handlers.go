@@ -197,8 +197,16 @@ type AuditLogResponse struct {
 
 // HandleGetAuditLogs retrieves audit logs
 func (a *ActionPlaneAPI) HandleGetAuditLogs(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement audit log retrieval
+	ctx := r.Context()
+	proposalID := r.URL.Query().Get("proposal_id")
+
+	logs, err := a.actionDB.FetchAuditLogs(ctx, proposalID)
+	if err != nil {
+		http.Error(w, "failed to fetch audit logs: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode([]AuditLogResponse{})
+	json.NewEncoder(w).Encode(logs)
 }

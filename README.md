@@ -64,6 +64,7 @@ OmniTrade is engineered for security and precision:
 | **Foundation** | Go 1.26+, `go-chi`, `sqlx`, LiteLLM Gateway |
 | **Intelligence** | Google ADK-Go, Multi-Agent Orchestration, Vector RAG (pgvector), Redis Cache |
 | **Frontend** | React 19.2, Vite 7.3, Vanilla CSS, CopilotKit, GenUI & Spatial Standards |
+| **ML Microservices** | `ml-inference-tabular` (Fast CPU models) & `ml-inference-deep` (GPU-accelerated PyTorch) |
 | **Plugin Systems** | Claude Code Plugin, Internal Agent Plugin System, MCP Servers (5) |
 | **Protocols** | A2A (Agent-to-Agent), MCP (Model Context), ACP (Agent Client) |
 | **Observability** | SpecSwarm Quality Gates, Immutable Audit Logs, Circuit Breaker Patterns |
