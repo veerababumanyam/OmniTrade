@@ -200,6 +200,18 @@ func (t *AssessRiskTool) Execute(ctx context.Context, input *tools.ExecutionInpu
 	// Calculate position value
 	positionValue := float64(quantity) * entryPrice
 
+	// ── ENHANCEMENT: Systematic Algorithmic Bounds ──
+	// If stop loss or take profit are not explicitly provided, calculate them systematically.
+	// This mirrors the stopLossTakeProfit_StockTargetPrice repository logic.
+	if stopLoss <= 0 {
+		// Base stop loss: 8% trailing stop logic (simplified ATR/Algorithmic proxy)
+		stopLoss = entryPrice * 0.92
+	}
+	if takeProfit <= 0 {
+		// Base take profit: 15% technical target logic
+		takeProfit = entryPrice * 1.15
+	}
+
 	// Calculate risk/reward if stop loss and take profit provided
 	var riskRewardRatio float64
 	var maxLoss, maxGain float64

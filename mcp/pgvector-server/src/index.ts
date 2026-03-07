@@ -77,7 +77,7 @@ function getPool(): Pool {
  * Helper to generate embeddings from LiteLLM Gateway
  */
 async function getEmbedding(text: string): Promise<number[]> {
-  const litellmUrl = process.env.LITELLM_URL || "http://localhost:4000/v1/embeddings";
+  const litellmUrl = process.env.LITELLM_URL || "http://127.0.0.1:4000/v1/embeddings";
   const masterKey = process.env.LITELLM_MASTER_KEY || "sk-omnitrade-master-key";
 
   console.error(`Generating embedding for: "${text.substring(0, 50)}..."`);
@@ -116,7 +116,7 @@ async function getEmbedding(text: string): Promise<number[]> {
  * Helper to get chat completions from LiteLLM Gateway
  */
 async function getChatCompletion(systemPrompt: string, userPrompt: string): Promise<string> {
-  const litellmUrl = (process.env.LITELLM_URL || "http://localhost:4000/v1/embeddings").replace("/embeddings", "/chat/completions");
+  const litellmUrl = (process.env.LITELLM_URL || "http://127.0.0.1:4000/v1/embeddings").replace("/embeddings", "/chat/completions");
   const masterKey = process.env.LITELLM_MASTER_KEY || "sk-omnitrade-master-key";
 
   try {

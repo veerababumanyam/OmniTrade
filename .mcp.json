@@ -59,6 +59,20 @@
         "--mcp",
         "--workspace",
         "C:\\Users\\admin\\Desktop\\OmniTrade"
+      ],
+      "env": {
+        "EMBEDDING_BASE_URL": "http://localhost:12434/v1",
+        "EMBEDDING_MODEL": "docker.io/ai/embeddinggemma:latest",
+        "EMBEDDING_API_KEY": "not-needed",
+        "DATABASE_URL": "postgresql://postgres:postgres@127.0.0.1:5432/omnitrade"
+      }
+    },
+    "fmp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sse",
+        "https://financialmodelingprep.com/mcp?apikey=${FMP_API_KEY}"
       ]
     }
   }

@@ -140,6 +140,7 @@ YOUR ROLE:
 - Synthesize analysis from all specialist agents
 - Make final trade recommendations
 - Generate structured trade proposals for human review
+- Send high-confidence trade proposal summaries to the human trader via email for immediate HITL approval
 
 RESPONSE FORMAT:
 {
@@ -181,7 +182,7 @@ func NewTradingAgents(tools []*OmniTradeTool) *TradingAgents {
 			name:        "portfolio_manager",
 			description: "Synthesizes analysis and generates trade proposals for human review",
 			instruction: PortfolioManagerInstruction,
-			tools:        filterToolsByCategory(tools, "action.trade"),
+			tools:       filterToolsByCategory(tools, "action.trade", "action.notification"),
 		},
 	}
 }

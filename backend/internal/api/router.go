@@ -12,6 +12,7 @@ import (
 
 	"github.com/v13478/omnitrade/backend/internal/action"
 	"github.com/v13478/omnitrade/backend/internal/database"
+	"github.com/v13478/omnitrade/backend/internal/fmp"
 	"github.com/v13478/omnitrade/backend/internal/portfolio"
 )
 
@@ -21,10 +22,11 @@ type API struct {
 	Redis  *database.RedisDB
 	Router chi.Router
 	WSHub  *WebSocketHub
+	FMP    *fmp.Service
 }
 
 // NewAPI initializes the API and its routes.
-func NewAPI(db *database.DB, redisDB *database.RedisDB, actionDB *action.ActionPlaneDB, portfolioService *portfolio.Service, wsHub *WebSocketHub) *API {
+func NewAPI(db *database.DB, redisDB *database.RedisDB, actionDB *action.ActionPlaneDB, portfolioService *portfolio.Service, wsHub *WebSocketHub, fmpService *fmp.Service) *API {
 	r := chi.NewRouter()
 
 	// Standard middleware
@@ -53,6 +55,7 @@ func NewAPI(db *database.DB, redisDB *database.RedisDB, actionDB *action.ActionP
 		Redis:  redisDB,
 		Router: r,
 		WSHub:  wsHub,
+		FMP:    fmpService,
 	}
 
 	// ── Public Routes ──────────────────────────────────
@@ -75,6 +78,12 @@ func NewAPI(db *database.DB, redisDB *database.RedisDB, actionDB *action.ActionP
 		r.Get("/market/{symbol}/range", api.HandleGetMarketDataRange)
 		r.Get("/proposals", api.HandleGetProposals)
 		r.Get("/proposals/{id}", api.HandleGetProposalByID)
+
+		// FMP Financial Data Hub
+		if api.FMP != nil {
+			fmpHandler := fmp.NewHandler(api.FMP)
+			fmpHandler.SetupRoutes(r)
+		}
 
 		// Portfolio routes - Mounted if service is available
 		if portfolioService != nil {

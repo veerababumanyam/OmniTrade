@@ -5,59 +5,47 @@ description: Orchestrates multi-agent systems using the Google AI Agent ecosyste
 
 # Orchestrating Google AI Agents
 
-This skill provides the logic for building, deploying, and coordinating AI agents using Google's modular ecosystem. It covers the **Agent Development Kit (ADK)** for building agents, the **Agent2Agent (A2A)** protocol for collaboration, and **Genkit** for application-level orchestration.
+This skill provides the logic for building, deploying, and coordinating AI agents using Google's modular ecosystem and the **OmniTrade MCP Gateway**.
 
 ## When to use this skill
 - When building multi-agent systems where agents need to discover and talk to each other.
-- When implementing **A2A Agent Cards** for interoperability.
+- When configuring multi-model failover or cost routing via **omnitrade-gateway**.
+- When discovering or executing backend flows via **genkit-mcp-server**.
 - When creating complex **Genkit Flows** or custom **Genkit Tools**.
-- When deploying agents to Vertex AI Agent Engine or Cloud Run.
 
 ## Workflow
 
-- [ ] **Define Agent Role**: Use ADK to define the agent's purpose, model (Gemini), and toolset.
+- [ ] **Discovery**: Use **`genkit-mcp-server:list_flows`** to see available agent tools.
+- [ ] **Execution**: Use **`genkit-mcp-server:run_flow`** to trigger long-running analysis.
+- [ ] **Model Selection**: Use **`omnitrade-gateway`** to route specific tasks to specialized models (e.g., Gemini 1.5 Pro for market context, Claude 3.5 for code).
+- [ ] **Define Agent Role**: Use ADK to define the agent's purpose, model, and toolset.
 - [ ] **Create Agent Card**: Generate a JSON-based A2A Agent Card for discovery.
 - [ ] **Implement Genkit Flow**: Define the orchestrator logic using `genkit.DefineFlow`.
-- [ ] **Equip Tools**: Register functions as tools using `genkit.DefineTool` or ADK custom tools.
-- [ ] **Configure A2A Discovery**: Set up the discovery endpoint or registry for inter-agent communication.
-- [ ] **Validate multi-agent diplomacy**: Ensure conflict resolution patterns are in place for agent disagreements.
 
 ## Instructions
 
-### 1. Agent Development Kit (ADK)
+### 1. Multi-Model Gateway (omnitrade-gateway)
+The LiteLLM gateway allows agents to utilize over 100+ models.
+- **Failover**: If a primary model (e.g., GPT-4) hits a rate limit, the gateway can automatically route to a secondary model.
+- **Cost Efficiency**: Route sub-tasks like "Summarization" to cheaper models while keeping "Reasoning" on high-tier models.
+
+### 2. Genkit Flow Debugging (genkit-mcp-server)
+Use the MCP server to inspect backend logic live.
+```bash
+# List all registered flows
+tools/call genkit-mcp-server list_flows {}
+
+# Inspect a specific flow's input schema
+tools/call genkit-mcp-server get_flow_info { "flowName": "analyzeFundamentalData" }
+```
+
+### 3. Agent Development Kit (ADK)
 ADK focuses on modularity. When defining an agent, separate the **Capability** (what it can do) from the **Logic** (how it thinks).
 - Use `agent.Capability` to wrap tools.
 - Use `agent.Orchestrator` to manage handoffs between specialized agents.
-- **Blueprint-First Assembly**: Design agents that output "Functional Blueprints" for UI assembly.
-- **Signal Bus Integration**: Agents must publish telemetry and status updates via the high-frequency event bus for real-time UI reflection.
-
-### 2. Agent2Agent (A2A) Protocol
-Standardize agent metadata using Agent Cards.
-- **Agent Card**: A manifest file (usually `.well-known/agent-card.json`) that describes capabilities, safety boundaries, and pricing.
-- **Handshake**: Use the A2A handshake protocol for secure context exchange between a Client Agent and a Remote Agent.
-
-### 3. Google Genkit (Go Integration)
-In the OmniTrade backend, use Genkit for typed flows:
-- **Define Flow**:
-  ```go
-  genkit.DefineFlow("marketAnalysisFlow", func(ctx context.Context, input string) (OutputStruct, error) {
-      // Logic here
-  })
-  ```
-- **Define Tool**:
-  ```go
-  genkit.DefineTool("getPrice", "gets current asset price", func(ctx context.Context, input struct{Symbol string}) (float64, error) {
-      // Tool logic
-  })
-  ```
-
-### 4. Conflict Resolution (Three-Plane Architecture)
-Following the OmniTrade architecture:
-- Data Plane agents provide telemetry.
-- Intelligence Plane agents debate (Debate Topology).
-- Action Plane agents require HITL (Human-in-the-Loop) before commit.
 
 ## Resources
+- [Leveraging MCP Ecosystem](../leveraging-omnitrade-mcp-ecosystem/SKILL.md)
 - [Agent Card Template](resources/AGENT_CARD_TEMPLATE.json)
 - [Example: A2A Handshake](examples/a2a-handshake.go)
 - [Genkit Reference](https://genkit.dev/docs/go)

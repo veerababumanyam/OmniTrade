@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -32,11 +33,26 @@ type LiteLLMEmbeddingResponse struct {
 }
 
 func NewEmbeddingClient() *EmbeddingClient {
-	// LiteLLM Gateway normally runs on 4000
+	// Docker Model Runner runs on 12434 for local development
+	// Falls back to LiteLLM Gateway on 4000 if not available
+	baseURL := os.Getenv("EMBEDDING_BASE_URL")
+	if baseURL == "" {
+		// Try Docker Model Runner first (default for local dev)
+		baseURL = "http://localhost:12434/v1"
+	}
+	model := os.Getenv("EMBEDDING_MODEL")
+	if model == "" {
+		model = "docker.io/ai/embeddinggemma:latest"
+	}
+	masterKey := os.Getenv("EMBEDDING_API_KEY")
+	if masterKey == "" {
+		masterKey = "not-needed" // Docker Model Runner doesn't require auth
+	}
+
 	return &EmbeddingClient{
-		BaseURL:   "http://localhost:4000",
-		Model:     "embeddinggemma",
-		MasterKey: "sk-omnitrade-master-key", // Default from docker-compose.yml
+		BaseURL:   baseURL,
+		Model:     model,
+		MasterKey: masterKey,
 		httpClient: &http.Client{
 			Timeout: 30 * time.Second,
 		},
@@ -55,7 +71,8 @@ func (c *EmbeddingClient) GenerateEmbeddings(ctx context.Context, text string) (
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
 	}
 
-	url := fmt.Sprintf("%s/v1/embeddings", c.BaseURL)
+	// BaseURL already includes /v1 for Docker Model Runner, so just append /embeddings
+	url := fmt.Sprintf("%s/embeddings", c.BaseURL)
 	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)

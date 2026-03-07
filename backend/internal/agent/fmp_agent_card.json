@@ -1,0 +1,39 @@
+{
+  "agent_id": "fmp-data-hub",
+  "name": "FMP Financial Data Hub",
+  "description": "Provides comprehensive financial data including balance sheets, analyst estimates, insider trading, and historical prices via Financial Modeling Prep (FMP) API.",
+  "version": "1.0.0",
+  "capabilities": [
+    "fundamental_analysis",
+    "market_intelligence",
+    "historical_data",
+    "ownership_tracking",
+    "valuation_metrics"
+  ],
+  "endpoints": {
+    "genkit_flow": "fmpDataFlow",
+    "genkit_tool": "getFMPData",
+    "rest_api": "/api/v1/fmp/{symbol}[/{category}]"
+  },
+  "data_categories": [
+    "income_statement",
+    "balance_sheet",
+    "cash_flow",
+    "ratios",
+    "key_metrics",
+    "financial_growth",
+    "analyst_estimates",
+    "price_target",
+    "insider_trading",
+    "historical_price_daily"
+  ],
+  "auth": {
+    "type": "api_key",
+    "env_var": "FMP_API_KEY"
+  },
+  "storage": {
+    "persistence": "postgresql",
+    "caching": "redis",
+    "differential_updates": "sha256_hash"
+  }
+}

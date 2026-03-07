@@ -13,6 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/internal/database/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
       - ./backend/internal/database/rag_schema.sql:/docker-entrypoint-initdb.d/2_rag_schema.sql
+      - ./backend/internal/database/fmp_schema.sql:/docker-entrypoint-initdb.d/3_fmp_schema.sql
       - ./backend/internal/database/0_init_litellm_db.sql:/docker-entrypoint-initdb.d/0_init_litellm_db.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -50,16 +51,40 @@ services:
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
       GROK_API_KEY: ${GROK_API_KEY:-}
       ZAI_API_KEY: ${ZAI_API_KEY:-}
+      ZAI_BEARER_TOKEN: "Bearer ${ZAI_API_KEY:-}"
+      FMP_API_KEY: ${FMP_API_KEY:-}
+      FMP_MCP_URL: "https://financialmodelingprep.com/mcp?apikey=${FMP_API_KEY:-}"
       REDIS_HOST: redis
       REDIS_PORT: 6379
       DATABASE_URL: postgresql://postgres:postgres@database:5432/litellm
-    command: [ "--config", "/app/config.yaml", "--port", "4000", "--host", "0.0.0.0" ]
+    command: >
+      /bin/sh -c "npm install -g @z_ai/mcp-server @upstash/context7-mcp &&
+      litellm --config /app/config.yaml --port 4000 --host 0.0.0.0"
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')" ]
       interval: 15s
       timeout: 10s
       retries: 5
       start_period: 120s
+
+  # ── PostgreSQL pgvector Connector ─────────────────────
+  pgvector-connector:
+    image: ghcr.io/berriai/litellm-pg-vector-store:latest
+    depends_on:
+      database:
+        condition: service_healthy
+      litellm:
+        condition: service_healthy
+    ports:
+      - "5001:5001"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@database:5432/litellm
+      LITELLM_API_BASE: http://litellm:4000/v1
+      LITELLM_API_KEY: ${LITELLM_MASTER_KEY:-sk-omnitrade-master-key}
+      # The connector needs to know which embedding model to use
+      DEFAULT_EMBEDDING_MODEL: text-embedding-004 
+      PORT: 5001
+    restart: always
 
   # ── Phoenix LLM Observability ────────────────────────
   phoenix:

@@ -10,21 +10,32 @@ This skill provides the structure and patterns for the OmniTrade Go backend, whi
 ## When to use this skill
 - When creating or refactoring backend services, API handlers, or database layers.
 - When implementing **Dependency Injection** for new components.
-- When working with the `go-chi` router or `sqlx` database extension.
+- When navigating the codebase using **kilo-indexer** or **jcodemunch**.
 - When defining environment variables or service configuration.
 
 ## Workflow
 
-- [ ] **Dependency Injection**: Use constructors to pass dependencies. No global states except `genkit.DefineFlow` context requirements.
+- [ ] **Context Discovery**: Use **`kilo-indexer:codebase_search`** or **`jcodemunch:get_file_outline`** to understand existing patterns.
+- [ ] **Logic Isolation**: Use **`jcodemunch:get_symbol`** to read specific implementation details before refactoring.
+- [ ] **Dependency Injection**: Use constructors to pass dependencies. No global states.
 - [ ] **Layering Check**: Keep business logic in `internal/agent` or `internal/ingestion`, not API handlers.
 - [ ] **Error Handling**: Explicitly return and handle errors. NO `panic` in production.
 - [ ] **Testing Coverage**: Follow table-driven testing patterns (target 90% coverage).
-- [ ] **SQL Hardening**: Use `sqlx` named queries and struct scanning. NO manual string concatenation.
-- [ ] **Environment Mapping**: Ensure all secrets are pulled from Environment Variables, never hardcoded.
+- [ ] **Environment Mapping**: Ensure all secrets are pulled from Environment Variables.
 
 ## Instructions
 
-### 1. Database Patterns (sqlx)
+### 1. Codebase Exploration (MCP)
+Before adding new features, use semantic search to find similar existing patterns.
+```bash
+# Semantic search for logic
+tools/call kilo-indexer codebase_search { "query": "how is the consensus reach?" }
+
+# Precise symbol retrieval
+tools/call jcodemunch get_symbol { "repo": "OmniTrade", "symbol_id": "ConsensusLogic" }
+```
+
+### 2. Database Patterns (sqlx)
 Use named queries for clarity and struct mapping for safety.
 ```go
 type Asset struct {
@@ -39,7 +50,7 @@ func GetAssets(db *sqlx.DB) ([]Asset, error) {
 }
 ```
 
-### 2. API Handlers (go-chi)
+### 3. API Handlers (go-chi)
 Handlers should be simple "thin" wrappers that decode input and call service logic.
 ```go
 func (h *Handler) GetAsset(w http.ResponseWriter, r *http.Request) {
@@ -53,16 +64,14 @@ func (h *Handler) GetAsset(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-### 3. Dependency Injection
+### 4. Dependency Injection
 ```go
 func NewService(db *sqlx.DB, logger *zap.Logger) *Service {
     return &Service{db: db, logger: logger}
 }
 ```
 
-### 4. Configuration
-Ensure `main.go` wires everything and exits gracefully on system signals.
-
 ## Resources
+- [Leveraging MCP Ecosystem](../leveraging-omnitrade-mcp-ecosystem/SKILL.md)
 - [Backend Structure Reference](resources/BACKEND_STRUCTURE.md)
 - [Example: Flow-Service Link](examples/flow-service.go)

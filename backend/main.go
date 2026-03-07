@@ -10,8 +10,10 @@ import (
 	"github.com/v13478/omnitrade/backend/internal/agent"
 	"github.com/v13478/omnitrade/backend/internal/api"
 	"github.com/v13478/omnitrade/backend/internal/database"
+	"github.com/v13478/omnitrade/backend/internal/fmp"
 	"github.com/v13478/omnitrade/backend/internal/ingestion"
 	"github.com/v13478/omnitrade/backend/internal/portfolio"
+	"github.com/firebase/genkit/go/genkit"
 )
 
 func main() {
@@ -59,8 +61,15 @@ func main() {
 		defer portfolioService.Close()
 	}
 
+	// Initialize Genkit
+	g := genkit.Init(ctx)
+
+	// Initialize FMP Service (No-MCP AI-native data hub)
+	fmpService := fmp.NewService(dbConn, redisDB, g)
+	fmpService.DefineFlows()
+
 	// Setup REST API Core with database connections (Read-Only and Write roles)
-	apiServer := api.NewAPI(dbConn, redisDB, actionDB, portfolioService, wsHub)
+	apiServer := api.NewAPI(dbConn, redisDB, actionDB, portfolioService, wsHub, fmpService)
 
 	// Start Data Ingestion Pipeline
 	tickEngine := ingestion.NewTickEngine(dbConn)

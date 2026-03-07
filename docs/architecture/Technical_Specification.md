@@ -263,7 +263,7 @@ The Intelligence Service implements a provider-agnostic LLM abstraction that sup
 | Tencent (Hunyuan) | `tencent` | `https://api.hunyuan.cloud.tencent.com/v1` | Hunyuan Pro, Lite |
 | Minimax | `minimax` | `https://api.minimax.chat/v1` | ABAB 6.5, 7 series |
 | SiliconFlow | `siliconflow` | `https://api.siliconflow.cn/v1` | Multi-model aggregator |
-| Z.ai | `zai` | `https://api.z.ai/api/paas/v4` | GLM-5, Z1, Z1-Rumination |
+| Z.ai | `zai` | `https://api.z.ai/api/coding/paas/v4` | GLM-5, Z1, Z1-Rumination |
 
 #### Aggregators
 | Provider | Provider ID | API Base URL | Notes |
@@ -776,7 +776,7 @@ providers:
 
   zai:
     api_key: "${ZAI_API_KEY}"
-    base_url: "https://api.z.ai/api/paas/v4"
+    base_url: "https://api.z.ai/api/coding/paas/v4"
 
   openrouter:
     api_key: "${OPENROUTER_API_KEY}"

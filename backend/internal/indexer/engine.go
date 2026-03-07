@@ -50,7 +50,7 @@ func NewEngine(workspaceDir string) (*Engine, error) {
 
 	// 2. Setup Vector DB (pgvector)
 	// Hardcoded for OmniTrade local dev environment for now
-	dbURL := "postgres://postgres:postgres@localhost:5432/omnitrade?sslmode=disable"
+	dbURL := "postgres://postgres:postgres@127.0.0.1:5432/omnitrade?sslmode=disable"
 	vdb, err := NewVectorStore(dbURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to pgvector database: %w", err)

@@ -78,6 +78,12 @@ func (f *Filterer) ShouldIndex(path string, info fs.FileInfo) bool {
 		return false
 	}
 
+	// Skip SQLite journal and WAL files
+	base := info.Name()
+	if strings.HasSuffix(base, ".db-journal") || strings.HasSuffix(base, ".db-wal") || strings.HasSuffix(base, ".db-shm") {
+		return false
+	}
+
 	// Check against ignore rules
 	relPath, err := filepath.Rel(f.workspaceDir, path)
 	if err != nil {

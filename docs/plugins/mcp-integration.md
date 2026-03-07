@@ -207,6 +207,40 @@ const sentiment = await mcp.callTool("financial-news", "get_news_sentiment", {
 // Returns: { score: 0.35, label: "positive", article_count: 42 }
 ```
 
+### 6. FMP Market Data MCP
+
+**Remote SSE Server**: `https://financialmodelingprep.com/mcp?apikey=${FMP_API_KEY}`
+
+**Purpose**: High-frequency financial data, historical prices, and corporate filings
+
+**Tools**:
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `get_quote` | Current stock price | `symbol` |
+| `get_historical` | Historical prices | `symbol`, `from`, `to` |
+| `get_balance_sheet` | Financial statements | `symbol`, `period` |
+| `get_income_statement` | Revenue and profit | `symbol`, `period` |
+| `get_cash_flow` | Cash flow metrics | `symbol`, `period` |
+
+**Environment Variables**:
+```bash
+export FMP_API_KEY="your_fmp_api_key"
+```
+
+**Use Cases**:
+- Complex fundamental analysis (Financials)
+- Historical data gap-filling
+- Real-time quote retrieval as backup to Polygon
+
+**Example Usage**:
+```typescript
+// Fetch balance sheet
+const balanceSheet = await mcp.callTool("fmp", "get_balance_sheet", {
+  symbol: "AAPL",
+  period: "annual"
+});
+```
+
 ## MCP Configuration
 
 All MCP servers configured in `.mcp.json`:

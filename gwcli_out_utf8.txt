@@ -1,0 +1,14 @@
+﻿Reading OAuth client credentials from: c:\Users\admin\Desktop\OmniTrade\client_secret.json
+
+Initiating OAuth flow for profile: default
+A browser window will open for authentication...
+
+Opening browser for authentication...
+If the browser does not open, visit this URL:
+https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.send%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.readonly&prompt=consent&response_type=code&client_id=566998559047-79j5ndqikrklmahtndu5hfke58rb6ic6.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A50370
+
+Waiting for authentication...
+Authentication successful!
+
+Γ£ô Profile "default" added successfully!
+Γ£ô Set "default" as the default profile

@@ -5,11 +5,11 @@ description: Manages pgvector-based RAG pipelines, including embedding storage, 
 
 # Integrating Vector Databases
 
-This skill provides the structure and patterns for OmniTrade's **Fundamental Analysis** RAG pipeline, using `pgvector` for storing and querying text embeddings (SEC filings, news, transcripts).
+This skill provides the structure and patterns for OmniTrade's **Fundamental Analysis** RAG pipeline, using `pgvector` for storing and querying text embeddings (SEC filings, news, transcripts). This infrastructure is exposed to agents via the **`pgvector-server`** MCP server.
 
 ## When to use this skill
 - When implementing vector similarity search in the Data Plane.
-- When building RAG pipelines to feed agent analysis layers.
+- When configuring the PostgreSQL schema for the **pgvector-server** tools.
 - When storing/retiring document embeddings in PostgreSQL.
 - When configuring HNSW or IVFFlat indexes for performance.
 
@@ -62,5 +62,6 @@ func Search(db *sqlx.DB, queryEmbedding []float32, limit int) ([]Chunk, error) {
 PostgreSQL's `vector` type maps to `[]float32` in Go. Use `pgvector.NewVector(embedding)` to wrap slices for SQL parameters.
 
 ## Resources
+- [Leveraging MCP Ecosystem](../leveraging-omnitrade-mcp-ecosystem/SKILL.md)
 - [Embedding Model Config](resources/EMBEDDING_CONFIG.md)
 - [Example: RAG Pipeline](examples/rag-retriever.go)

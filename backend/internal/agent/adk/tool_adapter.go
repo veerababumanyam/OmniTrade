@@ -186,6 +186,32 @@ var (
 		},
 		Timeout: 5 * time.Second,
 	}
+
+	// GmailSendTool sends an email alert.
+	GmailSendTool = ToolDefinition{
+		Name:        "workspace.gmail_send",
+		Description: "Sends an email via Gmail. Use for trade proposal notifications or alerts.",
+		Category:    "action.notification",
+		InputSchema: map[string]interface{}{
+			"type": "object",
+			"properties": map[string]interface{}{
+				"to": map[string]interface{}{
+					"type":        "string",
+					"description": "Recipient email address",
+				},
+				"subject": map[string]interface{}{
+					"type":        "string",
+					"description": "Email subject",
+				},
+				"body": map[string]interface{}{
+					"type":        "string",
+					"description": "Email body content",
+				},
+			},
+			"required": []interface{}{"to", "subject", "body"},
+		},
+		Timeout: 20 * time.Second,
+	}
 )
 
 // DefaultTradingTools returns the default set of trading tools.
@@ -196,5 +222,6 @@ func DefaultTradingTools() []ToolDefinition {
 		RAGSearchTool,
 		CalculateRiskMetricsTool,
 		ProposeTradeTool,
+		GmailSendTool,
 	}
 }

@@ -11,10 +11,16 @@ model_list:
     litellm_params:
       model: zai/glm-5
       api_key: os.environ/ZAI_API_KEY
-      base_url: https://api.z.ai/api/paas/v4/
+      base_url: https://api.z.ai/api/coding/paas/v4/
       extra_body:
         thinking:
           type: enabled
+
+  - model_name: glm-4.7-flash
+    litellm_params:
+      model: openai/glm-4.7-flash
+      api_base: https://api.z.ai/api/coding/paas/v4
+      api_key: os.environ/ZAI_API_KEY
 
 
   # ── Google Gemini (Gen 3.1) ───────────────────────────
@@ -26,6 +32,11 @@ model_list:
   - model_name: Gemini 3.1 Flash-Lite Preview
     litellm_params:
       model: gemini/gemini-3.1-flash-lite-preview
+      api_key: os.environ/GOOGLE_API_KEY
+
+  - model_name: text-embedding-004
+    litellm_params:
+      model: gemini/text-embedding-004
       api_key: os.environ/GOOGLE_API_KEY
 
 
@@ -103,7 +114,46 @@ router_settings:
     - gpt-5.3-garlic: [claude-opus-4.6, deepseek-v4, ministral3]
     - claude-opus-4.6: [gpt-5.3-garlic, gemini-3.1-pro, ministral3]
     - gemini-3.1-pro: [deepseek-v4, gpt-5.2, ministral3]
-    - deepseek-v4: [local-deepseek-r1, ministral3]
+    - deepseek-v4: [glm-4.7-flash, local-deepseek-r1, ministral3]
+
+mcp_servers:
+  # Vision Server (stdio)
+  vision:
+    command: npx
+    args: ["-y", "@z_ai/mcp-server"]
+    env:
+      Z_AI_API_KEY: os.environ/ZAI_API_KEY
+      Z_AI_MODE: ZAI
+
+  # Search, Reader, and Zread (HTTP/SSE)
+  web_search:
+    url: https://api.z.ai/api/mcp/web_search_prime/mcp
+    transport: sse
+    headers:
+      Authorization: os.environ/ZAI_BEARER_TOKEN
+  
+  web_reader:
+    url: https://api.z.ai/api/mcp/web_reader/mcp
+    transport: sse
+    headers:
+      Authorization: os.environ/ZAI_BEARER_TOKEN
+
+  zread:
+    url: https://api.z.ai/api/mcp/zread/mcp
+    transport: sse
+    headers:
+      Authorization: os.environ/ZAI_BEARER_TOKEN
+
+  # FMP Market Data (SSE)
+  fmp:
+    url: os.environ/FMP_MCP_URL
+
+  # Upstash Context7 (Documentation context)
+  context7:
+    command: npx
+    args: ["-y", "@upstash/context7-mcp"]
+    env:
+      CONTEXT7_API_KEY: os.environ/ZAI_API_KEY # Reusing ZAI key or user will provide
 
 # ── General Settings ───────────────────────────────────────
 general_settings:
