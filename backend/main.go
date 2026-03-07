@@ -14,6 +14,7 @@ import (
 	"github.com/v13478/omnitrade/backend/internal/ingestion"
 	"github.com/v13478/omnitrade/backend/internal/portfolio"
 	"github.com/firebase/genkit/go/genkit"
+	"github.com/firebase/genkit/go/plugins/googlegenai"
 )
 
 func main() {
@@ -61,8 +62,8 @@ func main() {
 		defer portfolioService.Close()
 	}
 
-	// Initialize Genkit
-	g := genkit.Init(ctx)
+	// Initialize Genkit with Google Gen AI plugin
+	g := genkit.Init(ctx, genkit.WithPlugins(&googlegenai.GoogleAI{}))
 
 	// Initialize FMP Service (No-MCP AI-native data hub)
 	fmpService := fmp.NewService(dbConn, redisDB, g)

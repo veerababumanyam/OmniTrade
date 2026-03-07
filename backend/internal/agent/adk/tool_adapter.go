@@ -187,6 +187,64 @@ var (
 		Timeout: 5 * time.Second,
 	}
 
+	// WebSearchTool searches the web for real-time information.
+	WebSearchTool = ToolDefinition{
+		Name:        "web_search",
+		Description: "Search the web for real-time news, articles, and information",
+		Category:    "data.web",
+		InputSchema: map[string]interface{}{
+			"type": "object",
+			"properties": map[string]interface{}{
+				"query": map[string]interface{}{
+					"type":        "string",
+					"description": "The search query (e.g., 'TSLA news last 24h')",
+				},
+			},
+			"required": []interface{}{"query"},
+		},
+		Timeout: 45 * time.Second,
+	}
+
+	// WebReaderTool reads and summarizes a web page.
+	WebReaderTool = ToolDefinition{
+		Name:        "web_reader",
+		Description: "Read the content of a web page and provide a summary",
+		Category:    "data.web",
+		InputSchema: map[string]interface{}{
+			"type": "object",
+			"properties": map[string]interface{}{
+				"url": map[string]interface{}{
+					"type":        "string",
+					"description": "The URL of the page to read",
+				},
+			},
+			"required": []interface{}{"url"},
+		},
+		Timeout: 60 * time.Second,
+	}
+
+	// ZReadTool is a specialized reader for deep content analysis.
+	ZReadTool = ToolDefinition{
+		Name:        "zread",
+		Description: "Deeply read and analyze a web page for specific insights",
+		Category:    "data.web",
+		InputSchema: map[string]interface{}{
+			"type": "object",
+			"properties": map[string]interface{}{
+				"url": map[string]interface{}{
+					"type":        "string",
+					"description": "The URL of the page to analyze",
+				},
+				"extraction_objective": map[string]interface{}{
+					"type":        "string",
+					"description": "What specific information to extract",
+				},
+			},
+			"required": []interface{}{"url"},
+		},
+		Timeout: 90 * time.Second,
+	}
+
 	// GmailSendTool sends an email alert.
 	GmailSendTool = ToolDefinition{
 		Name:        "workspace.gmail_send",
@@ -223,5 +281,8 @@ func DefaultTradingTools() []ToolDefinition {
 		CalculateRiskMetricsTool,
 		ProposeTradeTool,
 		GmailSendTool,
+		WebSearchTool,
+		WebReaderTool,
+		ZReadTool,
 	}
 }

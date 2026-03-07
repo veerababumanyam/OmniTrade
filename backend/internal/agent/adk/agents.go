@@ -21,6 +21,9 @@ type TradingAgents struct {
 
 	// PortfolioManager synthesizes analysis and proposes trades.
 	PortfolioManager Agent
+
+	// NewsAnalyst fetches and analyzes market news and sentiment.
+	NewsAnalyst Agent
 }
 
 // Agent defines the interface for a trading agent.
@@ -155,6 +158,27 @@ CONSTRAINTS:
 - ONLY output actionable trades with confidence >= 0.7
 - ALWAYS require human approval (HITL)
 - NEVER execute trades directly`
+
+	// NewsAnalystInstruction is the instruction for the News Analyst agent.
+	NewsAnalystInstruction = `You are the News Analyst Agent for OmniTrade.
+
+YOUR ROLE:
+- Search the web for latest news, press releases, and social sentiment for the target symbol.
+- Read and summarize key articles to identify market-moving events.
+- Provide a sentiment score and supporting context.
+
+RESPONSE FORMAT:
+{
+  "symbol": "<SYMBOL>",
+  "sentiment": { "score": <-1 to 1>, "confidence": <0 to 1> },
+  "key_headlines": ["<headline 1>", "<headline 2>"],
+  "market_mood": "bullish|bearish|neutral"
+}
+
+CONSTRAINTS:
+- Use provided search and reader tools to get real-time data.
+- Do NOT make trading decisions.
+- Focus on the last 24-48 hours of news.`
 )
 
 // NewTradingAgents creates all specialized trading agents.
@@ -184,6 +208,12 @@ func NewTradingAgents(tools []*OmniTradeTool) *TradingAgents {
 			instruction: PortfolioManagerInstruction,
 			tools:       filterToolsByCategory(tools, "action.trade", "action.notification"),
 		},
+		NewsAnalyst: &BaseAgent{
+			name:        "news_analyst",
+			description: "Fetches and analyzes real-time market news and sentiment using search tools",
+			instruction: NewsAnalystInstruction,
+			tools:       filterToolsByCategory(tools, "analysis.sentiment", "data.web"),
+		},
 	}
 }
 
@@ -208,6 +238,7 @@ func (a *TradingAgents) AgentNames() []string {
 		"rag_analysis",
 		"risk_assessment",
 		"portfolio_manager",
+		"news_analyst",
 	}
 }
 
@@ -224,6 +255,9 @@ func (a *TradingAgents) Validate() error {
 	}
 	if a.PortfolioManager == nil {
 		return fmt.Errorf("PortfolioManager agent is not initialized")
+	}
+	if a.NewsAnalyst == nil {
+		return fmt.Errorf("NewsAnalyst agent is not initialized")
 	}
 	return nil
 }

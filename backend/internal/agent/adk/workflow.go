@@ -4,10 +4,16 @@
 package adk
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
+
+	"github.com/v13478/omnitrade/backend/internal/action"
+	"github.com/v13478/omnitrade/backend/internal/fmp"
 )
 
 // TradeProposalInput represents the input for trade proposal generation.
@@ -30,6 +36,23 @@ type TradeProposalOutput struct {
 	RequiresApproval bool                     `json:"requires_approval"`
 	ProposalExpiry    time.Time                `json:"proposal_expiry"`
 	Metadata         map[string]interface{} `json:"metadata,omitempty"`
+}
+
+// ML Tabular Response (mocking local client format)
+type MLTabularResponse struct {
+	Symbol          string  `json:"symbol"`
+	PredictionScore float64 `json:"prediction_score"`
+	Confidence      float64 `json:"confidence"`
+	ModelVersion    string  `json:"model_version"`
+}
+
+// ML Deep Response
+type MLDeepResponse struct {
+	Symbol             string  `json:"symbol"`
+	HorizonDays        int     `json:"horizon_days"`
+	PredictedReturn    float64 `json:"predicted_return"`
+	VolatilityEstimate float64 `json:"volatility_estimate"`
+	ModelVersion       string  `json:"model_version"`
 }
 
 // RiskAssessmentSummary contains summarized risk metrics for a trade proposal.
@@ -71,16 +94,20 @@ type MemoryService interface {
 
 // TradingWorkflow orchestrates the multi-agent trade analysis workflow.
 type TradingWorkflow struct {
-	agents *TradingAgents
-	cache  SemanticCache
-	memory MemoryService
+	agents   *TradingAgents
+	cache    SemanticCache
+	memory   MemoryService
+	fmp      *fmp.Service
+	actionDB *action.ActionPlaneDB
 }
 
 // TradingWorkflowConfig holds configuration for creating a trading workflow.
 type TradingWorkflowConfig struct {
-	Agents *TradingAgents
-	Cache  SemanticCache
-	Memory MemoryService
+	Agents   *TradingAgents
+	Cache    SemanticCache
+	Memory   MemoryService
+	FMP      *fmp.Service
+	ActionDB *action.ActionPlaneDB
 }
 
 // NewTradingWorkflow creates a new trading workflow.
@@ -94,9 +121,11 @@ func NewTradingWorkflow(cfg TradingWorkflowConfig) (*TradingWorkflow, error) {
 	}
 
 	return &TradingWorkflow{
-		agents: cfg.Agents,
-		cache:  cfg.Cache,
-		memory: cfg.Memory,
+		agents:   cfg.Agents,
+		cache:    cfg.Cache,
+		memory:   cfg.Memory,
+		fmp:      cfg.FMP,
+		actionDB: cfg.ActionDB,
 	}, nil
 }
 
@@ -143,6 +172,20 @@ func (w *TradingWorkflow) Run(ctx context.Context, input TradeProposalInput) (*T
 	// Step 6: Execute Portfolio Manager phase
 	output := w.executePortfolioManagerPhase(ctx, input, marketData, ragContext, riskAssessment)
 
+	// Persist the proposal to the Action plane DB
+	if w.actionDB != nil {
+		proposal := &action.TradeProposal{
+			Symbol:          output.Symbol,
+			Action:          output.Action,
+			ConfidenceScore: output.ConfidenceScore,
+			Reasoning:       output.Reasoning,
+			ProposedByModel: "ADK-TradingWorkflow",
+		}
+		if err := w.actionDB.CreateProposal(ctx, proposal); err != nil {
+			log.Printf("[Workflow] Warning: Failed to persist proposal to Action DB: %v", err)
+		}
+	}
+
 	// Step 7: Save to episodic memory
 	if w.memory != nil {
 		userID := input.UserID
@@ -175,9 +218,28 @@ func (w *TradingWorkflow) Run(ctx context.Context, input TradeProposalInput) (*T
 
 func (w *TradingWorkflow) executeDataFetcherPhase(ctx context.Context, input TradeProposalInput) map[string]interface{} {
 	log.Printf("[Workflow] Phase 1: Data Fetcher for %s", input.Symbol)
-	// Simulated data fetching
-	price := simulateFetchPrice(input.Symbol)
-	volume := simulateFetchVolume(input.Symbol)
+	
+	price := 100.00
+	volume := 10e6
+
+	if w.fmp != nil {
+		if quoteData, err := w.fmp.GetData(ctx, input.Symbol, "quote"); err == nil && quoteData != nil {
+			if dataList, ok := quoteData.Data.([]interface{}); ok && len(dataList) > 0 {
+				if firstQuote, ok := dataList[0].(map[string]interface{}); ok {
+					if p, ok := firstQuote["price"].(float64); ok {
+						price = p
+					}
+					if v, ok := firstQuote["volume"].(float64); ok {
+						volume = v
+					}
+				}
+			}
+		}
+	} else {
+		price = simulateFetchPrice(input.Symbol)
+		volume = simulateFetchVolume(input.Symbol)
+	}
+
 	return map[string]interface{}{
 		"symbol":     input.Symbol,
 		"price":      price,
@@ -188,10 +250,24 @@ func (w *TradingWorkflow) executeDataFetcherPhase(ctx context.Context, input Tra
 
 func (w *TradingWorkflow) executeRAGAnalysisPhase(ctx context.Context, input TradeProposalInput) map[string]interface{} {
 	log.Printf("[Workflow] Phase 2: RAG Analysis for %s", input.Symbol)
-	// Simulated RAG analysis
+	
 	sentimentScore := 0.65
 	if input.Strategy == "lynch" {
 		sentimentScore = 0.75
+	}
+	
+	reqBody, _ := json.Marshal(map[string]interface{}{
+		"symbol": input.Symbol,
+		"features": map[string]float64{"momentum": 1.2, "value": 0.8},
+	})
+	
+	resp, err := http.Post("http://localhost:8000/predict/tabular", "application/json", bytes.NewBuffer(reqBody))
+	if err == nil {
+		defer resp.Body.Close()
+		var mlResp MLTabularResponse
+		if err := json.NewDecoder(resp.Body).Decode(&mlResp); err == nil {
+			sentimentScore = mlResp.PredictionScore
+		}
 	}
 	return map[string]interface{}{
 		"symbol": input.Symbol,
@@ -210,16 +286,36 @@ func (w *TradingWorkflow) executeRAGAnalysisPhase(ctx context.Context, input Tra
 
 func (w *TradingWorkflow) executeRiskAssessmentPhase(ctx context.Context, input TradeProposalInput, marketData map[string]interface{}) map[string]interface{} {
 	log.Printf("[Workflow] Phase 3: Risk Assessment for %s", input.Symbol)
-	// Simulated risk assessment
+	// Simulated risk assessment baseline
 	positionSize := input.AllocatorBudget * 0.02
+	var95 := positionSize * 0.05
+	sharpeRatio := 1.25
+	volatility := 0.22
+
+	reqBody, _ := json.Marshal(map[string]interface{}{
+		"symbol": input.Symbol,
+		"sequence_data": []map[string]float64{{"close": 100.0, "volume": 10000.0}},
+		"horizon_days": 5,
+	})
+	
+	resp, err := http.Post("http://localhost:8001/predict/deep", "application/json", bytes.NewBuffer(reqBody))
+	if err == nil {
+		defer resp.Body.Close()
+		var mlResp MLDeepResponse
+		if err := json.NewDecoder(resp.Body).Decode(&mlResp); err == nil {
+			volatility = mlResp.VolatilityEstimate
+			sharpeRatio = 1.0 + (mlResp.PredictedReturn * 10.0)
+		}
+	}
+
 	return map[string]interface{}{
 		"symbol": input.Symbol,
 		"risk_metrics": map[string]interface{}{
-			"var_95":       positionSize * 0.05,
+			"var_95":       var95,
 			"var_99":       positionSize * 0.08,
 			"max_drawdown": 0.12,
-			"sharpe_ratio": 1.25,
-			"volatility":   0.22,
+			"sharpe_ratio": sharpeRatio,
+			"volatility":   volatility,
 		},
 		"position_sizing": map[string]interface{}{
 			"recommended_size": positionSize,

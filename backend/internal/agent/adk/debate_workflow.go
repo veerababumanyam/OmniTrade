@@ -4,11 +4,19 @@
 package adk
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"sync"
 	"time"
+
+	"github.com/firebase/genkit/go/ai"
+	"github.com/firebase/genkit/go/genkit"
+	"github.com/v13478/omnitrade/backend/internal/action"
+	"github.com/v13478/omnitrade/backend/internal/fmp"
 )
 
 // DebateWorkflow orchestrates parallel multi-agent analysis with conflict resolution.
@@ -20,6 +28,9 @@ type DebateWorkflow struct {
 	mediator *MediatorAgent
 	cache    SemanticCache
 	memory   MemoryService
+	fmp      *fmp.Service
+	actionDB *action.ActionPlaneDB
+	gk       *genkit.Genkit
 }
 
 // DebateWorkflowConfig holds configuration for creating a debate workflow.
@@ -28,6 +39,9 @@ type DebateWorkflowConfig struct {
 	Mediator *MediatorAgent
 	Cache    SemanticCache
 	Memory   MemoryService
+	FMP      *fmp.Service
+	ActionDB *action.ActionPlaneDB
+	GK       *genkit.Genkit
 }
 
 // NewDebateWorkflow creates a new debate workflow with parallel execution.
@@ -51,6 +65,9 @@ func NewDebateWorkflow(cfg DebateWorkflowConfig) (*DebateWorkflow, error) {
 		mediator: mediator,
 		cache:    cfg.Cache,
 		memory:   cfg.Memory,
+		fmp:      cfg.FMP,
+		actionDB: cfg.ActionDB,
+		gk:       cfg.GK,
 	}, nil
 }
 
@@ -117,6 +134,20 @@ func (w *DebateWorkflow) Run(ctx context.Context, input TradeProposalInput) (*Tr
 	// Step 6: Execute Portfolio Manager phase with mediated decision
 	output := w.executePortfolioManagerPhase(ctx, input, marketData, debateContext, mediatorDecision)
 
+	// Persist the proposal to the Action plane DB
+	if w.actionDB != nil {
+		proposal := &action.TradeProposal{
+			Symbol:          output.Symbol,
+			Action:          output.Action,
+			ConfidenceScore: output.ConfidenceScore,
+			Reasoning:       output.Reasoning,
+			ProposedByModel: "ADK-DebateWorkflow",
+		}
+		if err := w.actionDB.CreateProposal(ctx, proposal); err != nil {
+			log.Printf("[DebateWorkflow] Warning: Failed to persist proposal to Action DB: %v", err)
+		}
+	}
+
 	// Step 7: Save to episodic memory
 	if w.memory != nil {
 		userID := input.UserID
@@ -150,9 +181,27 @@ func (w *DebateWorkflow) Run(ctx context.Context, input TradeProposalInput) (*Tr
 func (w *DebateWorkflow) executeDataFetcherPhase(ctx context.Context, input TradeProposalInput) map[string]interface{} {
 	log.Printf("[DebateWorkflow] Phase 1: DataFetcher for %s", input.Symbol)
 
-	// Simulated data fetching (matches existing workflow pattern)
-	price := simulateFetchPrice(input.Symbol)
-	volume := simulateFetchVolume(input.Symbol)
+	price := 100.00
+	volume := 10e6
+
+	if w.fmp != nil {
+		if quoteData, err := w.fmp.GetData(ctx, input.Symbol, "quote"); err == nil && quoteData != nil {
+			if dataList, ok := quoteData.Data.([]interface{}); ok && len(dataList) > 0 {
+				if firstQuote, ok := dataList[0].(map[string]interface{}); ok {
+					if p, ok := firstQuote["price"].(float64); ok {
+						price = p
+					}
+					if v, ok := firstQuote["volume"].(float64); ok {
+						volume = v
+					}
+				}
+			}
+		}
+	} else {
+		// Fallback to simulated data
+		price = simulateFetchPrice(input.Symbol)
+		volume = simulateFetchVolume(input.Symbol)
+	}
 
 	data := map[string]interface{}{
 		"symbol":     input.Symbol,
@@ -173,14 +222,8 @@ func (w *DebateWorkflow) executeDataFetcherPhase(ctx context.Context, input Trad
 	return data
 }
 
-// parallelAnalystResult holds the result from a parallel analyst execution.
-type parallelAnalystResult struct {
-	AgentName string
-	Opinion   AgentOpinion
-	Error     error
-}
 
-// executeParallelAnalystPhase runs RAGAnalysis and RiskAssessment concurrently.
+// executeParallelAnalystPhase runs RAGAnalysis, RiskAssessment, and NewsAnalyst concurrently.
 // Uses goroutines with sync.WaitGroup for parallel execution.
 func (w *DebateWorkflow) executeParallelAnalystPhase(ctx context.Context, input TradeProposalInput, marketData map[string]interface{}) *DebateContext {
 	log.Printf("[DebateWorkflow] Phase 2: Parallel Analyst Execution for %s", input.Symbol)
@@ -199,49 +242,43 @@ func (w *DebateWorkflow) executeParallelAnalystPhase(ctx context.Context, input 
 		debateContext.SessionID = fmt.Sprintf("debate-%d", time.Now().UnixNano())
 	}
 
-	// Channel to collect results from parallel goroutines
-	resultsChan := make(chan parallelAnalystResult, 2)
-
 	// WaitGroup for synchronizing parallel goroutines
 	var wg sync.WaitGroup
+	var mu sync.Mutex // Mutex to protect shared debateContext.AgentOpinions
 
-	// Launch RAGAnalysis goroutine
-	wg.Add(1)
+	// Execute analysts in parallel
+	wg.Add(3)
 	go func() {
 		defer wg.Done()
-		opinion := w.executeRAGAnalysis(ctx, input)
-		resultsChan <- parallelAnalystResult{
-			AgentName: "rag_analysis",
-			Opinion:   opinion,
-		}
+		opinion := w.executeRAGAnalysis(ctx, input) // Original RAGAnalysis doesn't take marketData
+		mu.Lock()
+		debateContext.AgentOpinions = append(debateContext.AgentOpinions, opinion)
+		mu.Unlock()
 	}()
 
-	// Launch RiskAssessment goroutine
-	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		opinion := w.executeRiskAssessment(ctx, input, marketData)
-		resultsChan <- parallelAnalystResult{
-			AgentName: "risk_assessment",
-			Opinion:   opinion,
-		}
+		mu.Lock()
+		debateContext.AgentOpinions = append(debateContext.AgentOpinions, opinion)
+		mu.Unlock()
 	}()
 
-	// Wait for all goroutines to complete in a separate goroutine
 	go func() {
-		wg.Wait()
-		close(resultsChan)
+		defer wg.Done()
+		opinion := w.executeNewsAnalysis(ctx, input, marketData)
+		mu.Lock()
+		debateContext.AgentOpinions = append(debateContext.AgentOpinions, opinion)
+		mu.Unlock()
 	}()
 
-	// Collect results from channel
-	for result := range resultsChan {
-		if result.Error != nil {
-			log.Printf("[DebateWorkflow] Warning: %s returned error: %v", result.AgentName, result.Error)
-			continue
-		}
-		debateContext.AgentOpinions = append(debateContext.AgentOpinions, result.Opinion)
-		log.Printf("[DebateWorkflow] Collected opinion from %s: Action=%s, Confidence=%.2f",
-			result.AgentName, result.Opinion.ActionRecommendation, result.Opinion.ConfidenceScore)
+	// Wait for all parallel analysts to complete
+	wg.Wait()
+
+	log.Printf("[DebateWorkflow] All parallel analysts completed. Collected %d opinions.", len(debateContext.AgentOpinions))
+	for _, op := range debateContext.AgentOpinions {
+		log.Printf("[DebateWorkflow] Opinion from %s: Action=%s, Confidence=%.2f",
+			op.AgentName, op.ActionRecommendation, op.ConfidenceScore)
 	}
 
 	// Save parallel execution summary to memory
@@ -270,10 +307,24 @@ func (w *DebateWorkflow) executeRAGAnalysis(ctx context.Context, input TradeProp
 		}
 	}
 
-	// Simulated RAG analysis (matches existing workflow pattern)
+	// Call ML Tabular Service for sentiment/momentum scoring
 	sentimentScore := 0.65
 	if input.Strategy == "lynch" {
 		sentimentScore = 0.75
+	}
+	
+	reqBody, _ := json.Marshal(map[string]interface{}{
+		"symbol": input.Symbol,
+		"features": map[string]float64{"momentum": 1.2, "value": 0.8},
+	})
+	
+	resp, err := http.Post("http://localhost:8000/predict/tabular", "application/json", bytes.NewBuffer(reqBody))
+	if err == nil {
+		defer resp.Body.Close()
+		var mlResp MLTabularResponse
+		if err := json.NewDecoder(resp.Body).Decode(&mlResp); err == nil {
+			sentimentScore = mlResp.PredictionScore
+		}
 	}
 
 	action := "HOLD"
@@ -327,11 +378,28 @@ func (w *DebateWorkflow) executeRiskAssessment(ctx context.Context, input TradeP
 		}
 	}
 
-	// Simulated risk assessment (matches existing workflow pattern)
+	// Call ML Deep Learning Service for risk/volatility forecasting
 	positionSize := input.AllocatorBudget * 0.02
 	var95 := positionSize * 0.05
 	sharpeRatio := 1.25
 	volatility := 0.22
+
+	reqBody, _ := json.Marshal(map[string]interface{}{
+		"symbol": input.Symbol,
+		"sequence_data": []map[string]float64{{"close": 100.0, "volume": 10000.0}},
+		"horizon_days": 5,
+	})
+	
+	resp, err := http.Post("http://localhost:8001/predict/deep", "application/json", bytes.NewBuffer(reqBody))
+	if err == nil {
+		defer resp.Body.Close()
+		var mlResp MLDeepResponse
+		if err := json.NewDecoder(resp.Body).Decode(&mlResp); err == nil {
+			volatility = mlResp.VolatilityEstimate
+			// roughly correlate higher predicted returns with better sharpe
+			sharpeRatio = 1.0 + (mlResp.PredictedReturn * 10.0) 
+		}
+	}
 
 	// Risk-based action recommendation
 	action := "HOLD"
@@ -403,15 +471,51 @@ func (w *DebateWorkflow) executeMediatorPhase(ctx context.Context, debateContext
 	}
 
 	// Execute mediator resolution
-	decision, err := w.mediator.Resolve(ctx, debateContext)
-	if err != nil {
-		log.Printf("[DebateWorkflow] Mediator error: %v", err)
-		return &MediatorDecision{
-			FinalAction:         "HOLD",
-			FinalConfidence:     0.0,
-			ResolutionReasoning: fmt.Sprintf("Mediation failed: %v", err),
-			ConflictSummary:     "Mediator resolution failed",
-			Strategy:            "ESCALATED",
+	var decision *MediatorDecision
+
+	if w.gk != nil {
+		prompt := fmt.Sprintf(
+			"You are the Mediator Agent resolving a debate between specialized agents.\n"+
+				"Symbol: %s\n"+
+				"Market Data: Price=$%.2f, Volume=%.0f\n"+
+				"Number of agent opinions: %d\n",
+			debateContext.Symbol, debateContext.MarketData["price"], debateContext.MarketData["volume_24h"], len(debateContext.AgentOpinions),
+		)
+		for _, op := range debateContext.AgentOpinions {
+			prompt += fmt.Sprintf("- Agent %s recommends %s (Conf: %.2f). Reasoning: %s\n", op.AgentName, op.ActionRecommendation, op.ConfidenceScore, op.Reasoning)
+		}
+		prompt += "\nDecide the final action (BUY, SELL, HOLD), confidence score (0.0-1.0), and summarize the reasoning. Respond in valid JSON format only matching this schema:\n" +
+			`{"strategy": "WEIGHTED_VOTE", "final_action": "BUY", "final_confidence": 0.8, "resolution_reasoning": "summary", "conflict_summary": "agree"}`
+
+		response, err := genkit.Generate(ctx, w.gk,
+			ai.WithModelName("googleai/gemini-2.5-pro"),
+			ai.WithPrompt(prompt),
+		)
+		if err == nil && response != nil {
+			var parsedDecision MediatorDecision
+			if err := json.Unmarshal([]byte(response.Text()), &parsedDecision); err == nil {
+				decision = &parsedDecision
+			} else {
+				log.Printf("[DebateWorkflow] Failed to parse Mediator JSON: %v. Raw: %s", err, response.Text())
+			}
+		} else {
+			log.Printf("[DebateWorkflow] failed Mediator generation: %v", err)
+		}
+	}
+
+	// Fallback logic if LLM offline
+	if decision == nil {
+		var err error
+		decision, err = w.mediator.Resolve(ctx, debateContext)
+		if err != nil {
+			log.Printf("[DebateWorkflow] Mediator error: %v", err)
+			return &MediatorDecision{
+				FinalAction:         "HOLD",
+				FinalConfidence:     0.0,
+				ResolutionReasoning: fmt.Sprintf("Mediation failed: %v", err),
+				ConflictSummary:     "Mediator resolution failed",
+				Strategy:            "ESCALATED",
+			}
 		}
 	}
 
@@ -485,13 +589,35 @@ func (w *DebateWorkflow) executePortfolioManagerPhase(ctx context.Context, input
 	stopLoss := price * 0.95
 
 	// Build reasoning from mediator decision and agent opinions
-	reasoning := fmt.Sprintf(
-		"Debate workflow analysis for %s using %s strategy. Mediator resolved to %s with %.2f confidence (%s strategy). "+
-			"Market price: $%.2f, Volume: %.0f. Risk assessment: %s (VaR95: $%.2f, Sharpe: %.2f). "+
-			"Position size: $%.2f. %s",
-		input.Symbol, input.Strategy, decision.FinalAction, decision.FinalConfidence, decision.Strategy,
-		price, volume, riskLevel, var95, sharpeRatio, positionSizeUSD,
-		decision.ResolutionReasoning)
+	var reasoning string
+	if w.gk != nil {
+		prompt := fmt.Sprintf(
+			"Synthesize a final trade proposal for %s using the %s strategy.\n"+
+				"Market Data: Price=$%.2f, Volume=%.0f.\n"+
+				"Mediator Decision: %s with %.2f confidence (%s strategy). Reasoning: %s\n"+
+				"Risk metrics: VaR95=$%.2f, Sharpe=%.2f.\n"+
+				"Provide a cohesive final 1-paragraph summary.",
+			input.Symbol, input.Strategy, price, volume, decision.FinalAction, decision.FinalConfidence, decision.Strategy, decision.ResolutionReasoning, var95, sharpeRatio,
+		)
+		response, err := genkit.Generate(ctx, w.gk,
+			ai.WithModelName("googleai/gemini-2.5-pro"),
+			ai.WithPrompt(PortfolioManagerInstruction+"\n\nTask:\n"+prompt),
+		)
+		if err == nil && response != nil {
+			reasoning = response.Text()
+		}
+	}
+
+	// Fallback if AI generation failed or was disabled
+	if reasoning == "" {
+		reasoning = fmt.Sprintf(
+			"Debate workflow analysis for %s using %s strategy. Mediator resolved to %s with %.2f confidence (%s strategy). "+
+				"Market price: $%.2f, Volume: %.0f. Risk assessment: %s (VaR95: $%.2f, Sharpe: %.2f). "+
+				"Position size: $%.2f. %s",
+			input.Symbol, input.Strategy, decision.FinalAction, decision.FinalConfidence, decision.Strategy,
+			price, volume, riskLevel, var95, sharpeRatio, positionSizeUSD,
+			decision.ResolutionReasoning)
+	}
 
 	// Check if escalation is required
 	requiresApproval := true

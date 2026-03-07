@@ -119,41 +119,44 @@ router_settings:
 mcp_servers:
   # Vision Server (stdio)
   vision:
+    transport: "stdio"
     command: npx
     args: ["-y", "@z_ai/mcp-server"]
     env:
       Z_AI_API_KEY: os.environ/ZAI_API_KEY
       Z_AI_MODE: ZAI
 
-  # Search, Reader, and Zread (HTTP/SSE)
+  # Search, Reader, and Zread (HTTP - Z.ai Streamable HTTP)
   web_search:
     url: https://api.z.ai/api/mcp/web_search_prime/mcp
-    transport: sse
-    headers:
-      Authorization: os.environ/ZAI_BEARER_TOKEN
-  
+    transport: "http"
+    auth_type: "bearer_token"
+    auth_value: os.environ/ZAI_API_KEY
+
   web_reader:
     url: https://api.z.ai/api/mcp/web_reader/mcp
-    transport: sse
-    headers:
-      Authorization: os.environ/ZAI_BEARER_TOKEN
+    transport: "http"
+    auth_type: "bearer_token"
+    auth_value: os.environ/ZAI_API_KEY
 
   zread:
     url: https://api.z.ai/api/mcp/zread/mcp
-    transport: sse
-    headers:
-      Authorization: os.environ/ZAI_BEARER_TOKEN
+    transport: "http"
+    auth_type: "bearer_token"
+    auth_value: os.environ/ZAI_API_KEY
 
-  # FMP Market Data (SSE)
+  # FMP Market Data (HTTP)
   fmp:
     url: os.environ/FMP_MCP_URL
+    transport: "http"
 
   # Upstash Context7 (Documentation context)
   context7:
+    transport: "stdio"
     command: npx
     args: ["-y", "@upstash/context7-mcp"]
     env:
-      CONTEXT7_API_KEY: os.environ/ZAI_API_KEY # Reusing ZAI key or user will provide
+      CONTEXT7_API_KEY: os.environ/ZAI_API_KEY
 
 # ── General Settings ───────────────────────────────────────
 general_settings:

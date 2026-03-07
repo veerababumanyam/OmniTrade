@@ -27,6 +27,16 @@ func NewService(db *database.DB, redisDB *database.RedisDB, gk *genkit.Genkit) *
 	}
 }
 
+// DB returns the underlying database connection.
+func (s *Service) DB() *database.DB {
+	return s.db
+}
+
+// Redis returns the underlying Redis connection.
+func (s *Service) Redis() *database.RedisDB {
+	return s.redis
+}
+
 // GetData retrieves data for a symbol and category, checking Redis cache first
 func (s *Service) GetData(ctx context.Context, symbol string, category string) (*FMPTickerData, error) {
 	upperSymbol := symbol // Should be normalized already
